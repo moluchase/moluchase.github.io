@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="算法第4版,Python," />
+  <meta name="keywords" content="算法导论,Java," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="问题描述本篇包含如下问题：  两个非负整数的最大公约数问题 两个非负整数的最小公倍数问题 n个非负整数的最大公约数问题 n个非负整数的最小公倍数问题 大数的处理">
-<meta name="keywords" content="算法第4版,Python">
+<meta name="description" content="问题描述算法导论P38提到来源：已知一股票在某一段时间内的变化趋势，问该时间段内何时买入，何时卖出，使得收益最大，求出最大值转化：给定一个数组，从中选取一个连续的子数组，使得其元素和在所有的子数组中最大，返回该最大值。">
+<meta name="keywords" content="算法导论,Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最大公约数与最小公倍数的问题">
-<meta property="og:url" content="http://yoursite.com/2017/04/24/algorithm01/index.html">
+<meta property="og:title" content="最大子数组问题">
+<meta property="og:url" content="http://yoursite.com/2017/04/28/algorithm07/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="问题描述本篇包含如下问题：  两个非负整数的最大公约数问题 两个非负整数的最小公倍数问题 n个非负整数的最大公约数问题 n个非负整数的最小公倍数问题 大数的处理">
-<meta property="og:updated_time" content="2017-04-25T06:32:18.196Z">
+<meta property="og:description" content="问题描述算法导论P38提到来源：已知一股票在某一段时间内的变化趋势，问该时间段内何时买入，何时卖出，使得收益最大，求出最大值转化：给定一个数组，从中选取一个连续的子数组，使得其元素和在所有的子数组中最大，返回该最大值。">
+<meta property="og:updated_time" content="2017-04-28T09:20:36.154Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="最大公约数与最小公倍数的问题">
-<meta name="twitter:description" content="问题描述本篇包含如下问题：  两个非负整数的最大公约数问题 两个非负整数的最小公倍数问题 n个非负整数的最大公约数问题 n个非负整数的最小公倍数问题 大数的处理">
+<meta name="twitter:title" content="最大子数组问题">
+<meta name="twitter:description" content="问题描述算法导论P38提到来源：已知一股票在某一段时间内的变化趋势，问该时间段内何时买入，何时卖出，使得收益最大，求出最大值转化：给定一个数组，从中选取一个连续的子数组，使得其元素和在所有的子数组中最大，返回该最大值。">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/04/24/algorithm01/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/04/28/algorithm07/"/>
 
 
 
 
 
-  <title> 最大公约数与最小公倍数的问题 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> 最大子数组问题 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -283,7 +283,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/24/algorithm01/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/28/algorithm07/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="song Peng">
@@ -304,7 +304,7 @@
             
             
               
-                最大公约数与最小公倍数的问题
+                最大子数组问题
               
             
           </h1>
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T19:52:06+08:00">
-                2017-04-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-28T10:48:31+08:00">
+                2017-04-28
               </time>
             
 
@@ -359,7 +359,7 @@
 
           
           
-             <span id="/2017/04/24/algorithm01/" class="leancloud_visitors" data-flag-title="最大公约数与最小公倍数的问题">
+             <span id="/2017/04/28/algorithm07/" class="leancloud_visitors" data-flag-title="最大子数组问题">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -388,26 +388,12 @@
       
 
       
-        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>本篇包含如下问题：</p>
-<ol>
-<li>两个非负整数的最大公约数问题</li>
-<li>两个非负整数的最小公倍数问题</li>
-<li>n个非负整数的最大公约数问题</li>
-<li>n个非负整数的最小公倍数问题</li>
-<li>大数的处理</li>
-</ol>
+        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>算法导论P38提到<br>来源：已知一股票在某一段时间内的变化趋势，问该时间段内何时买入，何时卖出，使得收益最大，求出最大值<br>转化：给定一个数组，从中选取一个连续的子数组，使得其元素和在所有的子数组中最大，返回该最大值。</p>
 <a id="more"></a>
-<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><p><strong>定义</strong><br>最大公约数：指两个或多个整数共有约数中最大的一个<br>最小公倍数：两个或多个整数的公倍数里最小的那一个叫做它们的最小公倍数</p>
-<p><strong>辗转相除法(欧几里德算法)</strong><br>两个数q，p<br>第一步：如果q==0，最大公约数为p；如果p==0，最大公约数为q<br>第二步：q对p取余，余数赋值给r，将p赋值给q，r赋值给p<br>(第二步的结果一定满足q大于p)<br>第三步：回到第一步</p>
-<p><strong>更相减损法</strong><br>第一步：任意给定两个正整数；判断它们是否都是偶数。若是，则用2约简；若不是则执行第二步。<br>第二步：以较大的数减较小的数，接着把所得的差与较小的数比较，并以大数减小数。继续这个操作，直到所得的减数和差相等为止，获取差，即为等数。<br>则第一步中约掉的若干个2与第二步中等数的乘积就是所求的最大公约数。</p>
-<p><strong>stein算法</strong><br>设置A1=A、B1=B和C1=1<br>1、如果An=0，Bn<em>Cn是最大公约数，算法结束<br>2、如果Bn=0，An</em>Cn是最大公约数，算法结束<br>3、如果An和Bn都是偶数，则An+1=An/2，Bn+1=Bn/2，Cn+1=Cn*2(注意，乘2只要把整数左移一位即可，除2只要把整数右移一位即可)<br>4、如果An是偶数，Bn不是偶数，则An+1=An/2，Bn+1=Bn，Cn+1=Cn (很显然啦，2不是奇数的约数)<br>5、如果Bn是偶数，An不是偶数，则Bn+1=Bn/2，An+1=An，Cn+1=Cn (很显然啦，2不是奇数的约数)<br>6、如果An和Bn都不是偶数，则An+1=|An-Bn|，Bn+1=min(An,Bn)，Cn+1=Cn<br>7、n加1，转步骤1</p>
-<p><strong>两个数的最小公倍数</strong><br>两个数的最小公倍数等于两个数的乘积除以两个数的最大公约数</p>
-<p>参考： <a href="http://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0" target="_blank" rel="external">百度百科</a></p>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><h4 id="两个非负整数的最大公约数问题"><a href="#两个非负整数的最大公约数问题" class="headerlink" title="两个非负整数的最大公约数问题"></a>两个非负整数的最大公约数问题</h4><p>使用辗转相除法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(p,q)</span>:</span></div><div class="line">    r=p%q</div><div class="line">    <span class="keyword">if</span> r==<span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span> q</div><div class="line">    <span class="keyword">return</span> gcd(q,r)</div></pre></td></tr></table></figure></p>
-<h4 id="两个非负整数的最小公倍数问题"><a href="#两个非负整数的最小公倍数问题" class="headerlink" title="两个非负整数的最小公倍数问题"></a>两个非负整数的最小公倍数问题</h4><p>先求最大公约数，然后两数之积除以最大公约数求得<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lcm</span><span class="params">(p,q)</span>:</span></div><div class="line">    <span class="keyword">return</span> p*q/gcd(p,q)</div></pre></td></tr></table></figure></p>
-<h4 id="n个非负整数的最大公约数问题"><a href="#n个非负整数的最大公约数问题" class="headerlink" title="n个非负整数的最大公约数问题"></a>n个非负整数的最大公约数问题</h4><p>百度百科上有提到先求两个数的最大公约数，然后将这个公约数继续与第三个数求最大公约数，一直循环直到最后一个，变为这n个数的最大公约数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">ngcd</span><span class="params">(list)</span>:</span></div><div class="line">    <span class="keyword">if</span> len(list)==<span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> list[<span class="number">0</span>]</div><div class="line">    list[<span class="number">1</span>]=gcd(list[<span class="number">0</span>],list[<span class="number">1</span>])</div><div class="line">    <span class="keyword">return</span> ngcd(list[<span class="number">1</span>:])</div></pre></td></tr></table></figure></p>
-<h4 id="n个非负整数的最小公倍数问题"><a href="#n个非负整数的最小公倍数问题" class="headerlink" title="n个非负整数的最小公倍数问题"></a>n个非负整数的最小公倍数问题</h4><p>同上，先求两个数的最小公倍数，再将这个最小公倍数与第三个数求最小公倍数，直至最后一个…<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nlcm</span><span class="params">(list)</span>:</span></div><div class="line">    <span class="keyword">if</span> len(list)==<span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> list[<span class="number">0</span>]</div><div class="line">    list[<span class="number">1</span>]=lcm(list[<span class="number">0</span>],list[<span class="number">1</span>])</div><div class="line">    <span class="keyword">return</span> nlcm(list[<span class="number">1</span>:])</div></pre></td></tr></table></figure></p>
-<h4 id="大数的处理"><a href="#大数的处理" class="headerlink" title="大数的处理"></a>大数的处理</h4><p>int型数据是4个字节，long型在64位系统下是8字节，因此对于一个无法用8字节表示的数使用除法和取模会很复杂，于是就有了上面的stein算法，其本质就是更相减损法，只是多了下面一条：<br>“对于一个偶数A和一个奇数B，若有 $A/(2^k)=M$ ，且M，k均为整数，则A和B的最大公约数即为M和B的最大公约数”<br>这个可以使用前面的辗转相除法证明</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="暴力搜索"><a href="#暴力搜索" class="headerlink" title="暴力搜索"></a>暴力搜索</h4><p>n个元素中选取两个元素，计算两个元素之间的元素的和，将其与max相比，如果比max大，则替换；<br>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">//最简单的暴力搜索 O(n^3)</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxSum</span><span class="params">(<span class="keyword">int</span> []a)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> max=<span class="number">0</span>;</div><div class="line">	<span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)&#123;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&lt;a.length;j++)&#123;</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=i;k&lt;=j;k++)&#123;</div><div class="line">				sum+=a[k];</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span>(sum&gt;max)&#123;</div><div class="line">				max=sum;</div><div class="line">			&#125;</div><div class="line">			sum=<span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> max;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="分治策略"><a href="#分治策略" class="headerlink" title="分治策略"></a>分治策略</h4><p>把一个数组从中分开为两个子数组，最大子数组可能的情况是：在左边的子数组，在右边的子数组，含左边的一部分和右边的一部分；对于前两种情况只是将原问题分解为较小的原问题，而第三种情况既然包括左边和右边，一定含有中间的元素，因此很好解决，从左从右遍历即可；然后将这三种情况进行比较，选取最大的部分返回<br>这个问题和归并排序是一个道理<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">//采用分治策略，时间复杂度为O(nlgn)</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxSum2</span><span class="params">(<span class="keyword">int</span> []a)</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> findMaxSub(a,<span class="number">0</span>,a.length-<span class="number">1</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">findMaxSub</span><span class="params">(<span class="keyword">int</span>[] a,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left==right) <span class="keyword">return</span> a[left];</div><div class="line">	<span class="keyword">int</span> mid=left+(right-left)/<span class="number">2</span>;</div><div class="line">	<span class="keyword">int</span> leftSum=findMaxSub(a, left, mid);</div><div class="line">	<span class="keyword">int</span> midSum=findMaxCro(a, left,mid, right);</div><div class="line">	<span class="keyword">int</span> rightSum=findMaxSub(a, mid+<span class="number">1</span>, right);</div><div class="line">	<span class="keyword">if</span>(leftSum&gt;midSum&amp;&amp;left&gt;rightSum) <span class="keyword">return</span> leftSum;</div><div class="line">	<span class="keyword">if</span>(rightSum&gt;leftSum&amp;&amp;rightSum&gt;midSum) <span class="keyword">return</span> rightSum;</div><div class="line">	<span class="keyword">return</span> midSum;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">findMaxCro</span><span class="params">(<span class="keyword">int</span>[] a,<span class="keyword">int</span> left,<span class="keyword">int</span> mid,<span class="keyword">int</span> right)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> maxleft,maxright;</div><div class="line">	<span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">	maxleft=a[mid];</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=mid;i&gt;=left;i--)&#123;</div><div class="line">		sum+=a[i];</div><div class="line">		<span class="keyword">if</span>(sum&gt;maxleft)&#123;</div><div class="line">			maxleft=sum;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	maxright=<span class="number">0</span>;</div><div class="line">	sum=<span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=mid+<span class="number">1</span>;i&lt;=right;i++)&#123;</div><div class="line">		sum+=a[i];</div><div class="line">		<span class="keyword">if</span>(sum&gt;maxright)&#123;</div><div class="line">			maxright=sum;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> maxleft+maxright;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="DP解法"><a href="#DP解法" class="headerlink" title="DP解法"></a>DP解法</h4><p>第sum[i-1]个元素是前i-1个元素的最大子数组的和，如果sum[i-1]小于0，则sum[i]=a[i],否则sum[i]=sum[i-1]+a[i];最后的结果result取sum[i]的最大值<br>sum[i]=max(a[i],sum[i-1]+a[i])<br>result=max(result,sum[i])<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">//时间复杂度为O(n)</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMaxSum3</span><span class="params">(<span class="keyword">int</span> []a)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> b=<span class="number">0</span>;</div><div class="line">	<span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)&#123;</div><div class="line">		<span class="keyword">if</span>(b&gt;=<span class="number">0</span>)&#123;</div><div class="line">			b+=a[i];</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			b=a[i];</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(b&gt;sum)&#123;</div><div class="line">			sum=b;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> sum;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>参考：<br><a href="http://blog.csdn.net/v_JULY_v/article/details/6444021" target="_blank" rel="external">http://blog.csdn.net/v_JULY_v/article/details/6444021</a></p>
 
       
     </div>
@@ -458,9 +444,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法第4版/" rel="tag"># 算法第4版</a>
+            <a href="/tags/算法导论/" rel="tag"># 算法导论</a>
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -473,18 +459,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/25/algorithm02/" rel="next" title="素数问题">
-                <i class="fa fa-chevron-left"></i> 素数问题
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/23/python01/" rel="prev" title="python爬取网页并转为pdf">
-                python爬取网页并转为pdf <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/26/algorithm06/" rel="prev" title="排序算法">
+                排序算法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -636,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预备知识"><span class="nav-number">2.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">3.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两个非负整数的最大公约数问题"><span class="nav-number">3.1.</span> <span class="nav-text">两个非负整数的最大公约数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两个非负整数的最小公倍数问题"><span class="nav-number">3.2.</span> <span class="nav-text">两个非负整数的最小公倍数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n个非负整数的最大公约数问题"><span class="nav-number">3.3.</span> <span class="nav-text">n个非负整数的最大公约数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n个非负整数的最小公倍数问题"><span class="nav-number">3.4.</span> <span class="nav-text">n个非负整数的最小公倍数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大数的处理"><span class="nav-number">3.5.</span> <span class="nav-text">大数的处理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力搜索"><span class="nav-number">2.1.</span> <span class="nav-text">暴力搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分治策略"><span class="nav-number">2.2.</span> <span class="nav-text">分治策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DP解法"><span class="nav-number">2.3.</span> <span class="nav-text">DP解法</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="问题描述本篇包含如下问题：  两个非负整数的最大公约数问题 两个非负整数的最小公倍数问题 n个非负整数的最大公约数问题 n个非负整数的最小公倍数问题 大数的处理">
+<meta name="description" content="问题描述有若干数量的节点，如果A节点与B节点相连接，则表明A与B为同类节点，且满足传递性，求出有多少种类别的节点；针对大量节点的情况给出最优的解法">
 <meta name="keywords" content="算法第4版,Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最大公约数与最小公倍数的问题">
-<meta property="og:url" content="http://yoursite.com/2017/04/24/algorithm01/index.html">
+<meta property="og:title" content="union-find算法">
+<meta property="og:url" content="http://yoursite.com/2017/04/25/algorithm05/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="问题描述本篇包含如下问题：  两个非负整数的最大公约数问题 两个非负整数的最小公倍数问题 n个非负整数的最大公约数问题 n个非负整数的最小公倍数问题 大数的处理">
-<meta property="og:updated_time" content="2017-04-25T06:32:18.196Z">
+<meta property="og:description" content="问题描述有若干数量的节点，如果A节点与B节点相连接，则表明A与B为同类节点，且满足传递性，求出有多少种类别的节点；针对大量节点的情况给出最优的解法">
+<meta property="og:updated_time" content="2017-04-26T01:32:49.526Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="最大公约数与最小公倍数的问题">
-<meta name="twitter:description" content="问题描述本篇包含如下问题：  两个非负整数的最大公约数问题 两个非负整数的最小公倍数问题 n个非负整数的最大公约数问题 n个非负整数的最小公倍数问题 大数的处理">
+<meta name="twitter:title" content="union-find算法">
+<meta name="twitter:description" content="问题描述有若干数量的节点，如果A节点与B节点相连接，则表明A与B为同类节点，且满足传递性，求出有多少种类别的节点；针对大量节点的情况给出最优的解法">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/04/24/algorithm01/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/04/25/algorithm05/"/>
 
 
 
 
 
-  <title> 最大公约数与最小公倍数的问题 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> union-find算法 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -283,7 +283,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/24/algorithm01/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/25/algorithm05/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="song Peng">
@@ -304,7 +304,7 @@
             
             
               
-                最大公约数与最小公倍数的问题
+                union-find算法
               
             
           </h1>
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T19:52:06+08:00">
-                2017-04-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-25T20:01:18+08:00">
+                2017-04-25
               </time>
             
 
@@ -359,7 +359,7 @@
 
           
           
-             <span id="/2017/04/24/algorithm01/" class="leancloud_visitors" data-flag-title="最大公约数与最小公倍数的问题">
+             <span id="/2017/04/25/algorithm05/" class="leancloud_visitors" data-flag-title="union-find算法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -388,26 +388,21 @@
       
 
       
-        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>本篇包含如下问题：</p>
-<ol>
-<li>两个非负整数的最大公约数问题</li>
-<li>两个非负整数的最小公倍数问题</li>
-<li>n个非负整数的最大公约数问题</li>
-<li>n个非负整数的最小公倍数问题</li>
-<li>大数的处理</li>
-</ol>
-<a id="more"></a>
-<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><p><strong>定义</strong><br>最大公约数：指两个或多个整数共有约数中最大的一个<br>最小公倍数：两个或多个整数的公倍数里最小的那一个叫做它们的最小公倍数</p>
-<p><strong>辗转相除法(欧几里德算法)</strong><br>两个数q，p<br>第一步：如果q==0，最大公约数为p；如果p==0，最大公约数为q<br>第二步：q对p取余，余数赋值给r，将p赋值给q，r赋值给p<br>(第二步的结果一定满足q大于p)<br>第三步：回到第一步</p>
-<p><strong>更相减损法</strong><br>第一步：任意给定两个正整数；判断它们是否都是偶数。若是，则用2约简；若不是则执行第二步。<br>第二步：以较大的数减较小的数，接着把所得的差与较小的数比较，并以大数减小数。继续这个操作，直到所得的减数和差相等为止，获取差，即为等数。<br>则第一步中约掉的若干个2与第二步中等数的乘积就是所求的最大公约数。</p>
-<p><strong>stein算法</strong><br>设置A1=A、B1=B和C1=1<br>1、如果An=0，Bn<em>Cn是最大公约数，算法结束<br>2、如果Bn=0，An</em>Cn是最大公约数，算法结束<br>3、如果An和Bn都是偶数，则An+1=An/2，Bn+1=Bn/2，Cn+1=Cn*2(注意，乘2只要把整数左移一位即可，除2只要把整数右移一位即可)<br>4、如果An是偶数，Bn不是偶数，则An+1=An/2，Bn+1=Bn，Cn+1=Cn (很显然啦，2不是奇数的约数)<br>5、如果Bn是偶数，An不是偶数，则Bn+1=Bn/2，An+1=An，Cn+1=Cn (很显然啦，2不是奇数的约数)<br>6、如果An和Bn都不是偶数，则An+1=|An-Bn|，Bn+1=min(An,Bn)，Cn+1=Cn<br>7、n加1，转步骤1</p>
-<p><strong>两个数的最小公倍数</strong><br>两个数的最小公倍数等于两个数的乘积除以两个数的最大公约数</p>
-<p>参考： <a href="http://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0" target="_blank" rel="external">百度百科</a></p>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><h4 id="两个非负整数的最大公约数问题"><a href="#两个非负整数的最大公约数问题" class="headerlink" title="两个非负整数的最大公约数问题"></a>两个非负整数的最大公约数问题</h4><p>使用辗转相除法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(p,q)</span>:</span></div><div class="line">    r=p%q</div><div class="line">    <span class="keyword">if</span> r==<span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span> q</div><div class="line">    <span class="keyword">return</span> gcd(q,r)</div></pre></td></tr></table></figure></p>
-<h4 id="两个非负整数的最小公倍数问题"><a href="#两个非负整数的最小公倍数问题" class="headerlink" title="两个非负整数的最小公倍数问题"></a>两个非负整数的最小公倍数问题</h4><p>先求最大公约数，然后两数之积除以最大公约数求得<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lcm</span><span class="params">(p,q)</span>:</span></div><div class="line">    <span class="keyword">return</span> p*q/gcd(p,q)</div></pre></td></tr></table></figure></p>
-<h4 id="n个非负整数的最大公约数问题"><a href="#n个非负整数的最大公约数问题" class="headerlink" title="n个非负整数的最大公约数问题"></a>n个非负整数的最大公约数问题</h4><p>百度百科上有提到先求两个数的最大公约数，然后将这个公约数继续与第三个数求最大公约数，一直循环直到最后一个，变为这n个数的最大公约数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">ngcd</span><span class="params">(list)</span>:</span></div><div class="line">    <span class="keyword">if</span> len(list)==<span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> list[<span class="number">0</span>]</div><div class="line">    list[<span class="number">1</span>]=gcd(list[<span class="number">0</span>],list[<span class="number">1</span>])</div><div class="line">    <span class="keyword">return</span> ngcd(list[<span class="number">1</span>:])</div></pre></td></tr></table></figure></p>
-<h4 id="n个非负整数的最小公倍数问题"><a href="#n个非负整数的最小公倍数问题" class="headerlink" title="n个非负整数的最小公倍数问题"></a>n个非负整数的最小公倍数问题</h4><p>同上，先求两个数的最小公倍数，再将这个最小公倍数与第三个数求最小公倍数，直至最后一个…<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nlcm</span><span class="params">(list)</span>:</span></div><div class="line">    <span class="keyword">if</span> len(list)==<span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> list[<span class="number">0</span>]</div><div class="line">    list[<span class="number">1</span>]=lcm(list[<span class="number">0</span>],list[<span class="number">1</span>])</div><div class="line">    <span class="keyword">return</span> nlcm(list[<span class="number">1</span>:])</div></pre></td></tr></table></figure></p>
-<h4 id="大数的处理"><a href="#大数的处理" class="headerlink" title="大数的处理"></a>大数的处理</h4><p>int型数据是4个字节，long型在64位系统下是8字节，因此对于一个无法用8字节表示的数使用除法和取模会很复杂，于是就有了上面的stein算法，其本质就是更相减损法，只是多了下面一条：<br>“对于一个偶数A和一个奇数B，若有 $A/(2^k)=M$ ，且M，k均为整数，则A和B的最大公约数即为M和B的最大公约数”<br>这个可以使用前面的辗转相除法证明</p>
+        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>有若干数量的节点，如果A节点与B节点相连接，则表明A与B为同类节点，且满足传递性，求出有多少种类别的节点；针对大量节点的情况给出最优的解法<br><a id="more"></a></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>算法第4版P136提到</p>
+<h4 id="将问题转化为类表示"><a href="#将问题转化为类表示" class="headerlink" title="将问题转化为类表示"></a>将问题转化为类表示</h4><ul>
+<li>用一个列表表示所有的节点n，其值表示节点的类别，初始化时为每个节点赋不同的值</li>
+<li>union函数将给定的两节点的标识符置为相同值，同时也要将这两个节点的同类节点置为该值，即将两类节点置为同一类</li>
+<li>find函数获取节点的标识符，即类别</li>
+<li>connected函数判断节点是否连通</li>
+<li>count函数计算类别数</li>
+</ul>
+<p>如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#其中id列表表示的是节点对应的标识符，即类别；</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UF</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    <span class="comment">#初始化分量</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,n)</span>:</span></div><div class="line">        self.count=n</div><div class="line">        self.id=[]</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</div><div class="line">            self.id.append(i)</div><div class="line">    </div><div class="line">    <span class="comment">#将p以及和p标识相同的节点和q以及q标识相同的节点置为同样的值</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">union</span><span class="params">(self,p,q)</span>:</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line">    <span class="comment">#查找p的标识符</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(self,p)</span>:</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    </div><div class="line">    <span class="comment">#判断p和q是否连通</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">(self,p,q)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.find(p)==self.find(q)</div><div class="line">    </div><div class="line">    <span class="comment">#计算不同种类的个数</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.count</div></pre></td></tr></table></figure></p>
+<p>优化的关键在于find函数和union函数</p>
+<h4 id="quick-find算法"><a href="#quick-find算法" class="headerlink" title="quick-find算法"></a>quick-find算法</h4><p>find函数直接返回标识符，union通过该标识符对列表全部扫描，修改标识符<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#将p以及和p标识相同的节点和q以及q标识相同的节点置为同样的值</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">union</span><span class="params">(self,p,q)</span>:</span></div><div class="line">    pid= self.find(p)</div><div class="line">    qid= self.find(q)</div><div class="line">    <span class="comment">#如果相等，则不需要修改</span></div><div class="line">    <span class="keyword">if</span> pid==qid:</div><div class="line">        <span class="keyword">return</span> </div><div class="line">    <span class="comment">#否则找出所有标识符为qid的，全部改为pid，也可以反之，此处没有规定，见下面的加权算法</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(self.id)):</div><div class="line">        <span class="keyword">if</span> self.id[i]==qid :</div><div class="line">            self.id[i]=pid</div><div class="line">    self.count=self.count<span class="number">-1</span></div><div class="line">    </div><div class="line"></div><div class="line"><span class="comment">#查找p的标识符</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(self,p)</span>:</span></div><div class="line">    <span class="keyword">return</span> self.id[p]</div></pre></td></tr></table></figure></p>
+<p>试想一下，如果给出的节点量非常大，在每次执行union时都要进行整个列表的扫描，很显然是不可取的</p>
+<h4 id="quick-union算法"><a href="#quick-union算法" class="headerlink" title="quick-union算法"></a>quick-union算法</h4><p>使用树，如果两个节点相连通，只需要将一节点的根节点作为到另一节点的根节点的子节点；不改变每个节点的标识符，只是修改其对应的根节点，这样每个节点存储的就是父节点的下标；只有根节点的下标等于其存储的值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#获取根节点的标识符，只有根节点才满足下标等于其值，其它节点都存储的是父节点的下标</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(self,p)</span>:</span></div><div class="line">    <span class="keyword">while</span> self.id[p]!=p:</div><div class="line">        p=self.id[p]</div><div class="line">    <span class="keyword">return</span> p</div><div class="line"><span class="comment">#</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">union</span><span class="params">(self,p,q)</span>:</span></div><div class="line">    pid=self.find(p)</div><div class="line">    qid=self.find(q)</div><div class="line">    <span class="comment">#同一根节点，则返回</span></div><div class="line">    <span class="keyword">if</span> pid==qid:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    self.id[qid]=pid<span class="comment">#将下标为qid的节点的值置为pid，即其父类为pid节点，也可以反之</span></div><div class="line">    self.count=self.count<span class="number">-1</span><span class="comment">#种类减1</span></div></pre></td></tr></table></figure></p>
+<h4 id="union-find算法-加权quick-union算法"><a href="#union-find算法-加权quick-union算法" class="headerlink" title="union-find算法(加权quick-union算法)"></a>union-find算法(加权quick-union算法)</h4><p>上述quick-union算法的最坏的情况是：1号节点的父节点是2号，2号节点的父节点是3号，3号节点的父节点是4号，依次至最后，树的深度变为节点的个数，这样并没有降低查找的次数；针对于此，做如下改变：对于union函数每次在寻找到两个根节点后，判断其含有的节点个数，将小树的根节点添加到大树的根节点下面，就可以降低树的深度<br>这样需要为每个节点添加一个变量，代表以该节点为根节点组成树的节点数<br>完整代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UF</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    <span class="comment">#初始化分量</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,n)</span>:</span></div><div class="line">        self.count=n</div><div class="line">        self.id=[]</div><div class="line">        self.sz=[]</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</div><div class="line">            self.id.append(i)</div><div class="line">            self.sz.append(<span class="number">1</span>)</div><div class="line"></div><div class="line">    <span class="comment">#获取根节点的标识符，只有根节点才满足下标等于其值，其它节点都存储的是父节点的下标</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(self,p)</span>:</span></div><div class="line">        <span class="keyword">while</span> self.id[p]!=p:</div><div class="line">            p=self.id[p]</div><div class="line">        <span class="keyword">return</span> p</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">union</span><span class="params">(self,p,q)</span>:</span></div><div class="line">        pid=self.find(p)</div><div class="line">        qid=self.find(q)</div><div class="line">        <span class="comment">#同一根节点，则返回</span></div><div class="line">        <span class="keyword">if</span> pid==qid:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        <span class="comment">#具体变化在于此</span></div><div class="line">        <span class="keyword">if</span> self.sz[p]&gt;self.sz[q]:</div><div class="line">            self.id[q]=pid</div><div class="line">            self.sz[p]=self.sz[p]+self.sz[q]</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.id[p]=qid</div><div class="line">            self.sz[q] = self.sz[p] + self.sz[q]</div><div class="line">        self.count=self.count<span class="number">-1</span><span class="comment">#种类减1</span></div><div class="line"></div><div class="line">    <span class="comment">#查找p的标识符</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(self,p)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.id[p]</div><div class="line"></div><div class="line">    <span class="comment">#判断p和q是否连通</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">(self,p,q)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.find(p)==self.find(q)</div><div class="line"></div><div class="line">    <span class="comment">#计算不同种类的个数</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.count</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -473,8 +468,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/25/algorithm02/" rel="next" title="素数问题">
-                <i class="fa fa-chevron-left"></i> 素数问题
+              <a href="/2017/04/26/algorithm06/" rel="next" title="排序算法">
+                <i class="fa fa-chevron-left"></i> 排序算法
               </a>
             
           </div>
@@ -483,8 +478,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/23/python01/" rel="prev" title="python爬取网页并转为pdf">
-                python爬取网页并转为pdf <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/25/algorithm04/" rel="prev" title="k-sum问题">
+                k-sum问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -636,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预备知识"><span class="nav-number">2.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">3.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两个非负整数的最大公约数问题"><span class="nav-number">3.1.</span> <span class="nav-text">两个非负整数的最大公约数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两个非负整数的最小公倍数问题"><span class="nav-number">3.2.</span> <span class="nav-text">两个非负整数的最小公倍数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n个非负整数的最大公约数问题"><span class="nav-number">3.3.</span> <span class="nav-text">n个非负整数的最大公约数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n个非负整数的最小公倍数问题"><span class="nav-number">3.4.</span> <span class="nav-text">n个非负整数的最小公倍数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大数的处理"><span class="nav-number">3.5.</span> <span class="nav-text">大数的处理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将问题转化为类表示"><span class="nav-number">2.1.</span> <span class="nav-text">将问题转化为类表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#quick-find算法"><span class="nav-number">2.2.</span> <span class="nav-text">quick-find算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#quick-union算法"><span class="nav-number">2.3.</span> <span class="nav-text">quick-union算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#union-find算法-加权quick-union算法"><span class="nav-number">2.4.</span> <span class="nav-text">union-find算法(加权quick-union算法)</span></a></li></ol></li></ol></div>
             
 
           </div>
