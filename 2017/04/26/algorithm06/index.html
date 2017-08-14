@@ -90,20 +90,20 @@
 
 
 
-<meta name="description" content="问题描述 选择排序 插入排序 希尔排序 归并排序">
+<meta name="description" content="问题描述 选择排序 插入排序 希尔排序 归并排序 快速排序 堆排序">
 <meta name="keywords" content="算法第4版,Python,算法导论">
 <meta property="og:type" content="article">
-<meta property="og:title" content="排序算法">
+<meta property="og:title" content="比较排序">
 <meta property="og:url" content="http://yoursite.com/2017/04/26/algorithm06/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="问题描述 选择排序 插入排序 希尔排序 归并排序">
+<meta property="og:description" content="问题描述 选择排序 插入排序 希尔排序 归并排序 快速排序 堆排序">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/170426a.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/170426b.gif">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/170426c.gif">
-<meta property="og:updated_time" content="2017-04-28T09:18:26.166Z">
+<meta property="og:updated_time" content="2017-05-31T03:20:06.465Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="排序算法">
-<meta name="twitter:description" content="问题描述 选择排序 插入排序 希尔排序 归并排序">
+<meta name="twitter:title" content="比较排序">
+<meta name="twitter:description" content="问题描述 选择排序 插入排序 希尔排序 归并排序 快速排序 堆排序">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/170426a.png">
 
 
@@ -138,7 +138,7 @@
 
 
 
-  <title> 排序算法 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> 比较排序 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -308,7 +308,7 @@
             
             
               
-                排序算法
+                比较排序
               
             
           </h1>
@@ -363,7 +363,7 @@
 
           
           
-             <span id="/2017/04/26/algorithm06/" class="leancloud_visitors" data-flag-title="排序算法">
+             <span id="/2017/04/26/algorithm06/" class="leancloud_visitors" data-flag-title="比较排序">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -397,6 +397,8 @@
 <li>插入排序</li>
 <li>希尔排序</li>
 <li>归并排序</li>
+<li>快速排序</li>
+<li>堆排序</li>
 </ol>
 <a id="more"></a>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h4><p>排序思路：从第一个元素遍历数组，将最小的和第一个元素交换；从第二个元素遍历数组，将最小的和第二个元素交换…直至最后一个<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#选择排序</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">selection_sort</span><span class="params">(a)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(a)):</div><div class="line">        k=i</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(a))[i:]:</div><div class="line">            <span class="keyword">if</span> a[k]&gt;a[j]:</div><div class="line">                k=j</div><div class="line">        t=a[i]</div><div class="line">        a[i]=a[k]</div><div class="line">        a[k]=t</div><div class="line">    <span class="keyword">return</span> a</div></pre></td></tr></table></figure></p>
@@ -409,7 +411,14 @@
 
 <h4 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h4><p>归并排序的思路是分治法<br>算法导论p17中提到<br><strong>分解</strong>原问题为若干子问题，这些子问题是原问题规模较小的实例<br><strong>解决</strong>这些子问题，递归求解各子问题<br><strong>合并</strong>这些子问题的解成原问题的解<br>具体思路：将n个元素的列表分解为两组n/2个元素的列表，继续分解，直到只有一个元素，返回，执行合并函数，对两组有序列进行排序;需要开辟一个O(n)的空间来存储n个元素,而对原arr数组修改<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#将两个有序列表归并为一个有序列表</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(arr,p,mid,r)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(r-p+<span class="number">1</span>):</div><div class="line">        temp[p+i]=arr[p+i]</div><div class="line">    i=p</div><div class="line">    k=p</div><div class="line">    j=mid+<span class="number">1</span></div><div class="line">    <span class="keyword">while</span> i&lt;=mid <span class="keyword">and</span> j&lt;=r:</div><div class="line">        <span class="keyword">if</span> temp[i]&lt;temp[j]:</div><div class="line">            arr[k]=temp[i]</div><div class="line">            i=i+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            arr[k]=temp[j]</div><div class="line">            j=j+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line">    <span class="keyword">if</span> i&lt;=mid:</div><div class="line">        <span class="keyword">while</span> i&lt;=mid:</div><div class="line">            arr[k]=temp[i]</div><div class="line">            i=i+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line">    <span class="keyword">elif</span> j&lt;=r:</div><div class="line">        <span class="keyword">while</span> j&lt;=r:</div><div class="line">            arr[k]=temp[j]</div><div class="line">            j=j+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment">#归并排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(arr,p,r)</span>:</span></div><div class="line">    <span class="keyword">if</span> p&gt;=r:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    mid=p+int((r-p)/<span class="number">2</span>)</div><div class="line">    merge_sort(arr,p,mid)</div><div class="line">    merge_sort(arr,mid+<span class="number">1</span>,r)</div><div class="line">    merge(arr,p,mid,r)</div><div class="line">    <span class="keyword">return</span> arr</div></pre></td></tr></table></figure></p>
 <p>时间复杂度T(n)=O(nlgn)<br>动态图</p>
-<p><div align="center"><br><img src="/upload/essayimage/170426c.gif" alt="170426c"><br></div><br><br><br>[注]<br>图片来源于<a href="http://blog.jobbole.com/11745/" target="_blank" rel="external">http://blog.jobbole.com/11745/</a></p>
+<p><div align="center"><br><img src="/upload/essayimage/170426c.gif" alt="170426c"><br></div><br><br></p>
+<h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><p>和归并的思想是一样的，只是快速排序是原址排序<br>思路：给定一个数组，取最后一个元素作为比较的对象，将其它元素与之相比，小者置于该元素的左边，大者置于该元素的右边；将由这个元素分开的两个数组继续进行上述操作…,当数组元素为一个时不再执行该操作。<br>【notice】其中涉及到<strong>如何将小的元素置于比较对象的左边，将大的元素置于比较对象的右边的问题</strong>：<br>     书中是这样写的：一个指针i遍历数组，一个指针j记录小的元素最后位置的后一个，如果有小的元素，则交换j指向的元素和i指向的元素<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#a为数组；p，r为数组第元素的下标</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(a,p,r)</span>:</span></div><div class="line">    <span class="keyword">if</span> p&lt;r:</div><div class="line">        q=partition(a,p,r)</div><div class="line">        quick_sort(a,p,q<span class="number">-1</span>)</div><div class="line">        quick_sort(a,q+<span class="number">1</span>,r)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(a,p,r)</span>:</span></div><div class="line">    i=p</div><div class="line">    j=p</div><div class="line">    <span class="keyword">while</span> i&lt;r:</div><div class="line">        <span class="keyword">if</span> a[i]&lt;a[r]:</div><div class="line">            temp=a[i]</div><div class="line">            a[i]=a[j]</div><div class="line">            a[j]=temp</div><div class="line">            j=j+<span class="number">1</span></div><div class="line">        i=i+<span class="number">1</span></div><div class="line">    temp=a[j]</div><div class="line">    a[j]=a[r]</div><div class="line">    a[r]=temp</div><div class="line">    <span class="keyword">return</span> j</div></pre></td></tr></table></figure></p>
+<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><p>这里就采用数组来表示堆，结构如下所示：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parent</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">return</span> int(i/<span class="number">2</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">left</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">2</span>*i</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">right</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">2</span>*i+<span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>这里实现的是最大堆，最小对同理<br>堆排序的核心是如何维护堆，即对于树上的某个元素i，假设i后面的元素已经符合最大堆，如何让i也符合最大堆；（有点归纳的感觉）<br>维护最大堆：这是一个递归的过程，对于i，i的左节点，i的右节点，将最大的值和i交换，如果被交换的是子节点，则继续遍历子节点，直到没有子节点。<br>如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#维护最大堆，已知i元素后的元素是符合最大堆的，目的是使i元素也符合最大堆，</span></div><div class="line"><span class="comment">#前提是i下的子树均符合最大堆</span></div><div class="line"><span class="comment">#a为数组，i为可能不符合最大堆的元素</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_heapify</span><span class="params">(a,i)</span>:</span></div><div class="line">    lindex=left(i)</div><div class="line">    rindex=right(i)</div><div class="line">    largest=i</div><div class="line">    <span class="keyword">if</span> lindex&lt;len(a) <span class="keyword">and</span> a[lindex]&gt;a[largest]:</div><div class="line">        largest=lindex</div><div class="line">    <span class="keyword">elif</span> rindex&lt;len(a) <span class="keyword">and</span> a[rindex]&gt;a[largest]:</div><div class="line">        largest=rindex</div><div class="line">    <span class="keyword">if</span> largest!=i:</div><div class="line">        <span class="keyword">if</span> largest==lindex:</div><div class="line">            temp=a[i]</div><div class="line">            a[i]=a[lindex]</div><div class="line">            a[lindex]=temp</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            temp=a[i]</div><div class="line">            a[i]=a[rindex]</div><div class="line">            a[rindex]=temp</div><div class="line">        max_heapify(a,largest)</div></pre></td></tr></table></figure></p>
+<p>建堆<br>先是找到含有子节点且离根节点最远的节点，就是<code>len(a)/2</code>，然后向上遍历到根节点<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#建堆</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_max_heap</span><span class="params">(a)</span>:</span></div><div class="line">    i=int(len(a)/<span class="number">2</span>)</div><div class="line">    <span class="keyword">while</span> i&gt;=<span class="number">0</span>:</div><div class="line">        max_heapify(a,i)</div><div class="line">        i=i<span class="number">-1</span></div></pre></td></tr></table></figure></p>
+<p>输出堆</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#将堆中的元素取出并赋值给asort</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapsort</span><span class="params">(a)</span>:</span></div><div class="line">    build_max_heap(a)</div><div class="line">    asort=[]</div><div class="line">    i=len(a)<span class="number">-1</span></div><div class="line">    <span class="keyword">while</span> i&gt;=<span class="number">2</span>:</div><div class="line">        asort.append(a[<span class="number">0</span>])</div><div class="line">        a[<span class="number">0</span>]=a[i]</div><div class="line">        a.pop(i)</div><div class="line">        max_heapify(a,<span class="number">0</span>)</div><div class="line">        i=i<span class="number">-1</span></div><div class="line">    asort.append(a[<span class="number">0</span>])</div><div class="line">    asort.append(a[<span class="number">1</span>])</div></pre></td></tr></table></figure>
+<p>[注]<br>图片来源于<a href="http://blog.jobbole.com/11745/" target="_blank" rel="external">http://blog.jobbole.com/11745/</a></p>
 
       
     </div>
@@ -477,8 +486,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/28/algorithm07/" rel="next" title="最大子数组问题">
-                <i class="fa fa-chevron-left"></i> 最大子数组问题
+              <a href="/2017/04/25/algorithm05/" rel="next" title="union-find算法">
+                <i class="fa fa-chevron-left"></i> union-find算法
               </a>
             
           </div>
@@ -487,8 +496,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/25/algorithm05/" rel="prev" title="union-find算法">
-                union-find算法 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/28/algorithm07/" rel="prev" title="最大子数组问题">
+                最大子数组问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -563,7 +572,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -585,7 +594,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -640,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择排序"><span class="nav-number">2.1.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-number">2.2.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔排序"><span class="nav-number">2.3.</span> <span class="nav-text">希尔排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归并排序"><span class="nav-number">2.4.</span> <span class="nav-text">归并排序</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择排序"><span class="nav-number">2.1.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-number">2.2.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔排序"><span class="nav-number">2.3.</span> <span class="nav-text">希尔排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归并排序"><span class="nav-number">2.4.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速排序"><span class="nav-number">2.5.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆排序"><span class="nav-number">2.6.</span> <span class="nav-text">堆排序</span></a></li></ol></li></ol></div>
             
 
           </div>

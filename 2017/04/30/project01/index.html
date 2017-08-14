@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Java," />
+  <meta name="keywords" content="Java,Android," />
 
 
 
@@ -91,13 +91,13 @@
 
 
 <meta name="description" content="项目地址：https://github.com/WangGanxin/DoingDaily">
-<meta name="keywords" content="Android,Java">
+<meta name="keywords" content="Java,Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Github上Android项目学习之DoingDaily">
 <meta property="og:url" content="http://yoursite.com/2017/04/30/project01/index.html">
 <meta property="og:site_name" content="moluchase">
 <meta property="og:description" content="项目地址：https://github.com/WangGanxin/DoingDaily">
-<meta property="og:updated_time" content="2017-05-05T00:59:36.089Z">
+<meta property="og:updated_time" content="2017-05-05T02:58:06.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Github上Android项目学习之DoingDaily">
 <meta name="twitter:description" content="项目地址：https://github.com/WangGanxin/DoingDaily">
@@ -398,7 +398,7 @@
 <p>关于compileSdkVersion, minSdkVersion, and targetSdkVersion<br>参考<a href="https://medium.com/google-developers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd" target="_blank" rel="external">https://medium.com/google-developers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd</a><br>compileSdkVersion 要求用最新的版本，不会被包含在apk中，要与Support Library匹配</p>
 <p>关于Android中uses-permission的信息以及解释<br><a href="https://developer.android.com/reference/android/Manifest.permission.html" target="_blank" rel="external">https://developer.android.com/reference/android/Manifest.permission.html</a><br><a href="http://www.cnblogs.com/shiwei-bai/p/4916794.html" target="_blank" rel="external">http://www.cnblogs.com/shiwei-bai/p/4916794.html</a></p>
 <p>关于AndroidManifest.xml文件的解读<br><a href="http://www.cnblogs.com/skywang12345/p/3141610.html" target="_blank" rel="external">http://www.cnblogs.com/skywang12345/p/3141610.html</a><br>其中提到manifest属性中的sharedUserId如果在一些APK之间设置为一样的，则这些APK可以互相共享数据，当然也可以通过share Preference的方法来实现共享<br>属性installLocation决定apk安装的方式，其中internalOnly表示必须安装在内部存储空间，而且不能将程序移动到SD卡上；auto表示系统会根据存储空间去选择将APK安装在内部存储空间还是SD卡上，安装后，可以在内部存储空间和SD卡之间移动；preferExternal表示系统会优先考虑将APK安装到SD卡上</p>
-<p>一个应用的Activity中打开另外一个应用的Activity<br>使用<code>intent.setClassName(&quot;com.example.testandroida&quot;,&quot;com.example.testandroidb.BActivity&quot;)</code><br>即<code>intent.setClassName(String packageName,String className)</code><br>在B的应用程序的Manifest.xml中的<code>android:exported</code>属性设置为<code>true</code>，表示允许被其他应用程序打开</p>
+<p>一个应用的Activity中打开另外一个应用的Activity<br>使用<code>intent.setClassName(&quot;com.example.testandroida&quot;,&quot;com.example.testandroidb.BActivity&quot;)</code><br>即<code>intent.setClassName(String packageName,String className)</code><br>在B的应用程序的Manifest.xml中的<code>android:exported</code>属性设置为<code>true</code>，表示允许被其他应用程序打开<br>关于自定义权限见<a href="http://www.cnblogs.com/lwbqqyumidi/p/3793440.html" target="_blank" rel="external">http://www.cnblogs.com/lwbqqyumidi/p/3793440.html</a></p>
 <p>manifest.xml中每个Activity的属性android:name，其值如果使用了<code>.</code> 表示的是当前目录(当前目录指的是manifest的package属性的值)，如果一个Activity在该package下，可以不用使用<code>.</code>，而是直接使用该Activity的类名</p>
 <p>jdk在线api<a href="http://tool.oschina.net/apidocs/apidoc?api=jdk-zh" target="_blank" rel="external">http://tool.oschina.net/apidocs/apidoc?api=jdk-zh</a><br>极客学院的<a href="http://wiki.jikexueyuan.com/project/java-vm/overwise.html" target="_blank" rel="external">深入理解虚拟机</a></p>
 
@@ -451,9 +451,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
-          
             <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
         </div>
       
@@ -466,8 +466,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/02/mqtt01/" rel="next" title="mqtt学习01">
-                <i class="fa fa-chevron-left"></i> mqtt学习01
+              <a href="/2017/04/29/daily01/" rel="next" title="Daily">
+                <i class="fa fa-chevron-left"></i> Daily
               </a>
             
           </div>
@@ -476,8 +476,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/29/daily01/" rel="prev" title="Daily">
-                Daily <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/02/mqtt01/" rel="prev" title="mqtt学习01">
+                mqtt学习01 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -552,7 +552,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -574,7 +574,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
