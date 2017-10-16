@@ -1,0 +1,1303 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="对称加密,非对称加密,SSL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介非对称加密非对称加密：两个密钥，一个公钥，一个私钥，如果用公钥加密的数据只有用私钥才能解密，用私钥加密的数据只有公钥才能解密 特点：算法强度复杂，安全性能高，导致加密速度慢 主要算法：RSA，Elgamal，背包算法，Rabin，D-H，ECC， 对称加密双方使用同样的密钥加解密，这个是有一个问题的，首先得保证密钥不被泄露，而且需要定期在通信网络的源端和目的端同时修改密钥 密钥越大，加密越强，">
+<meta name="keywords" content="对称加密,非对称加密,SSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="各种加密算法与SSL简介">
+<meta property="og:url" content="http://yoursite.com/2017/10/08/cryptography01/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="简介非对称加密非对称加密：两个密钥，一个公钥，一个私钥，如果用公钥加密的数据只有用私钥才能解密，用私钥加密的数据只有公钥才能解密 特点：算法强度复杂，安全性能高，导致加密速度慢 主要算法：RSA，Elgamal，背包算法，Rabin，D-H，ECC， 对称加密双方使用同样的密钥加解密，这个是有一个问题的，首先得保证密钥不被泄露，而且需要定期在通信网络的源端和目的端同时修改密钥 密钥越大，加密越强，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/DH.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/ECC01.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/ECC02.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/ECC03.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/ECC04.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/ECC05.gif">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/DES.jpg">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/AES.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/AES02.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/tcpip.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/iotimg/ssl.png">
+<meta property="og:updated_time" content="2017-10-11T10:38:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="各种加密算法与SSL简介">
+<meta name="twitter:description" content="简介非对称加密非对称加密：两个密钥，一个公钥，一个私钥，如果用公钥加密的数据只有用私钥才能解密，用私钥加密的数据只有公钥才能解密 特点：算法强度复杂，安全性能高，导致加密速度慢 主要算法：RSA，Elgamal，背包算法，Rabin，D-H，ECC， 对称加密双方使用同样的密钥加解密，这个是有一个问题的，首先得保证密钥不被泄露，而且需要定期在通信网络的源端和目的端同时修改密钥 密钥越大，加密越强，">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/iotimg/DH.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/08/cryptography01/"/>
+
+
+
+
+
+  <title> 各种加密算法与SSL简介 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/cryptography01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                各种加密算法与SSL简介
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T21:55:41+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/物联网/" itemprop="url" rel="index">
+                    <span itemprop="name">物联网</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/08/cryptography01/" class="leancloud_visitors" data-flag-title="各种加密算法与SSL简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h3><p>非对称加密：两个密钥，一个公钥，一个私钥，如果用公钥加密的数据只有用私钥才能解密，用私钥加密的数据只有公钥才能解密</p>
+<p>特点：算法强度复杂，安全性能高，导致加密速度慢</p>
+<p>主要算法：RSA，Elgamal，背包算法，Rabin，D-H，ECC，</p>
+<h3 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h3><p>双方使用同样的密钥加解密，这个是有一个问题的，首先得保证密钥不被泄露，而且需要定期在通信网络的源端和目的端同时修改密钥</p>
+<p>密钥越大，加密越强，但加密与解密的过程越慢</p>
+<p>主要算法：DES，3DES，IDEA，AES</p>
+<a id="more"></a>
+<h2 id="非对称加密算法介绍"><a href="#非对称加密算法介绍" class="headerlink" title="非对称加密算法介绍"></a>非对称加密算法介绍</h2><h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><p>首先给出两个已知公式</p>
+<ol>
+<li><p>欧拉函数：表示小于n的正整数中，有多少个与n构成互质关系，其中 <script type="math/tex">n=p_{1}^{k_{1}}p_{2}^{k_{2}}...p_{r}^{k_{r}}</script> 表示任何一个大于1的整数都可以写成多个质数次方的积</p>
+<script type="math/tex; mode=display">
+\phi(n)=p_{1}^{k_{1}}p_{2}^{k_{2}}...p_{r}^{k_{r}}(1-\frac{1}{p_{1}})(1-\frac{1}{p_{2}})...(1-\frac{1}{p_{r}})</script></li>
+<li><p>欧拉定理：如果a，n互质，则下面公式成立：</p>
+<script type="math/tex; mode=display">
+a^{\phi(n)}=1\,\, mod \,\,n\\</script></li>
+</ol>
+<h4 id="RSA的公钥私钥选取过程"><a href="#RSA的公钥私钥选取过程" class="headerlink" title="RSA的公钥私钥选取过程"></a>RSA的公钥私钥选取过程</h4><ol>
+<li><p>选取两个不相等的质数p和q</p>
+</li>
+<li><p>计算乘积n=p*q，其中n转为二进制的长度即为密钥的长度</p>
+</li>
+<li><p>计算$\phi(n)$ </p>
+<p>因为p和q为质数，不能分解，因此代入欧拉函数得到：</p>
+<script type="math/tex; mode=display">
+\phi(n)=p^{1}q^{1}(1-\frac{1}{p})(1-\frac{1}{q})\\
+=(p-1)(q-1)</script><p>​</p>
+</li>
+<li><p>在{<script type="math/tex">x_{i}|gcd(x_{i},n)=1,x_{i}<n</script>}中选取e</p>
+</li>
+<li><p>计算d</p>
+<script type="math/tex; mode=display">
+满足：ed\,\,\%\,\,\phi(n)=1\\
+即：ed=k\phi(n)+1</script><p>计算出一组满足上式的整数解(d,k)</p>
+</li>
+<li><p>将（n，e）封装为公钥，（n，d）封装为私钥</p>
+</li>
+</ol>
+<h4 id="加解密及私钥解密证明"><a href="#加解密及私钥解密证明" class="headerlink" title="加解密及私钥解密证明"></a>加解密及私钥解密证明</h4><p>要加密信息为m ，m为整数（转换）且m<n，如果m>n,可以将上信息分割为若干个短信息</n，如果m></p>
+<p>加密：$m^{e}=c\,\,（mod\,\,n）$</p>
+<p>计算出c，作为密文发送出去</p>
+<p>解密：$c^{d}=m\,\,（mod\,\,n）$</p>
+<p>计算出m，即为明文</p>
+<p>证明过程如下：</p>
+<p>由加密的式子可得：</p>
+<script type="math/tex; mode=display">
+m^{e}=kn+c\\
+c=m^{e}-kn</script><p>将c代入解密的式子，得到：</p>
+<script type="math/tex; mode=display">
+(m^{e}-kn)^{d}=m \,\,（mod\,\,n）\\
+使用二项式展开如下： \\
+C_{d}^{0}(m^{e})^{0}(-kn)^{d}+C_{d}^{1}(m^{e})^{1}(-kn)^{d-1}+...+C_{d}^{d}(m^e)^{d}=m\,\,（mod\,\,n）\\
+上式只有一项不可能是n得倍数，因此对n取模的结果简化后如下：\\
+m^{ed}=m\,\,（mod\,\,n）</script><p>由$ed\,\,\%\,\,\phi(n)=1$ 即：$ed=h\phi(n)+1$ ,上式变为：</p>
+<script type="math/tex; mode=display">
+m^{h\phi(n)+1}=m\,\,（mod\,\,n）</script><p>对于上式，如果m和n互质，根据欧拉定理：</p>
+<script type="math/tex; mode=display">
+m^{\phi(n)}=1\,\,（mod\,\,n）\\
+而m^{h\phi(n)+1}\,\,\%\,\,n=(m^{h\phi(n)}\,\,\%\,\,n\,\,*\,\,m\,\,\%\,\,n)\,\,\%n=m\,\,\%\,\,n\\
+即m^{h\phi(n)+1}=m \,\,（mod\,\,n）\\
+得证</script><p>如果m和n不互质，即说明m和n存在非1的公因子，由于n=pq，且p，q均为质数，说明n的非1因子是p，q；</p>
+<p>那么m必然是p得倍数或者是q得倍数，设$m=kp$</p>
+<p>由于m&lt;n，可得k&lt;q，即k与q互质，那么kp和q互质，由欧拉定理得：</p>
+<script type="math/tex; mode=display">
+(kp)^{\phi(q)}=1 \,\,（mod\,\,q）\\
+即(kp)^{q-1}=1 \,\,（mod\,\,q）\\
+那么m^{h\phi(n)+1}\,\,\%\,\,q= \big((kp)^{q-1}\big)^{h(p-1)}*kp\,\,\%\,\,q \\
+=\bigg(\big((kp)^{q-1}\big)^{h(p-1)}\,\,\%\,\,q\,\,*\,\,kp\,\,\%q\bigg)\,\,\%\,\,q\\
+=kp\,\,\%\,\,q\\
+即：(kp)^{ed}=kp \,\,（mod\,\,q）\\
+即：(kp)^{ed}=tq+kp\\
+两边同除p：k^{ed}p^{ed-1}=\frac{tq}{p}+k\\
+左边为整数，那么右边一定为整数，而要使右边为整数，\\
+那么一定存在整数t^{'}使得tq=t^{'}p,又q，p为质数，即有t=t^{'}p\\
+上式可写为：(kp)^{ed}=t^{'}pq+kp\\
+即：m^{ed}=t^{'}n+m\\
+得证</script><h4 id="RSA算法的可靠性："><a href="#RSA算法的可靠性：" class="headerlink" title="RSA算法的可靠性："></a>RSA算法的可靠性：</h4><p>公钥开放，也就是说如果知道了d，私钥就泄露了</p>
+<script type="math/tex; mode=display">
+ed\,\,\%\,\,\phi(n)=1\\
+\phi(n)=(p-1)(q-1)\\
+n=p q</script><p>由上面第一个式子，要想知道d，必须知道$\phi(n)$ ,而$\phi(n)$由第二个式子可知，与p和q相关，由第三个式子知道p和q是n的因式分解</p>
+<p>因此如果想破解RSA算法，必须知道满足$pq=n$的所有质数对(p,q)，即如果高效解决大整数的因式分解就能快速破解RSA算法</p>
+<h3 id="D-H密钥交换"><a href="#D-H密钥交换" class="headerlink" title="D-H密钥交换"></a>D-H密钥交换</h3><p><img src="/upload/essayimage/iotimg/DH.png" alt="DH"></p>
+<p> a为Alice的私钥，b为Bob的私钥，公开的时g，p，A，B，密钥为K</p>
+<p>原理就是通过自己的私钥运算，并发送公钥给对方，通过运算获取相同的密钥，使用对称加密来加密明文</p>
+<h4 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h4><script type="math/tex; mode=display">
+B^a \,\,mod\,\,p=(g^b\,\,mod\,\,p)^a\,\,mod\,\,p=g^{ba} \,\,mod\,\,p=K\\
+A^b\,\,mod\,\,p=(g^a\,\,mod\,\,p)^b\,\,mod\,\,p=g^{ab}\,\,mod\,\,p=K</script><h4 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h4><p>要知道K，需要知道$g^{ab}\,\,mod\,\,p$ ,即需要知道a和b，而a和b分别由下式得到：</p>
+<script type="math/tex; mode=display">
+A=g^a\,\,mod\,\,p\\
+B=g^b\,\,mod\,\,p</script><p>上式是离散对数问题，目前没有快速求解离散对数的算法</p>
+<h3 id="ElGamal加密算法"><a href="#ElGamal加密算法" class="headerlink" title="ElGamal加密算法"></a>ElGamal加密算法</h3><p>实质上就是将D-H算法变为非对称加密算法</p>
+<h4 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h4><p>选择素数p，两个随机数g和x，满足g,x&lt;p，</p>
+<p>计算 y=$g^x\,\, mod \,\,p$</p>
+<p>私钥为x</p>
+<p>公钥为y,g,p,</p>
+<h4 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h4><p>随机选择k，满足k与p-1互素</p>
+<script type="math/tex; mode=display">
+a=g^k\,\,mod\,\,p\\
+b=y^k M \,\,mod\,\,p</script><p>其中M为明文，（a,b)为密文</p>
+<h4 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h4><script type="math/tex; mode=display">
+M=b/a^x\,\,mod\,\,p</script><h4 id="可靠性-1"><a href="#可靠性-1" class="headerlink" title="可靠性"></a>可靠性</h4><p>同D-H算法，是离散对数难题</p>
+<h3 id="ECC加密算法"><a href="#ECC加密算法" class="headerlink" title="ECC加密算法"></a>ECC加密算法</h3><h4 id="椭圆曲线："><a href="#椭圆曲线：" class="headerlink" title="椭圆曲线："></a>椭圆曲线：</h4><ol>
+<li>关于X轴对称</li>
+<li>画一条直线跟椭圆曲线相交，它们最多有三个交点</li>
+</ol>
+<h4 id="椭圆曲线上的运算："><a href="#椭圆曲线上的运算：" class="headerlink" title="椭圆曲线上的运算："></a>椭圆曲线上的运算：</h4><p>加法运算：</p>
+<p>设椭圆曲线上有两点，A和B，作这两点的直线与该曲线相交于第三点C，将C点关于X轴对称得到D点</p>
+<p>记D=A+B</p>
+<p><img src="/upload/essayimage/iotimg/ECC01.png" alt="ECC01"></p>
+<p>当A和B重合时，即作A点的切线，与曲线相交于第二点(B点)，然后关于X轴对称得到C点</p>
+<p>记 C=A+A</p>
+<p><img src="/upload/essayimage/iotimg/ECC02.png" alt="ECC02"></p>
+<p>乘法运算</p>
+<p>转为加法运算</p>
+<script type="math/tex; mode=display">
+kA=\underbrace{A+...A+A}_{k}</script><p>如下图所示：</p>
+<p><img src="/upload/essayimage/iotimg/ECC03.png" alt="ECC03"></p>
+<p>椭圆曲线上点的阶：</p>
+<p>P为椭圆曲线上的点，如果nP=无穷远点，n取最小整数，即为P的阶</p>
+<p>无穷远点：如果椭圆曲线上的两点A，B的连成的直线不与椭圆曲线交于第3点，则有A+B=无穷远点</p>
+<h4 id="椭圆曲线在密码学中的应用"><a href="#椭圆曲线在密码学中的应用" class="headerlink" title="椭圆曲线在密码学中的应用"></a>椭圆曲线在密码学中的应用</h4><p>对于实数域上的椭圆曲线，做如下变化：</p>
+<ol>
+<li>实数域中取整数点</li>
+<li>对整数点取模处理</li>
+</ol>
+<p>如下，对一椭圆曲线 mod 17的结果</p>
+<p><img src="/upload/essayimage/iotimg/ECC04.png" alt="ECC04"></p>
+<p>对于椭圆曲线中的运算仍然成立，如下图所示，描述C=A+B的过程</p>
+<p><img src="/upload/essayimage/iotimg/ECC05.gif" alt="ECC05"></p>
+<h4 id="有限域椭圆曲线上的加解密"><a href="#有限域椭圆曲线上的加解密" class="headerlink" title="有限域椭圆曲线上的加解密"></a>有限域椭圆曲线上的加解密</h4><p>用户A作如下处理：</p>
+<p>在椭圆曲线上选取一基点G，椭圆曲线$E_{p}(a,b)$ ,选取整数k作为私钥（k小于n，n为G的阶），</p>
+<p>计算K=kG</p>
+<p>将G，K，$E_{p}(a,b)$ 作为公钥公开</p>
+<p>用户B要将明文M传给A，作如下处理：</p>
+<p>随机产生一个随机数r，（r&lt;n)</p>
+<p>计算点<script type="math/tex">C_{1}=M+rK\,\,\,\,\,\,\,,\,\,\,\,C_{2}=rG</script></p>
+<p>将<script type="math/tex">C_{1},C_{2}</script>传给用户A</p>
+<p>用户A接收到<script type="math/tex">C_{1},C_{2}</script>后作如下处理：</p>
+<script type="math/tex; mode=display">
+M=C_{1}-kC_{2}</script><p>证明：</p>
+<script type="math/tex; mode=display">
+C_{1}-kC_{2}\\=M+rK-krG\\=M+rK-rK\\=M</script><h4 id="可靠性-2"><a href="#可靠性-2" class="headerlink" title="可靠性"></a>可靠性</h4><p>已知K和G，如何求解k的问题：对于椭圆曲线上的kG运算是不可逆的，这是椭圆曲线上的离散对数问题，目前无法找到快速解决该问题的方法。</p>
+<p>实际的函数如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Point result = P;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k - <span class="number">1</span>; i++)</div><div class="line">    result = add(P, result);</div><div class="line">sendTo((result, P), others);</div></pre></td></tr></table></figure>
+<p>有个问题：具体的kG如何计算？，为什么不可逆？<br>以下只是猜测，并没有找到什么确切的答案<br>原因：比如k=17，加密的时候因为知道k，作如下运算，由G得到2G，由2G得到4G，由4G得到8G，由8G得到16G，16G再和1G运算得到17G，总共走了5步；而如果破解的话，需要一步一步遍历，如果作倍数运算可能会漏掉k，导致永远找不到，因此只能有1G得2G，由2G得3G，…直到17G，最后的结果是走了17步；而如果k很大，结果会更明显；已知k的运算时间复杂度为O(log n)，未知k的时间复杂度为O(n)<br>更者，如果17G不等于17G（即不同的叠加出现不同的17G)，那么就有更多的可能了</p>
+<h3 id="背包算法"><a href="#背包算法" class="headerlink" title="背包算法"></a>背包算法</h3><p>超递增背包：其中的每一项都大于它之前所有项之和</p>
+<p>记超递增背包为{<script type="math/tex">a_{1},a_{2},…,a_{k}</script>}</p>
+<p>选取N满足N与背包中的任何一个数没有公因子</p>
+<p>并取一个模数M，满足该模数比背包中的所有数的和都大</p>
+<p>对背包中的每个元素作如下运算：</p>
+<script type="math/tex; mode=display">
+c_{i}=a_{i}N\,\,mod\,\,M</script><p>将修改后的背包{<script type="math/tex">c_{1},c_{2},...</script>}作为公钥，原始的超递增背包{<script type="math/tex">a_{1},a_{2},...</script>}作为私钥</p>
+<h4 id="加密-1"><a href="#加密-1" class="headerlink" title="加密"></a>加密</h4><p>对于要加密的二进制消息，按照背包个数分组，然后将每组二进制消息中1对应的背包元素相加，将每组最后相加的结果{<script type="math/tex">b_{1},b_{2}...</script>}作为密文发送出去</p>
+<h4 id="解密-1"><a href="#解密-1" class="headerlink" title="解密"></a>解密</h4><p>计算$N^{-1}$   : 满足$N\,\,N^{-1}\,\,mod\,\,M=1$</p>
+<p>对密文做如下运算 </p>
+<script type="math/tex; mode=display">
+b_{i}N^{-1}\,\,mod\,\,M=a_{i}+a_{j}+...</script><p>最后将<script type="math/tex">a_{i},a_{j}</script>在背包中的位置映射到二进制上，即得到了二进制消息</p>
+<h4 id="证明-1"><a href="#证明-1" class="headerlink" title="证明"></a>证明</h4><p>对于一组二进制消息来说，假设第i,j…等位上为1，加解密的运算如下：</p>
+<script type="math/tex; mode=display">
+(a_{i}N\,mod\,M+a_{j}N\,mod\,M+...)N^{-1}\,mod\,M\\
+=(a_{i}NN^-1\,mod\,M+a_{j}NN^{-1}\,mod\,M+...)\,mod\,M\\
+=(a_{i}+a_{j}+...)\,mod\,M\\
+=a_{i}+a_{j}+...</script><p>前提条件M的选取使得倒数第二行求和的结果和最后一行相等，超递增背包使得最后一个等式唯一</p>
+<h4 id="可靠性-3"><a href="#可靠性-3" class="headerlink" title="可靠性"></a>可靠性</h4><p>公钥为{<script type="math/tex">c_{1},c_{2},...</script>}，M，N，得到密文后，可以将每组的<script type="math/tex">a_{i}+a_{j}+…</script> 的和s求出来</p>
+<p>由公钥的求解方法，我们可以得到一个矩阵，矩阵的第i行表示私钥中第i个元素所有可能的取值，即私钥一定由下面的矩阵中每一行选取一个值组成：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+a_{1}^{1} & a_{1}^{2} & a_{1}^{3}&...\\ 
+a_{2}^{1} & a_{2}^{2} & a_{2}^{3}&...\\ 
+. & .& .&...\\ 
+a_{k}^{1} & a_{k}^{2} & a_{k}^{3}&...\\ 
+\end{bmatrix}</script><p>需要k重for循环进行遍历，每次选取元素时需满足该背包为超递增背包，选取完k个元素后，将得到的背包用于计算密文，如果所有的密文均可以由得到的背包中的元素组成，则该背包为密钥</p>
+<p>时间复杂度为$O(m^k)$，m为矩阵的宽</p>
+<h4 id="举个例子："><a href="#举个例子：" class="headerlink" title="举个例子："></a>举个例子：</h4><p>取一个超递增序列{2,3,6,13,27,52}，N=31，M=105</p>
+<script type="math/tex; mode=display">
+2*31\%105=62\\
+3*31\%105=93\\
+6*31\%105=81\\
+13*31\%105=88\\
+27*31\%105=102\\
+52*31\%105=37</script><p>公钥为{62,93,81,88,102,37}，N=31，M=105</p>
+<p>加密过程：</p>
+<p>需要传递的明文为011000110101101110，按照背包的大小分为三组：011000  110101  101110</p>
+<p>011000  对应  93+81=174</p>
+<p>110101  对应  62+93+88+37=280</p>
+<p>101110  对应  62+81+88+102=333</p>
+<p>密文为{174，280，333}</p>
+<p>解密过程：</p>
+<p>求解$N^{-1}=61$</p>
+<script type="math/tex; mode=display">
+174*61 \,\%\,105=9=3+6    \,\,\,\,\,\,\,\,\,\,\,\,\,对应011000\\
+280*61\,\%\,105=70=2+3+13+52 \,\,\,\,\,\,\,\,\,\,\,\,\,对应110101\\
+333*61\,\%\,105=48=2+6+13+27 \,\,\,\,\,\,\,\,\,\,\,\,\,对应101110\\</script><p>对于超递增背包，上面求解的结果都会唯一对应一组背包中的数字</p>
+<h3 id="Rabin"><a href="#Rabin" class="headerlink" title="Rabin"></a>Rabin</h3><p>选取两个素数p,q，满足同余3模4. 作为私钥，n=pq作为公钥</p>
+<p>加密消息M：</p>
+<script type="math/tex; mode=display">
+C=M^2\,\,mod\,\,n</script><p>解密：</p>
+<p>由于n=pq，由中国剩余定理得到$M^2=C\,\,(mod\,\,n)$等价为：</p>
+<script type="math/tex; mode=display">
+M^2=C \,\,(mod\,\, p)\\
+M^2=C\,\,(mod \,\,q)\\</script><p>引入符号Legendre$\left [ \frac{a}{p} \right ]$：假设p为一个奇素数，a为一个整数，那么有</p>
+<script type="math/tex; mode=display">
+\left [ \frac{a}{p} \right ]=a^{(p-1)/2}\,\,(mod\,\,p)</script><p>对于同余方程式$x^2\equiv a(mod\,\,q)$，如果Legendre符号$\left [ \frac{a}{p} \right ]=1$，且$p\equiv3(mod\,\,4)$</p>
+<p>则方程式的解为<script type="math/tex">\pm\,\,a^{\frac{p+1}{4}}</script></p>
+<p>由模n二次剩余问题的定理1可以证明$\left [ \frac{C}{p} \right ]=1$,$\left [ \frac{C}{q} \right ]=1$</p>
+<p>则4个解分别为：</p>
+<script type="math/tex; mode=display">
+m_{1}=C^{\frac{p+1}{4}}\,\,mod\,\,p\\
+m_{2}=(-C^{\frac{p+1}{4}})\,\,mod\,\,p\\
+m_{3}=C^{\frac{q+1}{4}}\,\,mod\,\,q\\
+m_{4}=(-C^{\frac{q+1}{4}})\,\,mod \,\,q</script><p>从<script type="math/tex">m_{1},m_{2}</script>中选择一个，从<script type="math/tex">m_{3},m_{4}</script>中选择一个，有4种组合方式，由之前的等价公式合并，利用中国剩余定理求解M的值</p>
+<script type="math/tex; mode=display">
+\left\{\begin{matrix}
+M=m_{1}\,\,mod\,\,p\\ M=m_{3}\,\,mod\,\,q
+\end{matrix}\right.\\
+ \,\,\\
+ \,\,\\
+\left\{\begin{matrix}
+M=m_{1}\,\,mod\,\,p\\ M=m_{4}\,\,mod\,\,q
+\end{matrix}\right.\\
+ \,\,\\
+ \,\,\\
+\left\{\begin{matrix}
+M=m_{2}\,\,mod\,\,p\\ M=m_{3}\,\,mod\,\,q
+\end{matrix}\right.\\
+ \,\,\\
+ \,\,\\
+\left\{\begin{matrix}
+M=m_{2}\,\,mod\,\,p\\ M=m_{4}\,\,mod\,\,q
+\end{matrix}\right.</script><p>可以得到4个值，其中有一个就是M，需要在消息加密前加入一个已知的标题，以确定M</p>
+<h4 id="可靠性-4"><a href="#可靠性-4" class="headerlink" title="可靠性"></a>可靠性</h4><p>基于求合数n的模平方根难度，解密过程在已知合数为pq的条件下，使用一种数学方法来得到M</p>
+<h2 id="对称加密算法"><a href="#对称加密算法" class="headerlink" title="对称加密算法"></a>对称加密算法</h2><h3 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h3><p>DES是基于组块的加密算法，输入输出均为64位长度</p>
+<h4 id="加密过程："><a href="#加密过程：" class="headerlink" title="加密过程："></a>加密过程：</h4><ol>
+<li><p>密钥K转为二进制64位，根据表格PC-1变换为56位，拆为左右两半部分<script type="math/tex">C_{0}和D_{0}</script> ，每半边28位</p>
+</li>
+<li><p>对<script type="math/tex">C_{0}和D_{0}</script>进行左移，对于前一个来说左移位数按照1，1，2，2，2，2，2，2，1，2，2，2，2，2，2，1进行，最后得到<script type="math/tex">C_{1},D_{1},…,C_{16},D_{16}</script> 16组子密钥</p>
+</li>
+<li><p>将<script type="math/tex">C_{i},D_{i}</script>拼接，并对应到表格PC-2，得到<script type="math/tex">K_i</script> 为48位，$1\leqslant i \leqslant 16$</p>
+</li>
+<li><p>将明文M转为二进制，并按照IP表变换，记为ip，将ip的左半部分32位记为<script type="math/tex">L_{0}</script>，右半部分32位记为<script type="math/tex">R_{0}</script> </p>
+</li>
+<li><p>使用函数$f$执行16次迭代：</p>
+<script type="math/tex; mode=display">
+L_{n}=R_{n-1}\\
+R_{n}=L_{n-1}\bigoplus f(R_{n-1},K_{n})</script><p>具体$f$中先将<script type="math/tex">R_{n-1}</script>从32位扩展为48位，按照表E；然后进行异或运算：<script type="math/tex">E(R_{n-1})\bigoplus K_{n}</script>，记为<script type="math/tex">B_{i}</script> ;再将<script type="math/tex">B_{i}</script>进行S运算，即<script type="math/tex">S_{i}(B_{i})</script> ，<script type="math/tex">S_{i}</script>的运算原理是计算<script type="math/tex">B_{i}</script>中第一位和最后一位的组成的二进制值作为i，中间的二进制值作为j，在<script type="math/tex">S_{i}</script>中对应的第i行第j列的值转为二进制，最后输出的<script type="math/tex">S_{i}(B_{i})</script> 再由表P转为32位的输出</p>
+</li>
+<li><p>将得到的<script type="math/tex">R_{16}和L_{16}</script>逆转结合得到一个64位的区块：<script type="math/tex">R_{16}L_{16}</script> ；将其按表IP-1输出写为16进制即为明文加密后的结果</p>
+</li>
+</ol>
+<p><img src="/upload/essayimage/iotimg/DES.jpg" alt="DES"></p>
+<h4 id="解密过程"><a href="#解密过程" class="headerlink" title="解密过程"></a>解密过程</h4><p>和加密一样，只是在16轮迭代过程中，调转左右子密钥的位置</p>
+<h4 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h4><p>如果不知道明文，只知道密文，是否能破解？</p>
+<p>明文的组合方式是$2^{64}$种，密钥的组合方式是$2^{56}$ ，从中选取一种明文，一种密文，使得最后加密的结果恰好为密文，总共需要遍历$2^{64}*2^{56}$次</p>
+<p>知道少量的明文密文对，是否能唯一确定一个密钥？</p>
+<h3 id="3DES"><a href="#3DES" class="headerlink" title="3DES"></a>3DES</h3><p>三重DES实质上将暴力破解难度从$2^{56}$变为$2^{168}$ </p>
+<p>使用3条56位的密钥对 数据进行三次加密。3DES（即Triple DES）是DES向AES过渡的加密算法</p>
+<p>其具体实现如下：设Ek()和Dk()代表DES算法的加密和解密过程，K代表DES算法使用的密钥，P代表明文，C代表密文，这样：</p>
+<p>3DES加密过程为：C=Ek3(Dk2(Ek1(P)))</p>
+<p>3DES解密过程为：P=Dk1(EK2(Dk3(C)))</p>
+<p>假设三个密钥均不相同，则本质上就相当于用一个长为168位的密钥进行加密</p>
+<h3 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h3><p>分组密码，由于DES的密钥长度只有56位，而且随着计算机处理能力越来越强，DES变得不再安全，AES便出现了，用以取代DES</p>
+<p>AES分组的长度有128位，192位，256位，下面是按照128位来讲解</p>
+<h4 id="加密-2"><a href="#加密-2" class="headerlink" title="加密"></a>加密</h4><ol>
+<li>16字节的明文和扩展密钥异或，i=0</li>
+<li>将上一步的结果映射到S盒，得到变换后的16字节</li>
+<li>将上一步的16字节按照4x4的矩阵排列，对每一行按照0位，8位，16位，24位进行循环移位</li>
+<li>将上一步得到的矩阵左乘指定矩阵A 得到新的矩阵</li>
+<li>通过G函数获取下一个扩展密钥，将上一步的矩阵从新排成一列，与扩展密钥异或，i++</li>
+<li>如果i=10，返回得到的16字节作为密文，否则执行第2步</li>
+</ol>
+<h4 id="解密-2"><a href="#解密-2" class="headerlink" title="解密"></a>解密</h4><p>加密的逆过程</p>
+<p>加解密如下图</p>
+<p><img src="/upload/essayimage/iotimg/AES.png" alt="AES"></p>
+<p>扩展密钥原理</p>
+<p><img src="/upload/essayimage/iotimg/AES02.png" alt="AES02"></p>
+<h3 id="关于对称加密"><a href="#关于对称加密" class="headerlink" title="关于对称加密"></a>关于对称加密</h3><p>对称加密的安全性基于密钥的长度，如果说一种情况出现：不管密钥的长度变为多长，计算机都能在很短的时间遍历完这所有的可能，该怎么办？</p>
+<h2 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h2><h3 id="SSL-简述"><a href="#SSL-简述" class="headerlink" title="SSL 简述"></a>SSL 简述</h3><p>HTTP+SSL=HTTPS</p>
+<p>SSL在协议模型中的位置</p>
+<p><img src="/upload/essayimage/iotimg/tcpip.png" alt="tcpip"></p>
+<p><img src="/upload/essayimage/iotimg/ssl.png" alt="ssl"></p>
+<p>SSL作用：</p>
+<p>不使用SSL的HTTP通信，带来三大风险：窃听风险，篡改风险，冒充风险</p>
+<p>使用SSL后，所有信息都是加密传播，第三方无法窃听；具有校验机制，被篡改，通信双方会立即发现；配备身份证书，防止被冒充</p>
+<h3 id="SSL握手过程"><a href="#SSL握手过程" class="headerlink" title="SSL握手过程"></a>SSL握手过程</h3><ol>
+<li>客户端发送请求：</li>
+</ol>
+<p>​       生成的随机数n1，请求加密的方法…</p>
+<ol>
+<li>服务器返回信息：</li>
+</ol>
+<p>​       生成的随机数n2，确定加密方法，含公钥的数字签名…</p>
+<ol>
+<li>客户端验证，回应：</li>
+</ol>
+<p>​       对生成的随机数n3使用公钥加密，前面内容的hash值供校验</p>
+<ol>
+<li>服务器回应：</li>
+</ol>
+<p>​       前面内容的hash值，供客户端校验</p>
+<p> n1,n2,n3用于生成会话密钥</p>
+<h3 id="白话数字签名"><a href="#白话数字签名" class="headerlink" title="白话数字签名"></a>白话数字签名</h3><p>假设A和B通信，A需要将信息M发送给B这样一个问题：</p>
+<p>如果使用对称加密，首先得传密钥吧，那还得使用非对称加密，那非对称加密的公钥开放，谁都可以使用，那A使用B的公钥将信息加密，传给B，而此时C也使用B的公钥将信息加密，传给B，B怎么确定哪个是A发过来的呢？</p>
+<p>数字签名的验证功能：</p>
+<p>B先随机生成一串数字发送给A，然后A用自己的私钥加密，再发送给B，B使用A的公钥解密得到的结果如果和随机数相等，则表明对方是A，因为A的公钥只能解用A的密钥加密的密文，其他伪造的密文，A的公钥无法解开。</p>
+<p>数字签名的防篡改功能：</p>
+<p>假设A需要发送一条消息给B，如何防止B篡改呢？</p>
+<p>A使用自己的私钥加密消息，将消息发送给B，B使用A的公钥解密消息，只能知道消息的内容，无法修改消息，因为B修改消息后，并不知道A的私钥，无法加密消息</p>
+<p>那么有一个很大的文件，需要发送，使用非对称加密太耗时，如何做：</p>
+<p>数字签名：摘要算法+非对称加密</p>
+<p>文件传输：对称加密+非对称加密</p>
+<p>实际对文件进行数字签名：先使用摘要算法将文件生成唯一的散列值，然后用私钥对这个散列值进行加密，再把加密后的结果和明文一起发送到B，B此时在网上下载A的公钥进行解密，B再使用摘要算法将明文文件转为散列值，如果两个值相等，表明签名成功</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html" target="_blank" rel="external">RSA算法原理</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%BF%AA%E8%8F%B2-%E8%B5%AB%E7%88%BE%E6%9B%BC%E5%AF%86%E9%91%B0%E4%BA%A4%E6%8F%9B" target="_blank" rel="external">迪菲-赫尔曼密钥交换</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/ElGamal%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95" target="_blank" rel="external">ElGamal加密算法</a></p>
+<p><a href="http://ws.nju.edu.cn/courses/dm/courseware/20150422-Cyclic_groups_and_Group_Isomorphism.pdf" target="_blank" rel="external">循环群</a></p>
+<p><a href="http://www.pediy.com/kssd/pediy06/pediy6014.htm" target="_blank" rel="external">ECC加密算法入门介绍</a></p>
+<p><a href="http://blog.csdn.net/qmickecs/article/details/76585303" target="_blank" rel="external">离散对数和椭圆曲线加密原理</a></p>
+<p><a href="http://pangjiuzala.github.io/2016/03/03/Bitcoin%E5%8A%A0%E5%AF%86%E6%8A%80%E6%9C%AF%E4%B9%8B%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E7%A0%81%E5%AD%A6/" target="_blank" rel="external">Bitcoin加密技术之椭圆曲线密码学</a></p>
+<p><a href="http://www.dongcoder.com/detail-6324.html" target="_blank" rel="external">Rabin加密算法</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86" target="_blank" rel="external">中国剩余定理</a></p>
+<p><a href="http://www.infosec.sdu.edu.cn/jpkc/resource/11shudaiwenti.pdf" target="_blank" rel="external">公钥密码学中的数学问题之二次剩余</a></p>
+<p><a href="http://cc.jlu.edu.cn/Download/20141006103118811.pdf" target="_blank" rel="external">RSA数论基础</a></p>
+<p><a href="http://www.hankcs.com/security/des-algorithm-illustrated.html" target="_blank" rel="external">DES算法实例详解</a></p>
+<p><a href="http://www.360drm.com/resource/16.html" target="_blank" rel="external">DES的破解方案</a></p>
+<p><a href="http://www.cnblogs.com/luop/p/4334160.html#commentform" target="_blank" rel="external">AES简介</a></p>
+<p><a href="http://www.cnblogs.com/sunxuchu/p/5483956.html" target="_blank" rel="external">加密算法对比</a></p>
+<p><a href="https://baike.baidu.com/item/ECDLP" target="_blank" rel="external">RSA与ECC的对比</a></p>
+<p><a href="http://www.cnblogs.com/1-2-3/archive/2007/09/17/colloquialism-digital-certificate-part1.html" target="_blank" rel="external">白话数字签名</a></p>
+<p><a href="http://www.jianshu.com/p/992bad24412e" target="_blank" rel="external">白话HTTPS&amp;SSL/TLS</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/对称加密/" rel="tag"><i class="fa fa-tag"></i> 对称加密</a>
+          
+            <a href="/tags/非对称加密/" rel="tag"><i class="fa fa-tag"></i> 非对称加密</a>
+          
+            <a href="/tags/SSL/" rel="tag"><i class="fa fa-tag"></i> SSL</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/28/interview170928/" rel="next" title="17年百度校招">
+                <i class="fa fa-chevron-left"></i> 17年百度校招
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/12/leetcode051/" rel="prev" title="51. N-Queens">
+                51. N-Queens <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非对称加密"><span class="nav-number">1.1.</span> <span class="nav-text">非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对称加密"><span class="nav-number">1.2.</span> <span class="nav-text">对称加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非对称加密算法介绍"><span class="nav-number">2.</span> <span class="nav-text">非对称加密算法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA"><span class="nav-number">2.1.</span> <span class="nav-text">RSA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RSA的公钥私钥选取过程"><span class="nav-number">2.1.1.</span> <span class="nav-text">RSA的公钥私钥选取过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加解密及私钥解密证明"><span class="nav-number">2.1.2.</span> <span class="nav-text">加解密及私钥解密证明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RSA算法的可靠性："><span class="nav-number">2.1.3.</span> <span class="nav-text">RSA算法的可靠性：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D-H密钥交换"><span class="nav-number">2.2.</span> <span class="nav-text">D-H密钥交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#证明"><span class="nav-number">2.2.1.</span> <span class="nav-text">证明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可靠性"><span class="nav-number">2.2.2.</span> <span class="nav-text">可靠性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ElGamal加密算法"><span class="nav-number">2.3.</span> <span class="nav-text">ElGamal加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#密钥生成"><span class="nav-number">2.3.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加密"><span class="nav-number">2.3.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解密"><span class="nav-number">2.3.3.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可靠性-1"><span class="nav-number">2.3.4.</span> <span class="nav-text">可靠性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECC加密算法"><span class="nav-number">2.4.</span> <span class="nav-text">ECC加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#椭圆曲线："><span class="nav-number">2.4.1.</span> <span class="nav-text">椭圆曲线：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#椭圆曲线上的运算："><span class="nav-number">2.4.2.</span> <span class="nav-text">椭圆曲线上的运算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#椭圆曲线在密码学中的应用"><span class="nav-number">2.4.3.</span> <span class="nav-text">椭圆曲线在密码学中的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有限域椭圆曲线上的加解密"><span class="nav-number">2.4.4.</span> <span class="nav-text">有限域椭圆曲线上的加解密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可靠性-2"><span class="nav-number">2.4.5.</span> <span class="nav-text">可靠性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#背包算法"><span class="nav-number">2.5.</span> <span class="nav-text">背包算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加密-1"><span class="nav-number">2.5.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解密-1"><span class="nav-number">2.5.2.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证明-1"><span class="nav-number">2.5.3.</span> <span class="nav-text">证明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可靠性-3"><span class="nav-number">2.5.4.</span> <span class="nav-text">可靠性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#举个例子："><span class="nav-number">2.5.5.</span> <span class="nav-text">举个例子：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rabin"><span class="nav-number">2.6.</span> <span class="nav-text">Rabin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可靠性-4"><span class="nav-number">2.6.1.</span> <span class="nav-text">可靠性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对称加密算法"><span class="nav-number">3.</span> <span class="nav-text">对称加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DES"><span class="nav-number">3.1.</span> <span class="nav-text">DES</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加密过程："><span class="nav-number">3.1.1.</span> <span class="nav-text">加密过程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解密过程"><span class="nav-number">3.1.2.</span> <span class="nav-text">解密过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#破解"><span class="nav-number">3.1.3.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3DES"><span class="nav-number">3.2.</span> <span class="nav-text">3DES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AES"><span class="nav-number">3.3.</span> <span class="nav-text">AES</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加密-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解密-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于对称加密"><span class="nav-number">3.4.</span> <span class="nav-text">关于对称加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL"><span class="nav-number">4.</span> <span class="nav-text">SSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL-简述"><span class="nav-number">4.1.</span> <span class="nav-text">SSL 简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL握手过程"><span class="nav-number">4.2.</span> <span class="nav-text">SSL握手过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#白话数字签名"><span class="nav-number">4.3.</span> <span class="nav-text">白话数字签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

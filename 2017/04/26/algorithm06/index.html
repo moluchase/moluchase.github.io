@@ -51,17 +51,41 @@
   
 
   
+    
+      
+    
 
+    
   
 
   
+    
+      
+    
 
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
   
 
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -99,8 +123,6 @@
 <meta property="og:description" content="问题描述 选择排序 插入排序 希尔排序 归并排序 快速排序 堆排序">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/170426a.png">
-<meta property="og:image" content="http://yoursite.com/upload/essayimage/170426b.gif">
-<meta property="og:image" content="http://yoursite.com/upload/essayimage/170426c.gif">
 <meta property="og:updated_time" content="2017-08-26T13:30:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="比较排序">
@@ -114,7 +136,7 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -408,11 +430,15 @@
 <p>插入排序最坏的时间复杂度T(n)=1+2+…(n-1) ~ O(n^2)</p>
 <h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p>希尔排序是插入排序的改进版，想象这么一种极端情况，待排序列的最后一个元素是最小的，这样插入排序需要将前面的所有元素往后移，才能把最后一个元素放进有序列中；而希尔排序就是针对这样的情况出现的<br>算法如下：<br>令k=n (n为序列中元素的个数)<br>第一步：取步长为k=k/2(可以按照其他方式选取)<br>第二步：对第i，i+k,i+k*2,…的元素排序，i小于k,这样的序列集有k个<br>第三步：执行第一步，当k=0时，跳出<br>如下图：<br><img src="/upload/essayimage/170426a.png" alt="170426a"><br>代码如下，需要借助快速排序函数insert_sort()<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#希尔排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell_sort</span><span class="params">(arr)</span>:</span></div><div class="line">    n=len(arr)</div><div class="line">    k=<span class="number">1</span><span class="comment">#k为步长</span></div><div class="line">    <span class="comment">#步长k取通项公式an=i*3+1组成的序列中最大的小于n的数</span></div><div class="line">    <span class="keyword">while</span>(k&lt;int(n/<span class="number">3</span>)):</div><div class="line">        k=k*<span class="number">3</span>+<span class="number">1</span></div><div class="line">    <span class="keyword">while</span> k&gt;=<span class="number">1</span>:</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</div><div class="line">            t=insert_sort(arr[i::k])<span class="comment">#以k为步长，获取arr中的元素组成序列传给插入排序</span></div><div class="line">            p=i</div><div class="line">            <span class="comment">#将排好的序列赋值给指定的位置</span></div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> t:</div><div class="line">                arr[p]=j</div><div class="line">                p=p+k</div><div class="line">        <span class="comment">#减小步长，继续排序</span></div><div class="line">        k=int(k/<span class="number">3</span>)</div><div class="line">    <span class="keyword">return</span> arr</div></pre></td></tr></table></figure></p>
 <p>希尔排序时间复杂度是要小于插入排序的，暂时不知道如何计算<br>动态图</p>
-<div align="center"><br><img src="/upload/essayimage/170426b.gif" alt="170426b"><br></div>
+<div align="center">
+![170426b](/upload/essayimage/170426b.gif)
+</div>
 
 <h4 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h4><p>归并排序的思路是分治法<br>算法导论p17中提到<br><strong>分解</strong>原问题为若干子问题，这些子问题是原问题规模较小的实例<br><strong>解决</strong>这些子问题，递归求解各子问题<br><strong>合并</strong>这些子问题的解成原问题的解<br>具体思路：将n个元素的列表分解为两组n/2个元素的列表，继续分解，直到只有一个元素，返回，执行合并函数，对两组有序列进行排序;需要开辟一个O(n)的空间来存储n个元素,而对原arr数组修改<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#将两个有序列表归并为一个有序列表</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(arr,p,mid,r)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(r-p+<span class="number">1</span>):</div><div class="line">        temp[p+i]=arr[p+i]</div><div class="line">    i=p</div><div class="line">    k=p</div><div class="line">    j=mid+<span class="number">1</span></div><div class="line">    <span class="keyword">while</span> i&lt;=mid <span class="keyword">and</span> j&lt;=r:</div><div class="line">        <span class="keyword">if</span> temp[i]&lt;temp[j]:</div><div class="line">            arr[k]=temp[i]</div><div class="line">            i=i+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            arr[k]=temp[j]</div><div class="line">            j=j+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line">    <span class="keyword">if</span> i&lt;=mid:</div><div class="line">        <span class="keyword">while</span> i&lt;=mid:</div><div class="line">            arr[k]=temp[i]</div><div class="line">            i=i+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line">    <span class="keyword">elif</span> j&lt;=r:</div><div class="line">        <span class="keyword">while</span> j&lt;=r:</div><div class="line">            arr[k]=temp[j]</div><div class="line">            j=j+<span class="number">1</span></div><div class="line">            k=k+<span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment">#归并排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(arr,p,r)</span>:</span></div><div class="line">    <span class="keyword">if</span> p&gt;=r:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    mid=p+int((r-p)/<span class="number">2</span>)</div><div class="line">    merge_sort(arr,p,mid)</div><div class="line">    merge_sort(arr,mid+<span class="number">1</span>,r)</div><div class="line">    merge(arr,p,mid,r)</div><div class="line">    <span class="keyword">return</span> arr</div></pre></td></tr></table></figure></p>
 <p>时间复杂度T(n)=O(nlgn)<br>动态图</p>
-<p><div align="center"><br><img src="/upload/essayimage/170426c.gif" alt="170426c"><br></div><br><br></p>
+<p><div align="center">
+![170426c](/upload/essayimage/170426c.gif)
+</div><br><br></p>
 <h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><p>和归并的思想是一样的，只是快速排序是原址排序<br>思路：给定一个数组，取最后一个元素作为比较的对象，将其它元素与之相比，小者置于该元素的左边，大者置于该元素的右边；将由这个元素分开的两个数组继续进行上述操作…,当数组元素为一个时不再执行该操作。<br>【notice】其中涉及到<strong>如何将小的元素置于比较对象的左边，将大的元素置于比较对象的右边的问题</strong>：<br>     书中是这样写的：一个指针i遍历数组，一个指针j记录小的元素最后位置的后一个，如果有小的元素，则交换j指向的元素和i指向的元素<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#a为数组；p，r为数组第元素的下标</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(a,p,r)</span>:</span></div><div class="line">    <span class="keyword">if</span> p&lt;r:</div><div class="line">        q=partition(a,p,r)</div><div class="line">        quick_sort(a,p,q<span class="number">-1</span>)</div><div class="line">        quick_sort(a,q+<span class="number">1</span>,r)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(a,p,r)</span>:</span></div><div class="line">    i=p</div><div class="line">    j=p</div><div class="line">    <span class="keyword">while</span> i&lt;r:</div><div class="line">        <span class="keyword">if</span> a[i]&lt;a[r]:</div><div class="line">            temp=a[i]</div><div class="line">            a[i]=a[j]</div><div class="line">            a[j]=temp</div><div class="line">            j=j+<span class="number">1</span></div><div class="line">        i=i+<span class="number">1</span></div><div class="line">    temp=a[j]</div><div class="line">    a[j]=a[r]</div><div class="line">    a[r]=temp</div><div class="line">    <span class="keyword">return</span> j</div></pre></td></tr></table></figure></p>
 <h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><p>这里就采用数组来表示堆，结构如下所示：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parent</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">return</span> int(i/<span class="number">2</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">left</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">2</span>*i</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">right</span><span class="params">(i)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">2</span>*i+<span class="number">1</span></div></pre></td></tr></table></figure></p>
 <p>这里实现的是最大堆，最小对同理<br>堆排序的核心是如何维护堆，即对于树上的某个元素i，假设i后面的元素已经符合最大堆，如何让i也符合最大堆；（有点归纳的感觉）<br>维护最大堆：这是一个递归的过程，对于i，i的左节点，i的右节点，将最大的值和i交换，如果被交换的是子节点，则继续遍历子节点，直到没有子节点。<br>如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#维护最大堆，已知i元素后的元素是符合最大堆的，目的是使i元素也符合最大堆，</span></div><div class="line"><span class="comment">#前提是i下的子树均符合最大堆</span></div><div class="line"><span class="comment">#a为数组，i为可能不符合最大堆的元素</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_heapify</span><span class="params">(a,i)</span>:</span></div><div class="line">    lindex=left(i)</div><div class="line">    rindex=right(i)</div><div class="line">    largest=i</div><div class="line">    <span class="keyword">if</span> lindex&lt;len(a) <span class="keyword">and</span> a[lindex]&gt;a[largest]:</div><div class="line">        largest=lindex</div><div class="line">    <span class="keyword">elif</span> rindex&lt;len(a) <span class="keyword">and</span> a[rindex]&gt;a[largest]:</div><div class="line">        largest=rindex</div><div class="line">    <span class="keyword">if</span> largest!=i:</div><div class="line">        <span class="keyword">if</span> largest==lindex:</div><div class="line">            temp=a[i]</div><div class="line">            a[i]=a[lindex]</div><div class="line">            a[lindex]=temp</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            temp=a[i]</div><div class="line">            a[i]=a[rindex]</div><div class="line">            a[rindex]=temp</div><div class="line">        max_heapify(a,largest)</div></pre></td></tr></table></figure></p>
@@ -470,9 +496,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法第4版/" rel="tag"># 算法第4版</a>
+            <a href="/tags/算法第4版/" rel="tag"><i class="fa fa-tag"></i> 算法第4版</a>
           
-            <a href="/tags/算法导论/" rel="tag"># 算法导论</a>
+            <a href="/tags/算法导论/" rel="tag"><i class="fa fa-tag"></i> 算法导论</a>
           
         </div>
       
@@ -571,7 +597,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -582,7 +608,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -593,7 +619,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

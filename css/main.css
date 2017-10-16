@@ -185,8 +185,8 @@ th {
 }
 body {
   position: relative;
-  font-family: Verdana, sans-serif;
-  font-size: 16px;
+  font-family: 'Microsoft Yahei', "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 20px;
   line-height: 2;
   color: #555;
   background: #fff;
@@ -216,7 +216,7 @@ h6 {
   padding: 0;
   font-weight: bold;
   line-height: 1.5;
-  font-family: Georgia, sans;
+  font-family: 'Microsoft Yahei', 'Microsoft Yahei', "Microsoft YaHei", "PingFang SC", sans-serif;
 }
 h2,
 h3,
@@ -434,11 +434,11 @@ body {
 .header-inner {
   margin: 0 auto;
   padding: 100px 0 70px;
-  width: 700px;
+  width: 1000px;
 }
 @media (min-width: 1600px) {
   .container .header-inner {
-    width: 900px;
+    width: 1200px;
   }
 }
 .main {
@@ -446,11 +446,11 @@ body {
 }
 .main-inner {
   margin: 0 auto;
-  width: 700px;
+  width: 1000px;
 }
 @media (min-width: 1600px) {
   .container .main-inner {
-    width: 900px;
+    width: 1200px;
   }
 }
 .footer {
@@ -463,11 +463,11 @@ body {
 .footer-inner {
   box-sizing: border-box;
   margin: 20px auto;
-  width: 700px;
+  width: 1000px;
 }
 @media (min-width: 1600px) {
   .container .footer-inner {
-    width: 900px;
+    width: 1200px;
   }
 }
 pre,
@@ -475,22 +475,22 @@ pre,
   overflow: auto;
   margin: 20px 0;
   padding: 0;
-  font-size: 13px;
+  font-size: 16px;
   color: #4d4d4c;
   background: #f7f7f7;
   line-height: 1.6;
 }
 pre,
 code {
-  font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
+  font-family: 'consolas', consolas, Menlo, "Microsoft YaHei", "PingFang SC", monospace;
 }
 code {
   padding: 2px 4px;
   word-wrap: break-word;
-  color: #555;
+  color: #d05;
   background: #eee;
   border-radius: 3px;
-  font-size: 13px;
+  font-size: 16px;
 }
 pre code {
   padding: 0;
@@ -999,7 +999,7 @@ pre .javascript .function {
   line-height: 36px;
   font-size: 20px;
   font-weight: normal;
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Microsoft Yahei', 'Microsoft Yahei', "Microsoft YaHei", "PingFang SC", sans-serif;
 }
 .site-subtitle {
   margin-top: 10px;
@@ -1087,7 +1087,7 @@ pre .javascript .function {
   opacity: 0;
 }
 .post-body {
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Microsoft Yahei', 'Microsoft Yahei', "Microsoft YaHei", "PingFang SC", sans-serif;
 }
 @media (max-width: 767px) {
   .post-body {
@@ -1105,7 +1105,7 @@ pre .javascript .function {
 .post-body .figure .caption {
   margin: 10px auto 15px;
   text-align: center;
-  font-size: 16px;
+  font-size: 20px;
   color: #999;
   font-weight: bold;
   line-height: 1;
@@ -1119,6 +1119,14 @@ pre .javascript .function {
   -ms-transform: rotate(30deg);
   -o-transform: rotate(30deg);
   transform: rotate(30deg);
+}
+.post-body p a {
+  color: #0593d3;
+  border-bottom: none;
+}
+.post-body p a:hover {
+  color: #ee3b3b;
+  text-decoration: underline;
 }
 .posts-expand {
   padding-top: 40px;
@@ -1358,7 +1366,7 @@ pre .javascript .function {
 .posts-expand .post-meta {
   margin: 3px 0 60px 0;
   color: #999;
-  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Microsoft Yahei', 'Microsoft Yahei', "Microsoft YaHei", "PingFang SC", sans-serif;
   font-size: 12px;
   text-align: center;
 }
@@ -1806,7 +1814,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff1bdb;
+  background: #b4d0e4;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2813,7 +2821,7 @@ hr {
 .post-button a {
   margin: 0 8px 8px 0 !important;
   padding: 0;
-  font-size: 16px;
+  font-size: 20px;
   color: #666;
   background: none;
   border: none;
@@ -2896,4 +2904,62 @@ hr {
     width: auto;
     text-align: center;
   }
+}
+h,
+.post {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  padding: 25px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
+  border-radius: 5px;
+}
+article.post.post-type-normal {
+  margin: 40px;
+}
+h1.post-title {
+  font-size: 30px !important;
+  font-weight: bold !important;
+  background: #00bfff;
+  border-radius: 5px;
+  padding: 20px 20px 20px 30px;
+}
+h1.post-title-link:hover {
+  color: #1c86ee !important;
+}
+.post-meta {
+  color: #9400d3 !important;
+  font-size: 22px !important;
+}
+a.btn {
+  background: #cae1ff !important;
+  border-radius: 5px !important;
+  font-size: 20px !important;
+}
+a.btn:hover {
+  color: #f00 !important;
+}
+h2 {
+  margin: 0 0 28px;
+  padding: 10px 0 10px 12px;
+  font-weight: bold !important;
+  border-left: 16px solid #d9534f !important;
+  background-color: #f9f9f9;
+  font-size: 34px !important;
+}
+h3 {
+  margin: 0 0 28px;
+  padding: 10px 0 10px 16px;
+  font-weight: bold !important;
+  border-left: 14px solid #d9534f !important;
+  background-color: #f9f9f9;
+  font-size: 30px !important;
+}
+h4 {
+  margin: 0 0 28px;
+  padding: 10px 0 10px 20px;
+  font-weight: bold !important;
+  border-left: 12px solid #d9534f !important;
+  background-color: #f9f9f9;
+  font-size: 26px !important;
 }
