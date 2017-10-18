@@ -114,19 +114,19 @@
 
 
 
-<meta name="description" content="description如下图所示：  从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？">
+<meta name="description" content="description如下图所示：  从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？ 接下来的一道题是，如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？ 接下来一道题目如下：Given a m x n grid filled with non-negative numbers, find a path from top left">
 <meta name="keywords" content="DP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="62. Unique Paths">
 <meta property="og:url" content="http://yoursite.com/2017/10/16/leetcode062/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="description如下图所示：  从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？">
+<meta property="og:description" content="description如下图所示：  从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？ 接下来的一道题是，如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？ 接下来一道题目如下：Given a m x n grid filled with non-negative numbers, find a path from top left">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/robot_maze.png">
-<meta property="og:updated_time" content="2017-10-16T10:53:07.000Z">
+<meta property="og:updated_time" content="2017-10-17T15:19:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="62. Unique Paths">
-<meta name="twitter:description" content="description如下图所示：  从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？">
+<meta name="twitter:description" content="description如下图所示：  从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？ 接下来的一道题是，如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？ 接下来一道题目如下：Given a m x n grid filled with non-negative numbers, find a path from top left">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/robot_maze.png">
 
 
@@ -418,8 +418,10 @@
         <h3 id="description"><a href="#description" class="headerlink" title="description"></a>description</h3><p>如下图所示：</p>
 <p><img src="/upload/essayimage/robot_maze.png" alt="robot_maze"></p>
 <p>从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？</p>
-<a id="more"></a>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>首先想到的当然是用DFS了，每次都有两种走法，向下和向右，而每次的这两种走法又都构成一个子问题，和start点的情况一样，这样便可以写出下面的代码：</p>
+<p>接下来的一道题是，如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？</p>
+<p>接下来一道题目如下：<br>Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.</p>
+<p>下面这道经常碰到的题目（跳台阶）：<br>You are climbing a stair case. It takes n steps to reach to the top.<br>Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?<br><a id="more"></a></p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><h4 id="第一道"><a href="#第一道" class="headerlink" title="第一道"></a>第一道</h4><p>首先想到的当然是用DFS了，每次都有两种走法，向下和向右，而每次的这两种走法又都构成一个子问题，和start点的情况一样，这样便可以写出下面的代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//使用DFS做，但是不是有记忆的，这样会有很多重复的</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> getUniquePathNum(m,n,<span class="number">1</span>,<span class="number">1</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getUniquePathNum</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(i==m&amp;&amp;j==n)<span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span>(i&gt;m||j&gt;n)<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> getUniquePathNum(m,n,i+<span class="number">1</span>,j)+getUniquePathNum(m,n,i,j+<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>放到leetcode后，显示超时了，很显然会有很多重复的子问题，但是仍然当成第一次走；比如从start向右走一步后再向下走和从start向下走一步后再向右走一步都达到了相同的位置，这个位置就会重复计算；</p>
 <p>这里我略掉有记忆的DFS，而是将递归变为for循环（自下向上变为自上向下）</p>
@@ -430,6 +432,25 @@ flag[i][0]=1\\
 flag[i][j]=flag[i-1][j]+flag[i][j-1]</script><p>这就叫动态规划</p>
 <p>实质就是有记忆的DFS</p>
 <p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//有记忆的遍历（DFS的反向）</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span>[][] flag=<span class="keyword">new</span> <span class="keyword">int</span>[m][n];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</div><div class="line">            <span class="keyword">if</span>(i==<span class="number">0</span>||j==<span class="number">0</span>)flag[i][j]=<span class="number">1</span>;</div><div class="line">            <span class="keyword">else</span> flag[i][j]=flag[i-<span class="number">1</span>][j]+flag[i][j-<span class="number">1</span>];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> flag[m-<span class="number">1</span>][n-<span class="number">1</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="第二道题"><a href="#第二道题" class="headerlink" title="第二道题"></a>第二道题</h4><p>实质是一样的，只是需要多加几个条件，这里以Finish为(n,m)点，start为(0,0)点,如果obstacleGrid矩阵中对应的点为0，那么有:</p>
+<script type="math/tex; mode=display">
+flag[n-1][m-1]=1\\
+flag[n-1][j]=flag[n-1][j+1]\\
+flag[i][m-1]=flag[i+1][m-1]\\
+flag[i][j]=flag[i+1][j]+flag[i][j+1]</script><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line">如果该位置是1直接返回0</div><div class="line">否者如果该位置是最后一个位置，返回1</div><div class="line">否者如果该位置在最下面一行，等于该位置右边那个位置</div><div class="line">否者如果该位置在最右边一行，等于该位置下面的那个位置</div><div class="line">否者等于该位置右边那个位置加上下面那个位置</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(<span class="keyword">int</span>[][] obstacleGrid)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> n=obstacleGrid.length;</div><div class="line">    <span class="keyword">int</span> m=obstacleGrid[<span class="number">0</span>].length;</div><div class="line">    <span class="keyword">int</span>[][]flag=<span class="keyword">new</span> <span class="keyword">int</span>[n][m];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=m-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</div><div class="line">            <span class="keyword">if</span>(obstacleGrid[i][j]==<span class="number">1</span>)flag[i][j]=<span class="number">0</span>;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(i==n-<span class="number">1</span>&amp;&amp;j==m-<span class="number">1</span>)flag[i][j]=<span class="number">1</span>;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(i==n-<span class="number">1</span>)flag[i][j]=flag[i][j+<span class="number">1</span>];</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(j==m-<span class="number">1</span>)flag[i][j]=flag[i+<span class="number">1</span>][j];</div><div class="line">            <span class="keyword">else</span> flag[i][j]=flag[i+<span class="number">1</span>][j]+flag[i][j+<span class="number">1</span>];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> flag[<span class="number">0</span>][<span class="number">0</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="第三道题"><a href="#第三道题" class="headerlink" title="第三道题"></a>第三道题</h4><p>同第二道:</p>
+<script type="math/tex; mode=display">
+flag[n-1][m-1]=grid[n-1][m-1]\\
+flag[n-1][j]=grid[n-1][j]+flag[n-1][j+1]\\
+flag[i][m-1]=grid[i][m-1]+flag[i+1][m-1]\\
+flag[i][j]=grid[i][j]+min(flag[i+1][j],flag[i][j+1])</script><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minPathSum</span><span class="params">(<span class="keyword">int</span>[][] grid)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> n=grid.length;</div><div class="line">    <span class="keyword">int</span> m=grid[<span class="number">0</span>].length;</div><div class="line">    <span class="keyword">int</span> [][] flag=<span class="keyword">new</span> <span class="keyword">int</span>[n][m];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=n-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=m-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</div><div class="line">            <span class="keyword">if</span>(i==n-<span class="number">1</span>&amp;&amp;j==m-<span class="number">1</span>)flag[i][j]=grid[i][j];</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(i==n-<span class="number">1</span>)flag[i][j]=grid[i][j]+flag[i][j+<span class="number">1</span>];</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(j==m-<span class="number">1</span>)flag[i][j]=grid[i][j]+flag[i+<span class="number">1</span>][j];</div><div class="line">            <span class="keyword">else</span> flag[i][j]=grid[i][j]+Math.min(flag[i+<span class="number">1</span>][j],flag[i][j+<span class="number">1</span>]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> flag[<span class="number">0</span>][<span class="number">0</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="第四道题"><a href="#第四道题" class="headerlink" title="第四道题"></a>第四道题</h4><p>这道跳台阶的题可以说是递归的经典题目，基本上一个递归就可以解决的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">climbStairs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>)<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>)<span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> climbStairs(n-<span class="number">1</span>)+climbStairs(n-<span class="number">2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>但是这样的递归是很耗时的，因为有重复的，DP就是来拯救递归的：</p>
+<script type="math/tex; mode=display">
+dp[0]=0\\
+dp[1]=1\\
+dp[i]=dp[i-1]+dp[i-2]</script><p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">climbStairs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> [] dp=<span class="keyword">new</span> <span class="keyword">int</span>[n+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>)dp[i]=<span class="number">0</span>;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="number">1</span>)dp[i]=<span class="number">1</span>;</div><div class="line">        <span class="keyword">else</span> dp[i]=dp[i-<span class="number">1</span>]+dp[i-<span class="number">2</span>];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> dp[n];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -493,8 +514,8 @@ flag[i][j]=flag[i-1][j]+flag[i][j-1]</script><p>这就叫动态规划</p>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/15/leetcode057/" rel="next" title="57. Insert Interval">
-                <i class="fa fa-chevron-left"></i> 57. Insert Interval
+              <a href="/2017/10/15/leetcode059/" rel="next" title="59. Spiral Matrix">
+                <i class="fa fa-chevron-left"></i> 59. Spiral Matrix
               </a>
             
           </div>
@@ -502,6 +523,10 @@ flag[i][j]=flag[i-1][j]+flag[i][j-1]</script><p>这就叫动态规划</p>
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/17/leetcode068/" rel="prev" title="68. Text Justification">
+                68. Text Justification <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -575,7 +600,7 @@ flag[i][j]=flag[i-1][j]+flag[i][j-1]</script><p>这就叫动态规划</p>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -597,7 +622,7 @@ flag[i][j]=flag[i-1][j]+flag[i][j-1]</script><p>这就叫动态规划</p>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -652,7 +677,7 @@ flag[i][j]=flag[i-1][j]+flag[i][j-1]</script><p>这就叫动态规划</p>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#description"><span class="nav-number">1.</span> <span class="nav-text">description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#description"><span class="nav-number">1.</span> <span class="nav-text">description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一道"><span class="nav-number">2.1.</span> <span class="nav-text">第一道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二道题"><span class="nav-number">2.2.</span> <span class="nav-text">第二道题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三道题"><span class="nav-number">2.3.</span> <span class="nav-text">第三道题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四道题"><span class="nav-number">2.4.</span> <span class="nav-text">第四道题</span></a></li></ol></li></ol></div>
             
 
           </div>
