@@ -1814,7 +1814,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #1cd4c2;
+  background: #8879c2;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2920,7 +2920,7 @@ article.post.post-type-normal {
 h1.post-title {
   font-size: 30px !important;
   font-weight: bold !important;
-  background: #00bfff;
+background
   border-radius: 5px;
   padding: 20px 20px 20px 30px;
 }

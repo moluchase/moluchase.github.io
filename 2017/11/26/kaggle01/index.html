@@ -1,0 +1,1004 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="kaggle," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="题目简述见 House Prices: Advanced Regression Techniques给出了可能和房价有关的79个变量，使用回归的方法预测房价主要按照以下文章的思路，注意这篇文章只是做一个简单的笔记整理，供后查阅，因此是针对博主而言的：数据分析：Comprehensive data exploration with Python数据处理及线性回归在训练集上的比较：A study on">
+<meta name="keywords" content="kaggle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kaggle之房价预测">
+<meta property="og:url" content="http://yoursite.com/2017/11/26/kaggle01/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="题目简述见 House Prices: Advanced Regression Techniques给出了可能和房价有关的79个变量，使用回归的方法预测房价主要按照以下文章的思路，注意这篇文章只是做一个简单的笔记整理，供后查阅，因此是针对博主而言的：数据分析：Comprehensive data exploration with Python数据处理及线性回归在训练集上的比较：A study on">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0101.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0102.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0103.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0104.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0105.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0106.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0107.png">
+<meta property="og:updated_time" content="2017-12-02T13:33:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kaggle之房价预测">
+<meta name="twitter:description" content="题目简述见 House Prices: Advanced Regression Techniques给出了可能和房价有关的79个变量，使用回归的方法预测房价主要按照以下文章的思路，注意这篇文章只是做一个简单的笔记整理，供后查阅，因此是针对博主而言的：数据分析：Comprehensive data exploration with Python数据处理及线性回归在训练集上的比较：A study on">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/kaggle/kaggle0101.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/26/kaggle01/"/>
+
+
+
+
+
+  <title> kaggle之房价预测 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/26/kaggle01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                kaggle之房价预测
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-26T19:58:14+08:00">
+                2017-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/26/kaggle01/" class="leancloud_visitors" data-flag-title="kaggle之房价预测">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="题目简述"><a href="#题目简述" class="headerlink" title="题目简述"></a>题目简述</h3><p>见 <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques" target="_blank" rel="external">House Prices: Advanced Regression Techniques</a><br>给出了可能和房价有关的79个变量，使用回归的方法预测房价<br>主要按照以下文章的思路，注意这篇文章只是做一个简单的笔记整理，供后查阅，因此是针对博主而言的：<br>数据分析：<a href="https://www.kaggle.com/pmarcelino/comprehensive-data-exploration-with-python" target="_blank" rel="external">Comprehensive data exploration with Python</a><br>数据处理及线性回归在训练集上的比较：<a href="https://www.kaggle.com/juliencs/a-study-on-regression-applied-to-the-ames-dataset" target="_blank" rel="external">A study on Regression applied to the Ames dataset</a><br>xgboost+线性回归：<a href="https://www.kaggle.com/apapiu/regularized-linear-models" target="_blank" rel="external">Regularized Linear Models</a><br>stacking的使用：<a href="https://www.kaggle.com/serigne/stacked-regressions-top-4-on-leaderboard" target="_blank" rel="external">Stacked Regressions : Top 4% on LeaderBoard</a><br>最后简单的处理了一下数据成绩为0.11510<br>代码放在github上：<br><a id="more"></a></p>
+<h3 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h3><p>这篇文章对数据的分析可谓经典，从中学到很多，但也有很多不是太明白<br>使用describe来判断DataFrame列的个数，均值，标准差，最小值，25%分位点，75%分位点，最大值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df_train[<span class="string">'SalePrice'</span>].describe()</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">count      1460.000000</div><div class="line">mean     180921.195890</div><div class="line">std       79442.502883</div><div class="line">min       34900.000000</div><div class="line">25%      129975.000000</div><div class="line">50%      163000.000000</div><div class="line">75%      214000.000000</div><div class="line">max      755000.000000</div><div class="line">Name: SalePrice, dtype: float64</div></pre></td></tr></table></figure>
+<p>关于数据的偏度和峰度<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#偏度，峰度 </span></div><div class="line"><span class="comment">#参见：</span></div><div class="line"><span class="comment"># http://blog.csdn.net/lxb1022/article/details/76919362</span></div><div class="line"><span class="comment"># http://blog.sina.com.cn/s/blog_514922200101c2dn.html</span></div><div class="line"><span class="string">"""</span></div><div class="line">偏度是描述数据分布形态的统计量，其描述的是某总体取值分布的对称性，</div><div class="line">偏度大于0表示其数据分布形态与正太分布相比为正偏或右偏；有一条长尾巴在右边；反之左偏，即有一条长尾巴在左边</div><div class="line"></div><div class="line">峰度是描述总体中所有取值分布形态陡缓程度的统计量。</div><div class="line">这个统计量需要与正态分布相比较，峰度为0表示该总体数据分布与正态分布的陡缓程度相同；峰度大于0表示该总体数据分布与正态分布相比较为陡峭，为尖顶峰；</div><div class="line">峰度小于0表示该总体数据分布与正态分布相比较为平坦，为平顶峰。峰度的绝对值数值越大表示其分布形态的陡缓程度与正态分布的差异程度越大。</div><div class="line">"""</div><div class="line"><span class="comment">#价格变量的偏差和峰度，</span></div><div class="line">print(<span class="string">"Skewness: %f"</span> % df_train[<span class="string">'SalePrice'</span>].skew())</div><div class="line">print(<span class="string">"Kurtosis: %f"</span> % df_train[<span class="string">'SalePrice'</span>].kurt())</div></pre></td></tr></table></figure></p>
+<p>散点图，绘制两个变量之间的关系，concat为连接，axis=1表示列上的连接<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#scatter画散点图,下面是GrLivArea和SalePrice之间的关系图</span></div><div class="line">var=<span class="string">'GrLivArea'</span></div><div class="line">data=pd.concat([df_train[<span class="string">'SalePrice'</span>],df_train[var]],axis=<span class="number">1</span>)<span class="comment">#axis表示在列上进行连接</span></div><div class="line">data.plot.scatter(x=var,y=<span class="string">'SalePrice'</span>,ylim=(<span class="number">0</span>,<span class="number">800000</span>));</div></pre></td></tr></table></figure></p>
+<p><img src="/upload/essayimage/kaggle/kaggle0101.png" alt="kaggle0101"></p>
+<p>箱形图的绘制，由异常点，分位点组成，可以观察数据的集中程度，异常情况等，<a href="http://seaborn.pydata.org/tutorial/categorical.html" target="_blank" rel="external">Plotting with categorical data</a>中给出的解释是说散点图可以很好的绘制出两个连续变量(数值变量)之间的关系，但是对于类别变量和数值变量之间的关系就需要用到类似的箱型图了，无意中发现了知乎专栏对seaborn全部的翻译<a href="https://zhuanlan.zhihu.com/p/27435863" target="_blank" rel="external">Seaborn(sns)官方文档学习笔记</a><br>下图中，我就不懂这个异常点是怎么回事，如果按照给出的文章<a href="https://www.zhihu.com/question/36172806" target="_blank" rel="external">箱形图中异常点的检测</a>来看异常点的话，计算公式为Q1-k(Q3-Q1)和Q3+k(Q3-Q1)，那么异常点应该离Q1点比较远的距离吧，但是图上为什么不是这样？<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var=<span class="string">'OverallQual'</span></div><div class="line">data=pd.concat([df_train[<span class="string">'SalePrice'</span>],df_train[var]],axis=<span class="number">1</span>)</div><div class="line">f,ax=plt.subplots(figsize=(<span class="number">8</span>,<span class="number">6</span>))<span class="comment">#创建800*600像素的图形，返回figure图像和一个子图ax的列表</span></div><div class="line">fig=sns.boxplot(x=var,y=<span class="string">'SalePrice'</span>,data=data)</div><div class="line">fig.axis(ymin=<span class="number">0</span>,ymax=<span class="number">800000</span>);<span class="comment">#设置y的范围</span></div></pre></td></tr></table></figure></p>
+<p><img src="/upload/essayimage/kaggle/kaggle0102.png" alt="kaggle0102"><br>DataFrame中生成相关系数矩阵，sns通过热力图展现<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#将生成的相关系数矩阵以热力图的形式展现出来</span></div><div class="line"><span class="comment">#这个corr是计算DataFrame中列之间的相关系数，如果存在非数字列，则会自动排除</span></div><div class="line">corrmat = df_train.corr()<span class="comment">#相关系数，比如有n列，则相关系数矩阵大小为n*n，其中的(i,j)表示的是第i列和第j列之间的相关系数，最后生成的是DataFrame</span></div><div class="line">f, ax = plt.subplots(figsize=(<span class="number">12</span>, <span class="number">9</span>))</div><div class="line">sns.heatmap(corrmat, vmax=<span class="number">.8</span>, square=<span class="keyword">True</span>);<span class="comment">#vmax=.8表示设置最大值为0.8；square表示将Axes横纵比设置为相等，这样每个单元格都是正方形</span></div></pre></td></tr></table></figure></p>
+<p><img src="/upload/essayimage/kaggle/kaggle0103.png" alt="kaggle0103"><br>上图可以清楚的显示有两个明显的淡黄块，即1stFlrSF与TotalBsmtSF，GarageCars和GarageArea，它们之间的相关性最强<br>这里提一下方差，协方差和相关系数，协方差是衡量两个变量的总体误差【这个解释好像并没有什么用？】，方差是协方差的特殊情况，衡量数据集离散程度，在<a href="https://baike.baidu.com/item/协方差/2185936?fr=aladdin" target="_blank" rel="external">协方差</a>上有这么一句话:协方差作为描述X和Y相关程度的量，在同一物理量纲之下有一定的作用，但同样的两个量采用不同的量纲使它们的协方差在数值上表现出很大的差异，为此引入相关系数<script type="math/tex">\rho_{XY}=\frac{Cov(X,Y)}{\sqrt{D(X)}\sqrt{D(Y)}}</script>，我觉得这句话对于协方差的意义更容易理解。</p>
+<p>对DataFrame中的指定列(Series)取前k个最大的行，对应的列的索引<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">k = <span class="number">10</span> <span class="comment">#number of variables for heatmap</span></div><div class="line"><span class="comment">#corrmat.nlargest表示的是在SalePrice列中选出最大的前k个对应的行，也就是说这样做之后的效果是生成了10*38的DataFrame</span></div><div class="line">cols = corrmat.nlargest(k, <span class="string">'SalePrice'</span>)[<span class="string">'SalePrice'</span>].index</div></pre></td></tr></table></figure></p>
+<p>使用np求协方差矩阵，并用热力图显示<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">cm = np.corrcoef(df_train[cols].values.T)<span class="comment">#此处之所以要转置，是因为np针对的是行，即行代表的是变量，而列代表的是值</span></div><div class="line">sns.set(font_scale=<span class="number">1.25</span>)<span class="comment">#设置字体大小</span></div><div class="line"><span class="string">"""</span></div><div class="line">详细参数参考：http://seaborn.pydata.org/generated/seaborn.heatmap.html?highlight=heatmap#seaborn.heatmap</div><div class="line">annot: 如果为true，写一个数据到每个单元上</div><div class="line">fmt: 当增加注释时，使用的格式</div><div class="line">annot_kws: 当annot为true时，对应值的设置</div><div class="line">"""</div><div class="line">hm = sns.heatmap(cm, cbar=<span class="keyword">True</span>, annot=<span class="keyword">True</span>, square=<span class="keyword">True</span>, fmt=<span class="string">'.2f'</span>, annot_kws=&#123;<span class="string">'size'</span>: <span class="number">10</span>&#125;, yticklabels=cols.values, xticklabels=cols.values)</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p><img src="/upload/essayimage/kaggle/kaggle0104.png" alt="kaggle0104"><br>使用sns中的pairplot绘制两两变量之间的散点图，至于在下面去掉了三对强相关中其中一个变量，强相关就是多重线性问题，在广义线性回归模型中讲到过多重线性问题的解决方案，其中之一是使用惩罚项(举到岭回归，为什么岭回归可以解决多重共线性问题，其中有公式推导，这里直观的理解就是如果有个变量是多余的，也就是说没有该变量也会达到同样的效果，而惩罚项的目的就是让权重变少或者变小，这样在惩罚项的作用下必然会将该多余变量的权重降为0)，也提到删除其中之一的变量，我觉得最好不要删除而用惩罚项。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#去掉3个强相关的</span></div><div class="line">cols = [<span class="string">'SalePrice'</span>, <span class="string">'OverallQual'</span>, <span class="string">'GrLivArea'</span>, <span class="string">'GarageCars'</span>, <span class="string">'TotalBsmtSF'</span>, <span class="string">'FullBath'</span>, <span class="string">'YearBuilt'</span>]</div><div class="line">sns.pairplot(df_train[cols], size = <span class="number">2.5</span>)<span class="comment">#画对应的列之间的散点关系图，不过没搞清楚，如果是自身之间的散点图为什么是直方图</span></div><div class="line">plt.show();</div></pre></td></tr></table></figure></p>
+<p><img src="/upload/essayimage/kaggle/kaggle0105.png" alt="kaggle0105"><br>下面这个是计算DataFrame中各列空值的占比<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">total = df_train.isnull().sum().sort_values(ascending=<span class="keyword">False</span>)<span class="comment">#计算每列中为空的个数，并排序（降序）</span></div><div class="line"><span class="string">"""</span></div><div class="line">df_train.isnull生成的是对应df_train的DataFrame，但是值为false或true；.count()计算DataFrame中每列不为空得个数</div><div class="line">df_train.count()会忽略掉为空的元素，这样的结果就是不为空得个数</div><div class="line">df_train.isnull().count()将空得元素转为true，这样结果就是实际行的行数</div><div class="line">所以说下面的df_train.isnull().count()实际上可以直接用1460来替换</div><div class="line">"""</div><div class="line">percent = (df_train.isnull().sum()/df_train.isnull().count()).sort_values(ascending=<span class="keyword">False</span>)<span class="comment">#</span></div><div class="line">missing_data = pd.concat([total, percent], axis=<span class="number">1</span>, keys=[<span class="string">'Total'</span>, <span class="string">'Percent'</span>])<span class="comment">#连接，column为Total和Percent</span></div><div class="line">missing_data.head(<span class="number">20</span>)</div></pre></td></tr></table></figure></p>
+<p>删除缺失数据个数大于1的列<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">df_train = df_train.drop((missing_data[missing_data[<span class="string">'Total'</span>] &gt; <span class="number">1</span>]).index,<span class="number">1</span>)<span class="comment">#前面的df对应值大于1的索引，1表示删除df_train的列</span></div><div class="line">df_train = df_train.drop(df_train.loc[df_train[<span class="string">'Electrical'</span>].isnull()].index)<span class="comment">#删除索引对应的行，axis默认为0</span></div></pre></td></tr></table></figure></p>
+<p>后面讲到数据的正态化我在其它文章中讲到过，这里就不重复了<br>在正态化中关于0值的处理直接不考虑感觉有点问题，而后续的文章中正态化处理使用的是log1p函数，即log(1+x)，这样就没有这个问题了<br>关于将某列数据正态化后和价格列画散点图和之前没有正态化对比，变得不再是锥形了，这里不知道说明了什么？好像没写完一样…</p>
+<h3 id="数据处理及线性回归在训练集上的比较"><a href="#数据处理及线性回归在训练集上的比较" class="headerlink" title="数据处理及线性回归在训练集上的比较"></a>数据处理及线性回归在训练集上的比较</h3><p>这篇文章可以作为广义线性回归的实际篇，而且对数据处理上做的特别好<br>对空值的处理上做的很详细，分析每一列在添加空值，对数据集中有些分类特征列用数字表示，这样显然是不对的，因为这些数字大小并不能说明问题，这样的列是需要从数值列转换为字符串列(分类列)的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#这个做的挺好的，就是有些本来是分类特征的，却写成了数值特征，那么这是需要转换回来的</span></div><div class="line"><span class="comment">#其中key作为要修改的值，value作为替换值；（用value替换成key）</span></div><div class="line"><span class="string">"""</span></div><div class="line">转换df中的值</div><div class="line">"""</div><div class="line">train = train.replace(&#123;<span class="string">"MSSubClass"</span> : &#123;<span class="number">20</span> : <span class="string">"SC20"</span>, <span class="number">30</span> : <span class="string">"SC30"</span>, <span class="number">40</span> : <span class="string">"SC40"</span>, <span class="number">45</span> : <span class="string">"SC45"</span>, </div><div class="line">                                       <span class="number">50</span> : <span class="string">"SC50"</span>, <span class="number">60</span> : <span class="string">"SC60"</span>, <span class="number">70</span> : <span class="string">"SC70"</span>, <span class="number">75</span> : <span class="string">"SC75"</span>, </div><div class="line">                                       <span class="number">80</span> : <span class="string">"SC80"</span>, <span class="number">85</span> : <span class="string">"SC85"</span>, <span class="number">90</span> : <span class="string">"SC90"</span>, <span class="number">120</span> : <span class="string">"SC120"</span>, </div><div class="line">                                       <span class="number">150</span> : <span class="string">"SC150"</span>, <span class="number">160</span> : <span class="string">"SC160"</span>, <span class="number">180</span> : <span class="string">"SC180"</span>, <span class="number">190</span> : <span class="string">"SC190"</span>&#125;,</div><div class="line">                       <span class="string">"MoSold"</span> : &#123;<span class="number">1</span> : <span class="string">"Jan"</span>, <span class="number">2</span> : <span class="string">"Feb"</span>, <span class="number">3</span> : <span class="string">"Mar"</span>, <span class="number">4</span> : <span class="string">"Apr"</span>, <span class="number">5</span> : <span class="string">"May"</span>, <span class="number">6</span> : <span class="string">"Jun"</span>,</div><div class="line">                                   <span class="number">7</span> : <span class="string">"Jul"</span>, <span class="number">8</span> : <span class="string">"Aug"</span>, <span class="number">9</span> : <span class="string">"Sep"</span>, <span class="number">10</span> : <span class="string">"Oct"</span>, <span class="number">11</span> : <span class="string">"Nov"</span>, <span class="number">12</span> : <span class="string">"Dec"</span>&#125;</div><div class="line">                      &#125;)</div></pre></td></tr></table></figure></p>
+<p>而有限类别类是可以用数值来表示的(表现在该特征的变化值)，而不用最后使用独热编码(一个特征列变成多个特征了)，如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">train = train.replace(&#123;<span class="string">"Alley"</span> : &#123;<span class="string">"Grvl"</span> : <span class="number">1</span>, <span class="string">"Pave"</span> : <span class="number">2</span>&#125;,</div><div class="line">                       <span class="string">"BsmtCond"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span> : <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"BsmtExposure"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Mn"</span> : <span class="number">1</span>, <span class="string">"Av"</span>: <span class="number">2</span>, <span class="string">"Gd"</span> : <span class="number">3</span>&#125;,</div><div class="line">                       <span class="string">"BsmtFinType1"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Unf"</span> : <span class="number">1</span>, <span class="string">"LwQ"</span>: <span class="number">2</span>, <span class="string">"Rec"</span> : <span class="number">3</span>, <span class="string">"BLQ"</span> : <span class="number">4</span>, </div><div class="line">                                         <span class="string">"ALQ"</span> : <span class="number">5</span>, <span class="string">"GLQ"</span> : <span class="number">6</span>&#125;,</div><div class="line">                       <span class="string">"BsmtFinType2"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Unf"</span> : <span class="number">1</span>, <span class="string">"LwQ"</span>: <span class="number">2</span>, <span class="string">"Rec"</span> : <span class="number">3</span>, <span class="string">"BLQ"</span> : <span class="number">4</span>, </div><div class="line">                                         <span class="string">"ALQ"</span> : <span class="number">5</span>, <span class="string">"GLQ"</span> : <span class="number">6</span>&#125;,</div><div class="line">                       <span class="string">"BsmtQual"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span>: <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"ExterCond"</span> : &#123;<span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span>: <span class="number">3</span>, <span class="string">"Gd"</span>: <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"ExterQual"</span> : &#123;<span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span>: <span class="number">3</span>, <span class="string">"Gd"</span>: <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"FireplaceQu"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span> : <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"Functional"</span> : &#123;<span class="string">"Sal"</span> : <span class="number">1</span>, <span class="string">"Sev"</span> : <span class="number">2</span>, <span class="string">"Maj2"</span> : <span class="number">3</span>, <span class="string">"Maj1"</span> : <span class="number">4</span>, <span class="string">"Mod"</span>: <span class="number">5</span>, </div><div class="line">                                       <span class="string">"Min2"</span> : <span class="number">6</span>, <span class="string">"Min1"</span> : <span class="number">7</span>, <span class="string">"Typ"</span> : <span class="number">8</span>&#125;,</div><div class="line">                       <span class="string">"GarageCond"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span> : <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"GarageQual"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span> : <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"HeatingQC"</span> : &#123;<span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span> : <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"KitchenQual"</span> : &#123;<span class="string">"Po"</span> : <span class="number">1</span>, <span class="string">"Fa"</span> : <span class="number">2</span>, <span class="string">"TA"</span> : <span class="number">3</span>, <span class="string">"Gd"</span> : <span class="number">4</span>, <span class="string">"Ex"</span> : <span class="number">5</span>&#125;,</div><div class="line">                       <span class="string">"LandSlope"</span> : &#123;<span class="string">"Sev"</span> : <span class="number">1</span>, <span class="string">"Mod"</span> : <span class="number">2</span>, <span class="string">"Gtl"</span> : <span class="number">3</span>&#125;,</div><div class="line">                       <span class="string">"LotShape"</span> : &#123;<span class="string">"IR3"</span> : <span class="number">1</span>, <span class="string">"IR2"</span> : <span class="number">2</span>, <span class="string">"IR1"</span> : <span class="number">3</span>, <span class="string">"Reg"</span> : <span class="number">4</span>&#125;,</div><div class="line">                       <span class="string">"PavedDrive"</span> : &#123;<span class="string">"N"</span> : <span class="number">0</span>, <span class="string">"P"</span> : <span class="number">1</span>, <span class="string">"Y"</span> : <span class="number">2</span>&#125;,</div><div class="line">                       <span class="string">"PoolQC"</span> : &#123;<span class="string">"No"</span> : <span class="number">0</span>, <span class="string">"Fa"</span> : <span class="number">1</span>, <span class="string">"TA"</span> : <span class="number">2</span>, <span class="string">"Gd"</span> : <span class="number">3</span>, <span class="string">"Ex"</span> : <span class="number">4</span>&#125;,</div><div class="line">                       <span class="string">"Street"</span> : &#123;<span class="string">"Grvl"</span> : <span class="number">1</span>, <span class="string">"Pave"</span> : <span class="number">2</span>&#125;,</div><div class="line">                       <span class="string">"Utilities"</span> : &#123;<span class="string">"ELO"</span> : <span class="number">1</span>, <span class="string">"NoSeWa"</span> : <span class="number">2</span>, <span class="string">"NoSewr"</span> : <span class="number">3</span>, <span class="string">"AllPub"</span> : <span class="number">4</span>&#125;&#125;</div><div class="line">                     )</div></pre></td></tr></table></figure></p>
+<p>补一下，上面是直接对df操作，为了更清楚，下面用Series：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">all_data[<span class="string">'Pclass'</span>]=all_data[<span class="string">'Pclass'</span>].replace(&#123;<span class="number">1</span>:<span class="string">'upper'</span>,<span class="number">2</span>:<span class="string">'middle'</span>,<span class="number">3</span>:<span class="string">'lower'</span>&#125;)</div></pre></td></tr></table></figure></p>
+<p>用下面三种方法创造新的特征(注意是增加列，而不是替换)<br>Simplifications of existing features<br>Combinations of existing features<br>Polynomials on the top 10 existing features<br>简化特征，将差别不大的归为一类<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 1* Simplifications of existing features</span></div><div class="line">train[<span class="string">"SimplOverallQual"</span>] = train.OverallQual.replace(&#123;<span class="number">1</span> : <span class="number">1</span>, <span class="number">2</span> : <span class="number">1</span>, <span class="number">3</span> : <span class="number">1</span>, <span class="comment"># bad</span></div><div class="line">                                                       <span class="number">4</span> : <span class="number">2</span>, <span class="number">5</span> : <span class="number">2</span>, <span class="number">6</span> : <span class="number">2</span>, <span class="comment"># average</span></div><div class="line">                                                       <span class="number">7</span> : <span class="number">3</span>, <span class="number">8</span> : <span class="number">3</span>, <span class="number">9</span> : <span class="number">3</span>, <span class="number">10</span> : <span class="number">3</span> <span class="comment"># good</span></div><div class="line">                                                      &#125;)</div></pre></td></tr></table></figure></p>
+<p>合并特征<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 2* Combinations of existing features</span></div><div class="line"><span class="comment"># Overall quality of the house</span></div><div class="line">train[<span class="string">"OverallGrade"</span>] = train[<span class="string">"OverallQual"</span>] * train[<span class="string">"OverallCond"</span>]</div><div class="line"><span class="comment"># Overall quality of the garage</span></div><div class="line">train[<span class="string">"GarageGrade"</span>] = train[<span class="string">"GarageQual"</span>] * train[<span class="string">"GarageCond"</span>]</div></pre></td></tr></table></figure></p>
+<p>在和价格相关性最大的十个特征上做多项式，注意对特征多项式的方法：可以看到一个特征被开根号，平方，三次方，最后都变为一列特征<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 3* Polynomials on the top 10 existing features</span></div><div class="line">train[<span class="string">"OverallQual-s2"</span>] = train[<span class="string">"OverallQual"</span>] ** <span class="number">2</span></div><div class="line">train[<span class="string">"OverallQual-s3"</span>] = train[<span class="string">"OverallQual"</span>] ** <span class="number">3</span></div><div class="line">train[<span class="string">"OverallQual-Sq"</span>] = np.sqrt(train[<span class="string">"OverallQual"</span>])</div><div class="line">train[<span class="string">"AllSF-2"</span>] = train[<span class="string">"AllSF"</span>] ** <span class="number">2</span></div><div class="line">train[<span class="string">"AllSF-3"</span>] = train[<span class="string">"AllSF"</span>] ** <span class="number">3</span></div><div class="line">train[<span class="string">"AllSF-Sq"</span>] = np.sqrt(train[<span class="string">"AllSF"</span>])</div><div class="line">train[<span class="string">"AllFlrsSF-2"</span>] = train[<span class="string">"AllFlrsSF"</span>] ** <span class="number">2</span></div><div class="line">train[<span class="string">"AllFlrsSF-3"</span>] = train[<span class="string">"AllFlrsSF"</span>] ** <span class="number">3</span></div><div class="line">train[<span class="string">"AllFlrsSF-Sq"</span>] = np.sqrt(train[<span class="string">"AllFlrsSF"</span>])</div><div class="line">train[<span class="string">"GrLivArea-2"</span>] = train[<span class="string">"GrLivArea"</span>] ** <span class="number">2</span></div><div class="line">train[<span class="string">"GrLivArea-3"</span>] = train[<span class="string">"GrLivArea"</span>] ** <span class="number">3</span></div><div class="line">train[<span class="string">"GrLivArea-Sq"</span>] = np.sqrt(train[<span class="string">"GrLivArea"</span>])</div><div class="line">train[<span class="string">"SimplOverallQual-s2"</span>] = train[<span class="string">"SimplOverallQual"</span>] ** <span class="number">2</span></div><div class="line">train[<span class="string">"SimplOverallQual-s3"</span>] = train[<span class="string">"SimplOverallQual"</span>] ** <span class="number">3</span></div></pre></td></tr></table></figure></p>
+<p>偏度判断并正态化<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">skewness = train_num.apply(<span class="keyword">lambda</span> x: skew(x))</div><div class="line">skewness = skewness[abs(skewness) &gt; <span class="number">0.5</span>]</div><div class="line">print(str(skewness.shape[<span class="number">0</span>]) + <span class="string">" skewed numerical features to log transform"</span>)</div><div class="line">skewed_features = skewness.index</div><div class="line">train_num[skewed_features] = np.log1p(train_num[skewed_features])</div></pre></td></tr></table></figure></p>
+<p>最后独热编码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">train_cat = pd.get_dummies(train_cat)</div></pre></td></tr></table></figure></p>
+<p>交叉验证，用方均根差来计算<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">scorer = make_scorer(mean_squared_error, greater_is_better = <span class="keyword">False</span>)<span class="comment">#定义一个得分机制，均方误差，越小越好</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rmse_cv_train</span><span class="params">(model)</span>:</span></div><div class="line">    rmse= np.sqrt(-cross_val_score(model, X_train, y_train, scoring = scorer, cv = <span class="number">10</span>))</div><div class="line">    <span class="keyword">return</span>(rmse)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rmse_cv_test</span><span class="params">(model)</span>:</span></div><div class="line">    rmse= np.sqrt(-cross_val_score(model, X_test, y_test, scoring = scorer, cv = <span class="number">10</span>))</div><div class="line">    <span class="keyword">return</span>(rmse)</div></pre></td></tr></table></figure></p>
+<p>线性回归模型<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">lr = LinearRegression()</div><div class="line">lr.fit(X_train, y_train)</div><div class="line">print(<span class="string">"RMSE on Training set :"</span>, rmse_cv_train(lr).mean())</div><div class="line">print(<span class="string">"RMSE on Test set :"</span>, rmse_cv_test(lr).mean())</div></pre></td></tr></table></figure></p>
+<p>RMSE on Training set : 0.389629944224<br>RMSE on Test set : 0.4179630667<br>然后用岭回归模型，这里需要指定惩罚项前的系数，具体的方法是使用下面的函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ridge = RidgeCV(alphas = [<span class="number">0.01</span>, <span class="number">0.03</span>, <span class="number">0.06</span>, <span class="number">0.1</span>, <span class="number">0.3</span>, <span class="number">0.6</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">10</span>, <span class="number">30</span>, <span class="number">60</span>])</div><div class="line">ridge.fit(X_train, y_train)</div><div class="line">alpha = ridge.alpha_</div></pre></td></tr></table></figure></p>
+<p>该函数会在给定的列表中选取最佳的惩罚项系数，这里获得最佳惩罚项系数后继续缩小范围，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ridge = RidgeCV(alphas = [alpha * <span class="number">.6</span>, alpha * <span class="number">.65</span>, alpha * <span class="number">.7</span>, alpha * <span class="number">.75</span>, alpha * <span class="number">.8</span>, alpha * <span class="number">.85</span>, </div><div class="line">                          alpha * <span class="number">.9</span>, alpha * <span class="number">.95</span>, alpha, alpha * <span class="number">1.05</span>, alpha * <span class="number">1.1</span>, alpha * <span class="number">1.15</span>,</div><div class="line">                          alpha * <span class="number">1.25</span>, alpha * <span class="number">1.3</span>, alpha * <span class="number">1.35</span>, alpha * <span class="number">1.4</span>], </div><div class="line">                cv = <span class="number">10</span>)<span class="comment">#kfold=10</span></div><div class="line">ridge.fit(X_train, y_train)</div><div class="line">alpha = ridge.alpha_</div></pre></td></tr></table></figure></p>
+<p>岭回归模型的结果如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">print(<span class="string">"Ridge RMSE on Training set :"</span>, rmse_cv_train(ridge).mean())</div><div class="line">print(<span class="string">"Ridge RMSE on Test set :"</span>, rmse_cv_test(ridge).mean())</div></pre></td></tr></table></figure></p>
+<p>Ridge RMSE on Training set : 0.115405723285<br>Ridge RMSE on Test set : 0.116427213778<br>可以看到相比于线性回归模型，方均误差已经小了很多，对比训练集结果和测试机结果可以看到模型的稳定性也得到了提高(即降低了过拟合)<br>用Lasso回归模型，该模型使用的是L1正则化，由于L1正则化没有使用平方，而导致最后拟合的结果中很多特征权重都会降为0，这对很多无关特征的高维数据集是有效的。同上原理，得出来得结果如下：<br>Lasso RMSE on Training set : 0.114111508375<br>Lasso RMSE on Test set : 0.115832132218<br>这个例子说明了对于高维无关数据集上的拟合Lasso回归模型更优于岭回归模型<br>最后提到了elasticNet模型，这里就不说明了</p>
+<h3 id="xgboost-线性回归"><a href="#xgboost-线性回归" class="headerlink" title="xgboost+线性回归"></a>xgboost+线性回归</h3><p>前面的数据分析及处理部分上面都包括了，这里主要讲一下xgboost的使用，如下使用xgboost做交叉验证，图中显示的是训练集误差和测试集误差的关系，显然越往后模型过拟合越明显：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</div><div class="line">dtrain = xgb.DMatrix(X_train, label = y)</div><div class="line">dtest = xgb.DMatrix(X_test)</div><div class="line">params = &#123;<span class="string">"max_depth"</span>:<span class="number">2</span>, <span class="string">"eta"</span>:<span class="number">0.1</span>&#125;</div><div class="line"><span class="comment">#迭代次数为500，如果在100的时候误差不能继续下降就停止迭代</span></div><div class="line">model = xgb.cv(params, dtrain,  num_boost_round=<span class="number">500</span>, early_stopping_rounds=<span class="number">100</span>)<span class="comment">#返回的是DataFrame</span></div><div class="line">print(model.head())<span class="comment">#包含训练集误差的均值和标准差，测试数据误差的均值和标准差【迭代500次后的变换】</span></div></pre></td></tr></table></figure></p>
+<p>   test-rmse-mean  test-rmse-std  train-rmse-mean  train-rmse-std<br>0       10.380138       0.007834        10.380139        0.003413<br>1        9.344810       0.008219         9.344813        0.003153<br>2        8.413089       0.008584         8.413092        0.002927<br>3        7.574992       0.008599         7.574618        0.002707<br>4        6.820292       0.008262         6.819935        0.002493<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">model.loc[:,[<span class="string">"test-rmse-mean"</span>, <span class="string">"train-rmse-mean"</span>]].plot()</div><div class="line">plt.ylim(<span class="number">0</span>,<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="/upload/essayimage/kaggle/kaggle0106.png" alt="kaggle0106"><br>最后做了一下简单的模型相加，效果还不错，能够达到0.120<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">preds = <span class="number">0.8</span>*lasso_preds + <span class="number">0.2</span>*xgb_preds</div><div class="line">solution = pd.DataFrame(&#123;<span class="string">"id"</span>:test.Id, <span class="string">"SalePrice"</span>:preds&#125;)</div><div class="line">solution.to_csv(<span class="string">"ridge_sol.csv"</span>, index = <span class="keyword">False</span>)</div></pre></td></tr></table></figure></p>
+<h3 id="stacking的使用"><a href="#stacking的使用" class="headerlink" title="stacking的使用"></a>stacking的使用</h3><p>这里需要继承scikit-learn的基类，BaseEstimator为估计的基础类，RegressorMixin是回归的基类，TransformerMixin是转换类的基类<br>其实下面这个自定义类就是将每个模型取个平均<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AveragingModels</span><span class="params">(BaseEstimator, RegressorMixin, TransformerMixin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, models)</span>:</span></div><div class="line">        self.models = models</div><div class="line">        </div><div class="line">    <span class="comment"># we define clones of the original models to fit the data in</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y)</span>:</span></div><div class="line">        self.models_ = [clone(x) <span class="keyword">for</span> x <span class="keyword">in</span> self.models]</div><div class="line">        </div><div class="line">        <span class="comment"># Train cloned base models</span></div><div class="line">        <span class="keyword">for</span> model <span class="keyword">in</span> self.models_:</div><div class="line">            model.fit(X, y)</div><div class="line"></div><div class="line">        <span class="keyword">return</span> self</div><div class="line">    </div><div class="line">    <span class="comment">#Now we do the predictions for cloned models and average them</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></div><div class="line">        predictions = np.column_stack([</div><div class="line">            model.predict(X) <span class="keyword">for</span> model <span class="keyword">in</span> self.models_</div><div class="line">        ])</div><div class="line">        <span class="keyword">return</span> np.mean(predictions, axis=<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p>使用上面的模型训练数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">averaged_models = AveragingModels(models = (ENet, GBoost, KRR, lasso))</div><div class="line">score = rmsle_cv(averaged_models)</div><div class="line">print(<span class="string">" Averaged base models score: &#123;:.4f&#125; (&#123;:.4f&#125;)\n"</span>.format(score.mean(), score.std()))</div></pre></td></tr></table></figure></p>
+<p>相对于单模型提高了进一个百分点，但是上面这个模型只是简单的对每个模型进行平均就能达到这样的效果<br>继续使用正宗的stacking方法，如下图所示，其原理就是用交叉验证的方法来预测训练集，比如5折，进行5次【这里代码中给出的是5个相同的模型，而图中显示的是不同的模型】，每次用其他的4部分训练，取预测剩下的一部分，这样5次后就会生成一个完整的对训练集的预测结果，分别用多个模型进行上面的步骤，就会得到多组对训练集预测的结果集，最后用基模型训练这个结果集，结果集作为自变量(x)，训练数据的因变量(y)作为该模型的因变量。预测的时候，先使用5次中的模型来预测测试集，并取均值；然后再用多个模型进行上述过程，得到多组预测集，再使用基模型对预测集进行预测，即为最终的结果，如下图：<br><img src="/upload/essayimage/kaggle/kaggle0107.png" alt="kaggle0107"><br>代码如下（此处对于5折并没有使用多模型，我觉得这样训练的模型更加稳定）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">StackingAveragedModels</span><span class="params">(BaseEstimator, RegressorMixin, TransformerMixin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, base_models, meta_model, n_folds=<span class="number">5</span>)</span>:</span></div><div class="line">        self.base_models = base_models</div><div class="line">        self.meta_model = meta_model</div><div class="line">        self.n_folds = n_folds</div><div class="line">   </div><div class="line">    <span class="comment"># We again fit the data on clones of the original models</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y)</span>:</span></div><div class="line">        self.base_models_ = [list() <span class="keyword">for</span> x <span class="keyword">in</span> self.base_models]</div><div class="line">        self.meta_model_ = clone(self.meta_model)</div><div class="line">        kfold = KFold(n_splits=self.n_folds, shuffle=<span class="keyword">True</span>, random_state=<span class="number">156</span>)</div><div class="line">        </div><div class="line">        <span class="comment"># Train cloned base models then create out-of-fold predictions</span></div><div class="line">        <span class="comment"># that are needed to train the cloned meta-model</span></div><div class="line">        out_of_fold_predictions = np.zeros((X.shape[<span class="number">0</span>], len(self.base_models)))</div><div class="line">        <span class="keyword">for</span> i, model <span class="keyword">in</span> enumerate(self.base_models):</div><div class="line">            <span class="keyword">for</span> train_index, holdout_index <span class="keyword">in</span> kfold.split(X, y):</div><div class="line">                instance = clone(model)</div><div class="line">                self.base_models_[i].append(instance)</div><div class="line">                instance.fit(X[train_index], y[train_index])</div><div class="line">                y_pred = instance.predict(X[holdout_index])</div><div class="line">                out_of_fold_predictions[holdout_index, i] = y_pred</div><div class="line">                </div><div class="line">        <span class="comment"># Now train the cloned  meta-model using the out-of-fold predictions as new feature</span></div><div class="line">        self.meta_model_.fit(out_of_fold_predictions, y)</div><div class="line">        <span class="keyword">return</span> self</div><div class="line">   </div><div class="line">    <span class="comment">#Do the predictions of all base models on the test data and use the averaged predictions as </span></div><div class="line">    <span class="comment">#meta-features for the final prediction which is done by the meta-model</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></div><div class="line">        meta_features = np.column_stack([</div><div class="line">            np.column_stack([model.predict(X) <span class="keyword">for</span> model <span class="keyword">in</span> base_models]).mean(axis=<span class="number">1</span>)</div><div class="line">            <span class="keyword">for</span> base_models <span class="keyword">in</span> self.base_models_ ])</div><div class="line">        <span class="keyword">return</span> self.meta_model_.predict(meta_features)</div></pre></td></tr></table></figure></p>
+<p>最后用了stacking后，将stacking的结果和Lightgbm和XGBoost的结果做了简单的加权：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">stacked_averaged_models = StackingAveragedModels(base_models = (ENet, GBoost, KRR),meta_model = lasso)</div><div class="line">stacked_averaged_models.fit(train.values, y_train)</div><div class="line">stacked_train_pred = stacked_averaged_models.predict(train.values)</div><div class="line">stacked_pred = np.expm1(stacked_averaged_models.predict(test.values))</div><div class="line">model_xgb.fit(train, y_train)</div><div class="line">xgb_train_pred = model_xgb.predict(train)</div><div class="line">xgb_pred = np.expm1(model_xgb.predict(test))</div><div class="line">model_lgb.fit(train, y_train)</div><div class="line">lgb_train_pred = model_lgb.predict(train)</div><div class="line">lgb_pred = np.expm1(model_lgb.predict(test.values))</div><div class="line">ensemble = stacked_pred*<span class="number">0.70</span> + xgb_pred*<span class="number">0.15</span> + lgb_pred*<span class="number">0.15</span></div><div class="line">sub = pd.DataFrame()</div><div class="line">sub[<span class="string">'Id'</span>] = test_ID</div><div class="line">sub[<span class="string">'SalePrice'</span>] = ensemble</div><div class="line">sub.to_csv(<span class="string">'sub.csv'</span>,index=<span class="keyword">False</span>)</div></pre></td></tr></table></figure></p>
+<p>确实觉得前面那篇数据处理部分做的太好了，只不过我改不过来了（太麻烦了），就只是简单的将第三部分的结果和第四部分的结果加权了一下，得出的结果由第四部分的0.1511变为0.1510</p>
+<p>到此就先结束了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kaggle/" rel="tag"><i class="fa fa-tag"></i> kaggle</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/26/ml01/" rel="next" title="线性回归中数据处理的方法">
+                <i class="fa fa-chevron-left"></i> 线性回归中数据处理的方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/27/leetcode126/" rel="prev" title="126. Word Ladder">
+                126. Word Ladder <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目简述"><span class="nav-number">1.</span> <span class="nav-text">题目简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据分析"><span class="nav-number">2.</span> <span class="nav-text">数据分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据处理及线性回归在训练集上的比较"><span class="nav-number">3.</span> <span class="nav-text">数据处理及线性回归在训练集上的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xgboost-线性回归"><span class="nav-number">4.</span> <span class="nav-text">xgboost+线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stacking的使用"><span class="nav-number">5.</span> <span class="nav-text">stacking的使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

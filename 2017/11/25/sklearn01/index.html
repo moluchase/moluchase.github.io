@@ -1,0 +1,1012 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="scikit-learn," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="【这里是对sklearn文档学习记录的笔记，不限于sklearn文档，其中添加了很多非常基础且帮助理解的知识，基本上对每个知识点的原理都会解释，也会留下不懂的疑问，如果有大神能对此指定一二，在下感激不尽！】线性组合generalized linear models（广义线性模型）大概就是一个用的是线性的，一个用的是非线性的https://cosx.org/2011/01/how-does-glm-">
+<meta name="keywords" content="scikit-learn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Generalized Linear Models">
+<meta property="og:url" content="http://yoursite.com/2017/11/25/sklearn01/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="【这里是对sklearn文档学习记录的笔记，不限于sklearn文档，其中添加了很多非常基础且帮助理解的知识，基本上对每个知识点的原理都会解释，也会留下不懂的疑问，如果有大神能对此指定一二，在下感激不尽！】线性组合generalized linear models（广义线性模型）大概就是一个用的是线性的，一个用的是非线性的https://cosx.org/2011/01/how-does-glm-">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm05.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols01.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols02.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols03.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols04.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols05.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols06.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/ols07.png">
+<meta property="og:image" content="http://scikit-learn.org/stable/_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm01.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm02.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm03.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm04.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm06.png">
+<meta property="og:updated_time" content="2017-12-04T15:17:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Generalized Linear Models">
+<meta name="twitter:description" content="【这里是对sklearn文档学习记录的笔记，不限于sklearn文档，其中添加了很多非常基础且帮助理解的知识，基本上对每个知识点的原理都会解释，也会留下不懂的疑问，如果有大神能对此指定一二，在下感激不尽！】线性组合generalized linear models（广义线性模型）大概就是一个用的是线性的，一个用的是非线性的https://cosx.org/2011/01/how-does-glm-">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/sklearn/glm05.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/25/sklearn01/"/>
+
+
+
+
+
+  <title> Generalized Linear Models | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/25/sklearn01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Generalized Linear Models
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-25T21:16:46+08:00">
+                2017-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/25/sklearn01/" class="leancloud_visitors" data-flag-title="Generalized Linear Models">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【这里是对sklearn文档学习记录的笔记，不限于sklearn文档，其中添加了很多非常基础且帮助理解的知识，基本上对每个知识点的原理都会解释，也会留下不懂的疑问，如果有大神能对此指定一二，在下感激不尽！】<br>线性组合<br><img src="/upload/essayimage/sklearn/glm05.png" alt="glm05"><br>generalized linear models（广义线性模型）<br>大概就是一个用的是线性的，一个用的是非线性的<br><a href="https://cosx.org/2011/01/how-does-glm-generalize-lm-assumption/" target="_blank" rel="external">https://cosx.org/2011/01/how-does-glm-generalize-lm-assumption/</a><br><a href="http://blog.csdn.net/acdreamers/article/details/44663091" target="_blank" rel="external">http://blog.csdn.net/acdreamers/article/details/44663091</a><br>【补充】这里会补上Logistic regression<br><a id="more"></a></p>
+<h3 id="1-1-1-Ordinary-Least-Squares"><a href="#1-1-1-Ordinary-Least-Squares" class="headerlink" title="1.1.1. Ordinary Least Squares"></a>1.1.1. Ordinary Least Squares</h3><p>最小二乘法原理<br>参考<br><a href="https://wenku.baidu.com/view/16f75d2bb4daa58da0114add.html" target="_blank" rel="external">https://wenku.baidu.com/view/16f75d2bb4daa58da0114add.html</a><br><a href="https://wenku.baidu.com/view/06af27ad5a8102d277a22f62.html" target="_blank" rel="external">https://wenku.baidu.com/view/06af27ad5a8102d277a22f62.html</a><br>上面这两个ppt如果看懂了，关于1.1.1 Ordinary Least Squares的一段话基本上就可以理解了<br>简单的来说，对于一组数据<script type="math/tex">x_{1},x_{2},…;y_{1},y_{2},…</script>，求一个近似函数P(x)约等于f(x)<br>最常见的做法是使<script type="math/tex">P(x_{i})-y_{i}</script>总体上尽可能的小</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^N|P(x_{i})-y_{i}|^2  \,\,\,最小</script><p>即如果多项式表示为</p>
+<script type="math/tex; mode=display">
+P(x)=a_{0}+a_{1}x+...+a_{n}x^n</script><p>使用最小二乘法，对于<script type="math/tex">(x_{i},y_{i})</script> ,使<script type="math/tex">\phi =\sum_{i=1}^N[P(x_{i}-y_{i})]^2</script> 达到极小值，即</p>
+<script type="math/tex; mode=display">
+\phi(a_0,a_1,...,a_n)=\sum_{i=1}^N[a_0+a_1x_i+...+a_nx_i^n-y_i]^2</script><p>使<script type="math/tex">\phi</script>最小，对其求极值，需要满足如下</p>
+<script type="math/tex; mode=display">
+\frac{\partial \phi}{\partial a_k}=0,\,\,\,k=0,...,n</script><p>下面举例说明<br><img src="/upload/essayimage/sklearn/ols01.png" alt="ols01"><br><img src="/upload/essayimage/sklearn/ols02.png" alt="ols02"><br><img src="/upload/essayimage/sklearn/ols03.png" alt="ols03"><br>对上式进行求导：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^N2[y_{i}-(\beta_0+\beta_1X_{1i}+...+\beta_kX_{ki}]=0\\
+\sum_{i=1}^N2X_{1i}[y_{i}-(\beta_0+\beta_1X_{1i}+...+\beta_kX_{ki}]=0\\
+...\\
+\sum_{i=1}^N2X_{ki}[y_{i}-(\beta_0+\beta_1X_{1i}+...+\beta_kX_{ki}]=0</script><p>分解：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^N(\beta_0+\beta_1X_{1i}+...+\beta_kX_{ki})=\sum_{i=1}^Ny_{i}\\
+\sum_{i=1}^NX_{1i}(\beta_0+\beta_1X_{1i}+...+\beta_kX_{ki})=\sum_{i=1}^NX_{1i}y_{i}\\
+...\\
+\sum_{i=1}^NX_{ki}(\beta_0+\beta_1X_{1i}+...+\beta_kX_{ki})=\sum_{i=1}^NX_{ki}y_{i}</script><p><img src="/upload/essayimage/sklearn/ols04.png" alt="ols04"><br>下面得到如下矩阵形式，其中X‘表示的时矩阵X的转置<br><img src="/upload/essayimage/sklearn/ols05.png" alt="ols05"><br><img src="/upload/essayimage/sklearn/ols06.png" alt="ols06"><br><img src="/upload/essayimage/sklearn/ols07.png" alt="ols07"></p>
+<p>However, coefficient estimates for Ordinary Least Squares rely on the independence of the model terms. When terms are correlated and the columns of the design matrix <img src="http://scikit-learn.org/stable/_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"> have an approximate linear dependence, the design matrix becomes close to singular and as a result, the least-squares estimate becomes highly sensitive to random errors in the observed response, producing a large variance. This situation of <em>multicollinearity</em> can arise, for example, when data are collected without an experimental design<br>这段话说当模型(y)与设计矩阵(X)存在近似线性相关时，设计矩阵(X)会变得奇异(也就是说不满秩矩阵)，这样使用最小二乘法对参数的估计就会变得很敏感(也就是说参数波动比较大也能满足条件)，以至于产生很大的方差(每组参数波动很大，当然会产生很大的方差了：比如系数<script type="math/tex">w_1</script>在使用最小二乘法求解时，由于矩阵不满秩，会有多个解，也就是说每来一条数据，就会产生一个<script type="math/tex">w_{1}</script>,会向这多个解中的一个靠拢，而满秩的话，只会向一个解靠拢，那么多个解对应的方差当然比一个解对应的方差大了。。。当然了，这是胡扯的，为了好理解，下面有公式)，这种情况下多重共线性的几率会上升<br>继续分析多重共线性是什么鬼<br>参考：<br><a href="http://blog.csdn.net/helh522/article/details/44564185" target="_blank" rel="external">http://blog.csdn.net/helh522/article/details/44564185</a><br><a href="https://wenku.baidu.com/view/aef5792d2b160b4e777fcf0e.html" target="_blank" rel="external">https://wenku.baidu.com/view/aef5792d2b160b4e777fcf0e.html</a><br><a href="https://wenku.baidu.com/view/eb33ad51be23482fb4da4cf3.html" target="_blank" rel="external">https://wenku.baidu.com/view/eb33ad51be23482fb4da4cf3.html</a><br>就是说对于模型</p>
+<script type="math/tex; mode=display">
+Y_{i}=\beta_{0}+\beta_{1}X_{1i}+\beta_{2}X_{2i}+...+\beta_{k}X_{ki}+\mu_{i}</script><p>如果两个或多个变量(特征)之间出现了相关性，就称为多重共线性</p>
+<p><img src="/upload/essayimage/sklearn/glm01.png" alt="glm01"></p>
+<p><img src="/upload/essayimage/sklearn/glm02.png" alt="glm02"></p>
+<p><img src="/upload/essayimage/sklearn/glm03.png" alt="glm03"></p>
+<p><img src="/upload/essayimage/sklearn/glm04.png" alt="glm04"></p>
+<p>上面的解释我看不太懂，方差的表达式为什么是这个，以及为什么会引起主对角线元素较大<br>然后讲了克服多重共线性的方法</p>
+<ol>
+<li>排除引起共线性的变量</li>
+<li>差分法 （时间序列）</li>
+<li>减少参数估计量的方差：增加样本容量，岭回归</li>
+</ol>
+<h4 id="1-1-1-1-Ordinary-Least-Squares-Complexity"><a href="#1-1-1-1-Ordinary-Least-Squares-Complexity" class="headerlink" title="1.1.1.1 Ordinary Least Squares Complexity"></a>1.1.1.1 Ordinary Least Squares Complexity</h4><p>用奇异矩阵分解最小二乘问题的时间复杂度为O(np^2)<br>参考：<br><a href="http://www.cnblogs.com/houkai/p/6656894.html" target="_blank" rel="external">http://www.cnblogs.com/houkai/p/6656894.html</a><br><a href="https://wenku.baidu.com/view/3c8cd12d453610661ed9f4b7.html" target="_blank" rel="external">https://wenku.baidu.com/view/3c8cd12d453610661ed9f4b7.html</a><br>关于奇异矩阵分解最小二乘问题：<br>奇异值分解SVD：任意一个<script type="math/tex">m*n</script>维的矩阵X可以分解为<script type="math/tex">X=USV^{T}</script>,其中UV为酉矩阵，S是m*n维的对角矩阵，其对角线元素为X的从大到小排序的非负奇异值。SVD分解十分强大且适用，因为任意一个矩阵都可以实现SVD分解，相比与SVD分解，特征值分解只能应用于方阵。</p>
+<p><img src="/upload/essayimage/sklearn/glm06.png" alt="glm06"></p>
+<p>【注意：关于上面的U被移到第二个式子上，是由于奇异矩阵的保范性，乘以U，V等式奇异值不变】<br>至于时间复杂度，这个不知道额，应该是SVD的分解时间复杂度吧</p>
+<h3 id="1-1-2-Ridge-Regression"><a href="#1-1-2-Ridge-Regression" class="headerlink" title="1.1.2. Ridge Regression"></a>1.1.2. Ridge Regression</h3><p>这里需要讲解一下L1正则化和L2正则化，及其区别</p>
+<h4 id="L1正则化和L2正则化"><a href="#L1正则化和L2正则化" class="headerlink" title="L1正则化和L2正则化"></a>L1正则化和L2正则化</h4><p>先讲一下0范数，我是不太明白的，查阅的解答是向量中非零元素的个数，说到当p趋于零，可以证明这时候的极限<script type="math/tex">(x_{1}^{p}+x_{2}^{p}+...+x_{n}^{p})^{\frac{1}{p}}</script>恰好是向量<script type="math/tex">x=(x_{1},x_{2},x_{3},...,x_{n})^{T}</script>中非零元素的个数。那么用L0范数来规则化参数矩阵W等价希望W的大部分元素都是0，即让W是稀疏的，而这恰恰是L1要做的事，但是为什么不直接用L0来做呢，原因是L0范数很难优化求解（NP难题），而且L1范数是L0得最优凸近似(这里我不知道原因)，且容易求解.<br>继续讲，需要解决这几个问题，为什么要稀疏(即特征选择)，为什么L1能稀疏，L2是什么，为什么要有L2，L2和L1的区别是什么？<br>稀疏的目的是可以实现特征的自动选择，如果x的大部分特征和最终的输出y没有关系(提供不了任何信息)，在最小化目标函数的时候考虑这些特征</p>
+<p>给出比较好的关于回归等得文章<br><a href="http://www.iteye.com/news/30875" target="_blank" rel="external">你应该掌握的七种回归技术</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/scikit-learn/" rel="tag"><i class="fa fa-tag"></i> scikit-learn</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/16/deeplearn01/" rel="next" title="TensorFlow实战之CNN">
+                <i class="fa fa-chevron-left"></i> TensorFlow实战之CNN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/25/sklearn02/" rel="prev" title="sklearn中的数据预处理">
+                sklearn中的数据预处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-Ordinary-Least-Squares"><span class="nav-number">1.</span> <span class="nav-text">1.1.1. Ordinary Least Squares</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-1-Ordinary-Least-Squares-Complexity"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.1.1 Ordinary Least Squares Complexity</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-Ridge-Regression"><span class="nav-number">2.</span> <span class="nav-text">1.1.2. Ridge Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L1正则化和L2正则化"><span class="nav-number">2.1.</span> <span class="nav-text">L1正则化和L2正则化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
