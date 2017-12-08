@@ -122,7 +122,7 @@
 <meta property="og:description" content="这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：集成学习原理小结一文读懂集成学习Bagging与随机森林算法原理小结">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml0301.jpg">
-<meta property="og:updated_time" content="2017-12-05T14:55:06.000Z">
+<meta property="og:updated_time" content="2017-12-06T11:14:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习之集成学习">
 <meta name="twitter:description" content="这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：集成学习原理小结一文读懂集成学习Bagging与随机森林算法原理小结">
@@ -415,7 +415,8 @@
 
       
         <p>这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：<br><a href="http://www.cnblogs.com/pinard/p/6131423.html" target="_blank" rel="external">集成学习原理小结</a><br><a href="http://www.xtecher.com/Xfeature/view?aid=7974" target="_blank" rel="external">一文读懂集成学习</a><br><a href="http://www.cnblogs.com/pinard/p/6156009.html" target="_blank" rel="external">Bagging与随机森林算法原理小结</a><br><a id="more"></a></p>
-<h3 id="boosting"><a href="#boosting" class="headerlink" title="boosting"></a>boosting</h3><h3 id="bagging"><a href="#bagging" class="headerlink" title="bagging"></a>bagging</h3><p>  bagging原理就是给定T个弱学习器，假设有m个训练样本，用来训练这T个弱学习器的样本是从这m个训练样本中有放回的选取m个样本(这就是bootstrap采样)进行训练，最后对这T个弱学习器采取结合策略来合并，对于弱学习器，一般使用决策树。对于合并多个弱学习器采用的方法：如果是分类问题，通常采用简单的投票法，得到最多票数的类别或者之一作为最终模型的输出；对于回归问题，通常使用简单的平均法，对T个弱学习器的得到的回归结果进行算术平均作为最终模型的输出。<br>  讲一下bootstrap采样：因为是有放回的采样，所以之前采样到的样本放回后有可能继续被采样到，这里每个样本被采样到的概率是<script type="math/tex">\frac{1}{m}</script>，不被采样到的概率是<script type="math/tex">1-\frac{1}{m}</script>。那么m次采样都没有被采样到的概率是<script type="math/tex">(1-\frac{1}{m})^m</script>，这里如果m趋近与无穷大，这个结果趋近于<script type="math/tex">\frac{1}{e}=0.368</script>，即bagging每轮随机采样的过程中，训练数据集中大约有36.8%的数据没有被采样到，这些数据被称为袋外数据，由于这些数据没有参与训练集模型的拟合，因此可以用来检测模型的泛化能力。<br>  这里讲到由于Bagging算法每次都进行采样来训练模型，因此泛化能力很强，对降低模型的方差有作用，而对模型的拟合程度会差，即模型的偏差会大一些<br>这里要理解上面的这句话，需要知道模型的方差，偏差，过拟合，欠拟合等概念<br>先给出下面一张图，可以说基本上把全部的知识都体现出来了<br><img src="/upload/essayimage/ml0301.jpg" alt="ml0301"><br>讲解几个概念：<br>偏差(bias)：学习算法的期望预测与真实结果的偏离程度，刻画了学习算法本身的拟合能力<br>方差(variance)：刻画的是同样大小的训练集的变动所导致学习性能的变化，刻画了数据扰动所造成的影响<br>欠拟合：模型的偏差过大，没有找出更多的特征<br>过拟合：模型的方差过大，特征过多<br>继续看上面的这个图，高偏差低方差的情况就是模型过于简单，需要寻找更多的特征来拟合模型；高偏差高方差就是模型不但对不同的数据集不稳定而且对真实数据预测不准，这个应该很少发生；低偏差高方差就是说<br>具体参考知乎上的回答<a href="https://www.zhihu.com/question/27068705" target="_blank" rel="external">机器学习中的Bias(偏差)，Error(误差)，和Variance(方差)有什么区别和联系</a></p>
+<h3 id="boosting"><a href="#boosting" class="headerlink" title="boosting"></a>boosting</h3><h3 id="bagging"><a href="#bagging" class="headerlink" title="bagging"></a>bagging</h3><p>  bagging原理就是给定T个弱学习器，假设有m个训练样本，用来训练这T个弱学习器的样本是从这m个训练样本中有放回的选取m个样本(这就是bootstrap采样)进行训练，最后对这T个弱学习器采取结合策略来合并，对于弱学习器，一般使用决策树。对于合并多个弱学习器采用的方法：如果是分类问题，通常采用简单的投票法，得到最多票数的类别或者之一作为最终模型的输出；对于回归问题，通常使用简单的平均法，对T个弱学习器的得到的回归结果进行算术平均作为最终模型的输出。<br>  讲一下bootstrap采样：因为是有放回的采样，所以之前采样到的样本放回后有可能继续被采样到，这里每个样本被采样到的概率是<script type="math/tex">\frac{1}{m}</script>，不被采样到的概率是<script type="math/tex">1-\frac{1}{m}</script>。那么m次采样都没有被采样到的概率是<script type="math/tex">(1-\frac{1}{m})^m</script>，这里如果m趋近与无穷大，这个结果趋近于<script type="math/tex">\frac{1}{e}=0.368</script>，即bagging每轮随机采样的过程中，训练数据集中大约有36.8%的数据没有被采样到，这些数据被称为袋外数据，由于这些数据没有参与训练集模型的拟合，因此可以用来检测模型的泛化能力。<br>  这里讲到由于Bagging算法每次都进行采样来训练模型，因此泛化能力很强，对降低模型的方差有作用，而对模型的拟合程度会差，即模型的偏差会大一些<br>这里要理解上面的这句话，需要知道模型的方差，偏差，过拟合，欠拟合等概念<br>先给出下面一张图，可以说基本上把全部的知识都体现出来了<br><img src="/upload/essayimage/ml0301.jpg" alt="ml0301"><br>讲解几个概念：<br>偏差(bias)：学习算法的期望预测与真实结果的偏离程度，刻画了学习算法本身的拟合能力<br>方差(variance)：刻画的是同样大小的训练集的变动所导致学习性能的变化，刻画了数据扰动所造成的影响<br>欠拟合：模型的偏差过大，没有找出更多的特征<br>过拟合：模型的方差过大，特征过多<br>继续看上面的这个图，高偏差低方差的情况就是模型过于简单，需要寻找更多的特征来拟合模型；高偏差高方差就是模型不但对不同的数据集不稳定而且对真实数据预测不准，这个应该很少发生；低偏差高方差就是说预期的结果都落在真实结果的周围，过拟合</p>
+<p>具体参考知乎上的回答<a href="https://www.zhihu.com/question/27068705" target="_blank" rel="external">机器学习中的Bias(偏差)，Error(误差)，和Variance(方差)有什么区别和联系</a></p>
 <h3 id="stacking"><a href="#stacking" class="headerlink" title="stacking"></a>stacking</h3>
       
     </div>
@@ -559,7 +560,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -581,7 +582,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
