@@ -98,7 +98,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ListNode," />
+  <meta name="keywords" content="链表," />
 
 
 
@@ -115,14 +115,14 @@
 
 
 <meta name="description" content="Description链表，分别为141，142，143  Given a linked list, determine if it has a cycle in it. Given a linked list, return the node where the cycle begins. If there is no cycle, return null. Given a singly lin">
-<meta name="keywords" content="ListNode">
+<meta name="keywords" content="链表">
 <meta property="og:type" content="article">
 <meta property="og:title" content="141. Linked List Cycle">
 <meta property="og:url" content="http://yoursite.com/2017/12/09/leetcode141/index.html">
 <meta property="og:site_name" content="moluchase">
 <meta property="og:description" content="Description链表，分别为141，142，143  Given a linked list, determine if it has a cycle in it. Given a linked list, return the node where the cycle begins. If there is no cycle, return null. Given a singly lin">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-09T03:22:49.000Z">
+<meta property="og:updated_time" content="2017-12-11T02:48:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="141. Linked List Cycle">
 <meta name="twitter:description" content="Description链表，分别为141，142，143  Given a linked list, determine if it has a cycle in it. Given a linked list, return the node where the cycle begins. If there is no cycle, return null. Given a singly lin">
@@ -417,10 +417,8 @@
 <ol>
 <li>Given a linked list, determine if it has a cycle in it.</li>
 <li>Given a linked list, return the node where the cycle begins. If there is no cycle, return null.</li>
-<li>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…</li>
+<li>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…<br>You must do this in-place without altering the nodes’ values.<br>For example,<br>Given {1,2,3,4}, reorder it to {1,4,2,3}.</li>
 </ol>
-<p>You must do this in-place without altering the nodes’ values.</p>
-<p>For example,<br>Given {1,2,3,4}, reorder it to {1,4,2,3}.</p>
 <a id="more"></a>
 <h4 id="Soultion"><a href="#Soultion" class="headerlink" title="Soultion"></a>Soultion</h4><p>第一道题是判断是否有环，用两个指针，一个指针每次走一步，一个指针每次走两步，然后比较它们指向的元素是否相等；为什么可以这样做，因为如果有环，快指针就会在慢指针的后面，而它们的距离经过若干步都可以达到快指针指向第i个元素，慢指针指向第i+1个元素，这样下一步（快指针走两步后，慢指针走一步后）它们就会相遇<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    ListNode p1,p2;</div><div class="line">    p1=p2=head;</div><div class="line">    <span class="keyword">while</span> (p1!=<span class="keyword">null</span>&amp;&amp;p1.next!=<span class="keyword">null</span>)&#123;</div><div class="line">        p1=p1.next.next;</div><div class="line">        p2=p2.next;</div><div class="line">        <span class="keyword">if</span>(p1==p2)<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>第二道题是上道题的延生，具体的可以看剑指offer，这里我们同样用一个快指针和一个慢指针，快指针走两步，慢指针走一步，如果有环，就会相遇；这里用<script type="math/tex">s_{1}</script>表示快指针走过的节点个数，用<script type="math/tex">s_{2}</script>表示慢指针走过的节点个数，用<script type="math/tex">l</script>表示环中节点个数，用<script type="math/tex">l_{0}</script>表示环的入口节点到快指针和慢指针相遇时的节点之间的节点个数，有如下公式：<br>其中k表示的是相遇时快指针已经在环上转过的圈数</p>
@@ -478,7 +476,7 @@ s_{1}=2s_{2}</script><p>由上面的公式可以得到：<script type="math/tex"
       
         <div class="post-tags">
           
-            <a href="/tags/ListNode/" rel="tag"><i class="fa fa-tag"></i> ListNode</a>
+            <a href="/tags/链表/" rel="tag"><i class="fa fa-tag"></i> 链表</a>
           
         </div>
       
@@ -577,7 +575,7 @@ s_{1}=2s_{2}</script><p>由上面的公式可以得到：<script type="math/tex"
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">66</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -1,0 +1,997 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【第一周】Ng的深度学习视频笔记，长期更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Setting up your ML application">
+<meta property="og:url" content="http://yoursite.com/2017/12/11/dl05/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【第一周】Ng的深度学习视频笔记，长期更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0501.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0502.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0503.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0504.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0505.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0506.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0507.png">
+<meta property="og:updated_time" content="2017-12-12T11:52:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Setting up your ML application">
+<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【第一周】Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0501.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/11/dl05/"/>
+
+
+
+
+
+  <title> Setting up your ML application | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/11/dl05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Setting up your ML application
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T16:07:00+08:00">
+                2017-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/11/dl05/" class="leancloud_visitors" data-flag-title="Setting up your ML application">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>改善深层神经网络：超参数调试、正则化以及优化【第一周】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+<h4 id="1-1-Train-dev-test-sets"><a href="#1-1-Train-dev-test-sets" class="headerlink" title="1.1 Train/dev/test/sets"></a>1.1 Train/dev/test/sets</h4><p>数据一部分作为训练集，一部分作为交叉验证集(验证集)，最后一部分作为测试集；通过训练集来训练模型，通过验证集来选择最好的模型，然后在测试集上进行评估(无偏估计)【测试集的目的是对神经网络系统做出无偏估计，如果不需要无偏估计，可以不设置测试集】<br>在实际应用中，没有测试集的情况，人们将简单的交叉验证集当测试集来使用，并没有完全实现该术语的功能，因为将验证集过度拟合到测试集中了。</p>
+<h4 id="1-2-Bias-Variance"><a href="#1-2-Bias-Variance" class="headerlink" title="1.2 Bias/Variance"></a>1.2 Bias/Variance</h4><p>之前分析过，见下面这张图：<br><img src="/upload/essayimage/dl/dl0501.png" alt="dl0501"><br>对于Cat classification来说，假设人类识别错误率为0%<br>训练集上的结果是1%，而在测试集上的结果却是11%，显然过拟合了，即高方差，可以这么理解：该模型对不同的数据的结果有较大的差异就是高方差，但是对于结果而言效果还是比较好的（低偏差）；<br>训练集上的结果是15%，测试集上的结果是16%，不管是训练集和测试集的效果都不是很好，即欠拟合（高偏差），但是模型对不同的数据的预测结果差别不大，即低方差；<br>训练集上的结果是15%，测试集上的结果是30%，这个就是高方差，高偏差；<br>训练集上的结果是0.5%，测试集上的结果是1%，这个就是低方差，低偏差。【这种情况在视频中有讲到，就是有的地方过拟合，而有的地方欠拟合】</p>
+<h4 id="1-3-Basic-“recipe”-for-machine-learning"><a href="#1-3-Basic-“recipe”-for-machine-learning" class="headerlink" title="1.3 Basic “recipe” for machine learning"></a>1.3 Basic “recipe” for machine learning</h4><p>当我们训练神经网络时，初始化模型完成后，当模型的偏差过高，就需要对训练集进行再次分析，或者是选择一个新的网络(如含有更多隐藏层的网络)，或者花费更多时间来训练算法，或者尝试更先进的优化算法，直到可以拟合数据为止（有一个小得偏差），这是第一步。一旦偏差小到可以接受的值后，就可以检查一下方差是否有问题，即需要对验证集预测，如果方差过大，解决办法是训练集使用更多的数据，或者使用正则化等等，然后不断的尝试，直到找到一个低偏差，低方差的模型，我们就成功了。<br>在深度学习的早期，我们没有太多工具可以做到减少偏差或方差，而不影响另一方，现在的工具可以做到在减小偏差或方差的同时，不对另一方产生过多不良的影响，这个是深度学习对监督式学习大有裨益的一个重要原因，也是我们不用太过关注如何平衡偏差和方差的一个重要原因。</p>
+<h4 id="1-4-Regularization"><a href="#1-4-Regularization" class="headerlink" title="1.4 Regularization"></a>1.4 Regularization</h4><p>详细可以参考UFLDL教程，至于正则化为什么只用W而不用b，视频中讲到W几乎涵盖了全部参数，b只是众多参数中的一部分，加上没有太大的影响，所以通常省略不计。<br>加上正则化后，神经网络的成本函数变为</p>
+<script type="math/tex; mode=display">
+J(W^{[1]},b^{[1]},...,W^{[l]},b^{[l]})=\frac{1}{m}\sum_{i=1}^{m}L(\hat y^{(i)}-y^{(i)})+\frac{\lambda}{2m}\sum_{l=1}^{L}||W^{[l]}||_{F}^{2}</script><p>其中由于<script type="math/tex">W^{[l]}</script>的维度为<script type="math/tex">(n^{[l]},n^{[l-1]})</script>，因此<script type="math/tex">||W^{[l]}||_{F}^{2}=\sum_{i}^{n^{[l-1]}}\sum_{j}^{n^{[l]}}(W_{ji}^{[l]})^2</script><br>继续分析为什么加上正则化后，会让W变小（是W的绝对值变小，即趋近于0），分析反向传播过程，可以发现添加正则项后，只是对<script type="math/tex">dW^{[l]}</script>多添加了一个<script type="math/tex">\frac{\lambda}{m}W^{[l]}</script>项，那么对于权重更新时，假设之前的$dW^{[l]}=(for backprop)$，则现在的变为<script type="math/tex">(for backprop)+\frac{\lambda}{m}W^{[l]}</script>，即</p>
+<script type="math/tex; mode=display">
+W^{[l]}=W^{[l]}- \alpha [(for backprop)+\frac{\lambda}{m}W^{[l]}]\\
+=(1-\frac{\alpha\lambda}{m})W^{[l]}=\alpha(for backprop)</script><p>注意到<script type="math/tex">(1-\frac{\alpha\lambda}{m})</script>恒小于1，也就是说加上正则项后，对W的影响是将W变为趋近于0的数。</p>
+<h4 id="1-5-Why-regularization-reduces-overfitting"><a href="#1-5-Why-regularization-reduces-overfitting" class="headerlink" title="1.5 Why regularization reduces overfitting"></a>1.5 Why regularization reduces overfitting</h4><p>为什么正则化有利于预防过拟合呢，即为什么可以减少方差问题？<br>添加正则项可以避免数据权值矩阵过大，为什么L2正则可以减少过拟合，直观的理解是当<script type="math/tex">\lambda</script>设置很大的时候，权重矩阵会被设置为接近于0的值，即把多层隐藏单元的权重设置为0，消除了这些隐藏单元的影响，这样神经网络就会变成一个很小的网络，如同一个logistic回归单元，这样就将一个过拟合的网络变成了高偏差的网络，如下图红色箭头所示：<br><img src="/upload/essayimage/dl/dl0502.png" alt="dl0502"><br>但是很显然我们不会这样做，我们会选取一个<script type="math/tex">\lambda</script>，使得模型接近于上图的中间模型“just right”。<br>继续看下面这个例子，假设我们用的是双曲激活函数，如果z非常小，即当正则化参数<script type="math/tex">\lambda</script>很大时，激活函数的参数会相对小（即W会小，而z=wa+b）,那么双曲激活函数对于z而言，就是线性函数，每层激活都是线性的，那么深层网络也只能计算线性函数，不适合非常复杂的决策以及允许过度拟合数据集的非线性决策边界(原文：very non-linear decision boundaries that allow it to really overfit right to data sets)。<br>可以看到代价函数对于梯度下降的每一个调幅都单调递减，如果你实现的是正则化，J有一个新的定义，而原来的不带正则项的J可能看不到单调递减的现象，为了调试梯度下降，应该使用带有正则化项的J函数，否则J可能不会在所有调幅范围内都单调递减。【这一段没太明白？？？】</p>
+<h4 id="1-6-Dropout-regularization"><a href="#1-6-Dropout-regularization" class="headerlink" title="1.6 Dropout regularization"></a>1.6 Dropout regularization</h4><p>除了L2正则外，还有一个非常实用的正则化方法—“dropout”<br>假设训练的神经网络存在过拟合，dropout会遍历网络中的每一层，并设置消除神经网络中节点的概率，即假设每个节点被保留下来的概率是0.5，使用dropout后，就会将没被保留的节点删除，及其连线，如下图所示：<br><img src="/upload/essayimage/dl/dl0503.png" alt="dl0503"><br>实施dropout的方法：inverted dropout<br>以第三层为例，给定一个keep-prob(保留率)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">d3=np.random.rand(a3.shape[0],a3.sharp[1])&lt;keep-prob</div><div class="line">a3=np.multiply(a3,d3)</div><div class="line">a3/=keep-prob</div></pre></td></tr></table></figure></p>
+<p>这里之所以要做第三行的代码，是因为需要在删除后的效果和原来的一样，即不影响后面的期望，需要弥补神经元为0的元素<br>这里补充一下：为什么dropout可以降低过拟合？<br>直观的理解就是，每个节点都有可能被删除，因此网络不愿意将所有的赌注全部放在一个节点上，即不会给任意的输入加上过多的权重，因为它可能被删除。和L2正则的效果一样，实施dropout的结果就是它会压缩权重，并完成一些预防过拟合的外层正则化。<br>每层的keep-prob的值可能不同，对于含有很多神经元的层，可以将keep-prob设置成比较小的值。dropout是一种正则化方法，目的是为了预防过拟合，所以除非算法过拟合，不然不应该使用dropout，因此该方法在其它领域用的比较少(之于计算机视觉，因为视觉模型会有很多的参数，但是训练样本有很有限)。<br>dropout的一大缺点是代价函数J不再被明确定义，因为每次迭代都会随机移除一些节点，很难核查梯度下降，对于定义明确的代价函数J每次迭代后都会下降….因此使用Dropout时，先关闭dropout的功能(设置keep-prob=1)，确保J函数代缴递增，然后开启dropout函数。【关于此处，我不是太明白，后期实践实践】</p>
+<h4 id="1-8-Other-regularzation-methods"><a href="#1-8-Other-regularzation-methods" class="headerlink" title="1.8 Other regularzation methods"></a>1.8 Other regularzation methods</h4><p>可以作为正则化的方法有：</p>
+<ol>
+<li>数据扩增：可以对原有的样本进行处理后作为新的样本，当然也可以添加更多数据了</li>
+<li>early stopping ：代价函数在训练集会越来越小，但是对于验证集却会在某一个点上开始上升，提前结束优化，可以解决过拟合问题，但是同时也会停止优化而带来偏差。</li>
+</ol>
+<p>如果不用early stopping，另一种方法就是L2正则化，这样训练网络的时间就会很长，必须尝试很多正则化参数<script type="math/tex">\lambda</script>的值，计算代价太高。early stopping的优点是只运行一次坡度下降，就可以找到W，而不需要尝试L2正则化。</p>
+<h4 id="1-9-Normalizing-inputs"><a href="#1-9-Normalizing-inputs" class="headerlink" title="1.9 Normalizing inputs"></a>1.9 Normalizing inputs</h4><p>训练神经网络的一个加速训练的方法就是归一化输入，即将数据0均值化，1方差化，如下处理：</p>
+<script type="math/tex; mode=display">
+\mu=\frac{1}{m}\sum_{i}^{m}x^{(i)}\,\,\,\,，\,\,\,\,x^{(i)}=x^{(i)}-\mu\\
+\sigma^{2}=\frac{1}{m}\sum_{i}^{m}(x^{(i)})^2\,\,\,\,,\,\,\,\, x/=\sigma</script><p>这里也很容易验证，将变换后的结果代入计算均值和方差的公式中，就会发现数据的均值为0，方差为1（这里Ng的视频中我觉得写错了，应该是除以标准差），如下图所示，一个二维的数据集，在每一维上作归一化处理后的结果：<br><img src="/upload/essayimage/dl/dl0504.png" alt="dl0504"><br>继续，为什么归一化后就会加速训练呢，下面这张图，假设特征x1的取值范围是0到100，而特征x2的取值范围是0到1，那么w1和w2的范围就会很不一样，这里用下图的w和b表示，对应的下面的图中显示的梯度下降曲线就会是z字型(这里这样理解：从起点到最小值的直线是梯度下降训练时间最短的路线，但是该线上每走一步，对应的dw1方向上要做过的大小和dw2方向上要走过的大小很显然是不一样的，但是我们在梯度训练的过程中，每次对w1和w2的变化都是相同的，即<script type="math/tex">\alpha dw1 ，\alpha dw2</script>，所以导致实际的路线并不是按照最短路线来走，而是呈现z字型)；归一化的数据各方向都是圆，这样梯度下降训练的时候就会沿着最短路径走，见下图：<br><img src="/upload/essayimage/dl/dl0505.png" alt="dl0505"></p>
+<h4 id="1-10-Vanishing-exploding-gradients"><a href="#1-10-Vanishing-exploding-gradients" class="headerlink" title="1.10 Vanishing/exploding gradients"></a>1.10 Vanishing/exploding gradients</h4><p>梯度消失和梯度爆炸<br><img src="/upload/essayimage/dl/dl0506.png" alt="dl0506"><br>这里举一个简单的例子，如上图所示，每一层省略了很多神经元，假设<script type="math/tex">g(z)=z,b^{[l]}=0</script>，对于目标输出有：</p>
+<script type="math/tex; mode=display">
+\hat y=W^{[l]}W^{[l-1]}...W^{[2]}W^{[1]}x</script><p>这里假设<script type="math/tex">W^{[l]}</script>为大于1的情况，即<script type="math/tex">W^{[l]}=\begin{bmatrix}
+ 1.5& 0  \\ 
+ 0&1.5  
+\end{bmatrix}</script>，让其它的W也都为该值，这样的多层叠加相乘后，就会出现一个很大的值，也就是说梯度函数出现爆炸。<br>相应的，如果W是小于1的情况，多层叠加的后果就是梯度函数接近于0，即梯度消散。</p>
+<p>那么怎么解决上面的问题呢，见下面的图：<br><img src="/upload/essayimage/dl/dl0507.png" alt="dl0507"><br>以单个神经元为例，忽略b，这里有：</p>
+<script type="math/tex; mode=display">
+z=w_{1}x_{1}+w_{2}x_{2}+...+w_{n}x_{n}</script><p>视频中说为了预防z值过大或者过小（为什么不让z过大或过小呢，因为z过大或者过小，表明W矩阵过大或者过小，那么就会出现上面讲到的梯度爆炸和梯度消失），即对于输入n越大(这里n代表特征x的个数)，希望<script type="math/tex">w_i</script>越小，这样z就不会过大。那么最合理的方法就是使<script type="math/tex">w_i</script>的方差为<script type="math/tex">\frac{1}{n}</script>，即对于每层的权重矩阵作如下初始化：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">WL = np.random.randn(WL.shape[<span class="number">0</span>],WL.shape[<span class="number">1</span>])* np.sqrt(<span class="number">1</span>/n)</div></pre></td></tr></table></figure></p>
+<p>这里讲原因：上面的randn表示的是随机数服从均值为0方差为1的正太分布，我们要让其服从方差为<script type="math/tex">\frac{1}{n}</script>的正太分布，需要对数据除以标准差，即<script type="math/tex">\sqrt{\frac{1}{n}}</script>。那么为什么要让其服从方差为<script type="math/tex">\frac{1}{n}</script>的正太分布呢，我是这么理解的：我们知道方差决定了数据的离散程度，对于上图单个神经元的权重wi，如果我们对每个wi都初始化均值为0，方差为1的数据，这样z的值就服从均值为0，方差为n的正太分布，而如果我们将每个wi的初始化分布改为<script type="math/tex">N(0,\frac{1}{n})</script>，那么z的值就服从N(0,1).<br>对于g(z)为ReLu函数，将其方差设置成<script type="math/tex">\frac{2}{n}</script>比较好，视频中也提到了几种其它的公式。</p>
+<h4 id="Numerical-approximation-of-gradients"><a href="#Numerical-approximation-of-gradients" class="headerlink" title="Numerical approximation of gradients"></a>Numerical approximation of gradients</h4><p>这一节就讲了一个知识点，就是导数的定义：</p>
+<script type="math/tex; mode=display">
+f'(\theta)=\lim_{\varepsilon \to 0}\frac{f(\theta+\varepsilon)-f(\theta-\varepsilon)}{2\varepsilon}</script><p>讲到上面的双边导数比单边导数类比于导数的实际值来说更加精确。</p>
+<h4 id="Gradient-Checking"><a href="#Gradient-Checking" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h4><p>这一节讲的是梯度验证，对于代价函数<script type="math/tex">J(W^{[1]},b^{[1]},W^{[2]},...,W^{[L]},b^{[L]})</script>表示为<script type="math/tex">J(\theta)</script>，即<script type="math/tex">d \theta</script>由<script type="math/tex">dW^{[1]},db^{[1]},dW^{[2]},...,dW^{[L]},db^{[L]}</script>组成。<br>对于<script type="math/tex">\theta_{i}</script>，我们需要计算：</p>
+<script type="math/tex; mode=display">
+d\theta_{approx}^{[i]}=\frac{J(\theta_{1},\theta_{2},...,\theta_i+\varepsilon,...)-J(\theta_1,\theta_2,...,\theta_{i}-\varepsilon,...)}{2\varepsilon}</script><p>与反向传播的梯度<script type="math/tex">d \theta</script>核查：</p>
+<script type="math/tex; mode=display">
+Check=\frac{||d\theta_{approx}-d\theta||_{2}}{||d\theta_{approx}||_{2}+||d\theta||_{2}}</script><p>上式的分子部分是计算相似度，即差的平方和开根号；分母部分是为了不让分子太小或太大(即规范因子)。<br>怎么验证呢，举个例子：当<script type="math/tex">\varepsilon=10^{-7}</script>的时候，如果上式的结果Check接近于<script type="math/tex">10^{-7}</script>，那么说明梯度计算没有什么问题，如果差了几个数量级，比如<script type="math/tex">10^{-5}</script>，就可能有问题了。</p>
+<p>第一周的课终于看完了，可真多啊，看了快一天了…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/11/leetcode149/" rel="next" title="149. Max Points on a Line">
+                <i class="fa fa-chevron-left"></i> 149. Max Points on a Line
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Train-dev-test-sets"><span class="nav-number">1.</span> <span class="nav-text">1.1 Train/dev/test/sets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Bias-Variance"><span class="nav-number">2.</span> <span class="nav-text">1.2 Bias/Variance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-Basic-“recipe”-for-machine-learning"><span class="nav-number">3.</span> <span class="nav-text">1.3 Basic “recipe” for machine learning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-Regularization"><span class="nav-number">4.</span> <span class="nav-text">1.4 Regularization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-Why-regularization-reduces-overfitting"><span class="nav-number">5.</span> <span class="nav-text">1.5 Why regularization reduces overfitting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-Dropout-regularization"><span class="nav-number">6.</span> <span class="nav-text">1.6 Dropout regularization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-8-Other-regularzation-methods"><span class="nav-number">7.</span> <span class="nav-text">1.8 Other regularzation methods</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-9-Normalizing-inputs"><span class="nav-number">8.</span> <span class="nav-text">1.9 Normalizing inputs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-10-Vanishing-exploding-gradients"><span class="nav-number">9.</span> <span class="nav-text">1.10 Vanishing/exploding gradients</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Numerical-approximation-of-gradients"><span class="nav-number">10.</span> <span class="nav-text">Numerical approximation of gradients</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradient-Checking"><span class="nav-number">11.</span> <span class="nav-text">Gradient Checking</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
