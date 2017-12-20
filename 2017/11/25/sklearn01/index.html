@@ -136,7 +136,7 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm03.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm04.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/sklearn/glm06.png">
-<meta property="og:updated_time" content="2017-12-04T15:17:15.000Z">
+<meta property="og:updated_time" content="2017-12-13T06:22:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Generalized Linear Models">
 <meta name="twitter:description" content="【这里是对sklearn文档学习记录的笔记，不限于sklearn文档，其中添加了很多非常基础且帮助理解的知识，基本上对每个知识点的原理都会解释，也会留下不懂的疑问，如果有大神能对此指定一二，在下感激不尽！】线性组合generalized linear models（广义线性模型）大概就是一个用的是线性的，一个用的是非线性的https://cosx.org/2011/01/how-does-glm-">
@@ -465,7 +465,7 @@ Y_{i}=\beta_{0}+\beta_{1}X_{1i}+\beta_{2}X_{2i}+...+\beta_{k}X_{ki}+\mu_{i}</scr
 <p><img src="/upload/essayimage/sklearn/glm06.png" alt="glm06"></p>
 <p>【注意：关于上面的U被移到第二个式子上，是由于奇异矩阵的保范性，乘以U，V等式奇异值不变】<br>至于时间复杂度，这个不知道额，应该是SVD的分解时间复杂度吧</p>
 <h3 id="1-1-2-Ridge-Regression"><a href="#1-1-2-Ridge-Regression" class="headerlink" title="1.1.2. Ridge Regression"></a>1.1.2. Ridge Regression</h3><p>这里需要讲解一下L1正则化和L2正则化，及其区别</p>
-<h4 id="L1正则化和L2正则化"><a href="#L1正则化和L2正则化" class="headerlink" title="L1正则化和L2正则化"></a>L1正则化和L2正则化</h4><p>先讲一下0范数，我是不太明白的，查阅的解答是向量中非零元素的个数，说到当p趋于零，可以证明这时候的极限<script type="math/tex">(x_{1}^{p}+x_{2}^{p}+...+x_{n}^{p})^{\frac{1}{p}}</script>恰好是向量<script type="math/tex">x=(x_{1},x_{2},x_{3},...,x_{n})^{T}</script>中非零元素的个数。那么用L0范数来规则化参数矩阵W等价希望W的大部分元素都是0，即让W是稀疏的，而这恰恰是L1要做的事，但是为什么不直接用L0来做呢，原因是L0范数很难优化求解（NP难题），而且L1范数是L0得最优凸近似(这里我不知道原因)，且容易求解.<br>继续讲，需要解决这几个问题，为什么要稀疏(即特征选择)，为什么L1能稀疏，L2是什么，为什么要有L2，L2和L1的区别是什么？<br>稀疏的目的是可以实现特征的自动选择，如果x的大部分特征和最终的输出y没有关系(提供不了任何信息)，在最小化目标函数的时候考虑这些特征</p>
+<h4 id="L1正则化和L2正则化"><a href="#L1正则化和L2正则化" class="headerlink" title="L1正则化和L2正则化"></a>L1正则化和L2正则化</h4><p>先讲一下0范数，我是不太明白的，查阅的解答是向量中非零元素的个数，说到当p趋于零，可以证明这时候的极限<script type="math/tex">(x_{1}^{p}+x_{2}^{p}+...+x_{n}^{p})^{\frac{1}{p}}</script>恰好是向量<script type="math/tex">x=(x_{1},x_{2},x_{3},...,x_{n})^{T}</script>中非零元素的个数。那么用L0范数来规则化参数矩阵W等价希望W的大部分元素都是0，即让W是稀疏的，而这恰恰是L1要做的事，但是为什么不直接用L0来做呢，原因是L0范数很难优化求解（NP难题），而且L1范数是L0得最优凸近似(这里我不知道原因)，且容易求解.<br>继续讲，需要解决这几个问题，为什么要稀疏(即特征选择)，为什么L1能稀疏，L2是什么，为什么要有L2，L2和L1的区别是什么？<br>稀疏的目的是可以实现特征的自动选择，如果x的大部分特征和最终的输出y没有关系(提供不了任何信息)，在最小化目标函数的时候考虑这些特征<br><a href="https://www.quora.com/What-is-the-difference-between-L1-and-L2-regularization-How-does-it-solve-the-problem-of-overfitting-Which-regularizer-to-use-and-when" target="_blank" rel="external">https://www.quora.com/What-is-the-difference-between-L1-and-L2-regularization-How-does-it-solve-the-problem-of-overfitting-Which-regularizer-to-use-and-when</a><br><a href="https://www.quora.com/Whats-a-good-way-to-provide-intuition-as-to-why-the-lasso-L1-regularization-results-in-sparse-weight-vectors" target="_blank" rel="external">https://www.quora.com/Whats-a-good-way-to-provide-intuition-as-to-why-the-lasso-L1-regularization-results-in-sparse-weight-vectors</a></p>
 <p>给出比较好的关于回归等得文章<br><a href="http://www.iteye.com/news/30875" target="_blank" rel="external">你应该掌握的七种回归技术</a></p>
 
       
@@ -616,7 +616,7 @@ Y_{i}=\beta_{0}+\beta_{1}X_{1i}+\beta_{2}X_{2i}+...+\beta_{k}X_{ki}+\mu_{i}</scr
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -638,7 +638,7 @@ Y_{i}=\beta_{0}+\beta_{1}X_{1i}+\beta_{2}X_{2i}+...+\beta_{k}X_{ki}+\mu_{i}</scr
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -114,12 +114,12 @@
 
 
 
-<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【第一周】Ng的深度学习视频笔记，长期更新">
+<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【2-1】Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Setting up your ML application">
 <meta property="og:url" content="http://yoursite.com/2017/12/11/dl05/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【第一周】Ng的深度学习视频笔记，长期更新">
+<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-1】Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0501.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0502.png">
@@ -128,10 +128,10 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0505.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0506.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0507.png">
-<meta property="og:updated_time" content="2017-12-12T11:52:14.000Z">
+<meta property="og:updated_time" content="2017-12-12T12:57:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Setting up your ML application">
-<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【第一周】Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-1】Ng的深度学习视频笔记，长期更新">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0501.png">
 
 
@@ -420,7 +420,7 @@
       
 
       
-        <p>改善深层神经网络：超参数调试、正则化以及优化【第一周】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p>改善深层神经网络：超参数调试、正则化以及优化【2-1】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="1-1-Train-dev-test-sets"><a href="#1-1-Train-dev-test-sets" class="headerlink" title="1.1 Train/dev/test/sets"></a>1.1 Train/dev/test/sets</h4><p>数据一部分作为训练集，一部分作为交叉验证集(验证集)，最后一部分作为测试集；通过训练集来训练模型，通过验证集来选择最好的模型，然后在测试集上进行评估(无偏估计)【测试集的目的是对神经网络系统做出无偏估计，如果不需要无偏估计，可以不设置测试集】<br>在实际应用中，没有测试集的情况，人们将简单的交叉验证集当测试集来使用，并没有完全实现该术语的功能，因为将验证集过度拟合到测试集中了。</p>
 <h4 id="1-2-Bias-Variance"><a href="#1-2-Bias-Variance" class="headerlink" title="1.2 Bias/Variance"></a>1.2 Bias/Variance</h4><p>之前分析过，见下面这张图：<br><img src="/upload/essayimage/dl/dl0501.png" alt="dl0501"><br>对于Cat classification来说，假设人类识别错误率为0%<br>训练集上的结果是1%，而在测试集上的结果却是11%，显然过拟合了，即高方差，可以这么理解：该模型对不同的数据的结果有较大的差异就是高方差，但是对于结果而言效果还是比较好的（低偏差）；<br>训练集上的结果是15%，测试集上的结果是16%，不管是训练集和测试集的效果都不是很好，即欠拟合（高偏差），但是模型对不同的数据的预测结果差别不大，即低方差；<br>训练集上的结果是15%，测试集上的结果是30%，这个就是高方差，高偏差；<br>训练集上的结果是0.5%，测试集上的结果是1%，这个就是低方差，低偏差。【这种情况在视频中有讲到，就是有的地方过拟合，而有的地方欠拟合】</p>
 <h4 id="1-3-Basic-“recipe”-for-machine-learning"><a href="#1-3-Basic-“recipe”-for-machine-learning" class="headerlink" title="1.3 Basic “recipe” for machine learning"></a>1.3 Basic “recipe” for machine learning</h4><p>当我们训练神经网络时，初始化模型完成后，当模型的偏差过高，就需要对训练集进行再次分析，或者是选择一个新的网络(如含有更多隐藏层的网络)，或者花费更多时间来训练算法，或者尝试更先进的优化算法，直到可以拟合数据为止（有一个小得偏差），这是第一步。一旦偏差小到可以接受的值后，就可以检查一下方差是否有问题，即需要对验证集预测，如果方差过大，解决办法是训练集使用更多的数据，或者使用正则化等等，然后不断的尝试，直到找到一个低偏差，低方差的模型，我们就成功了。<br>在深度学习的早期，我们没有太多工具可以做到减少偏差或方差，而不影响另一方，现在的工具可以做到在减小偏差或方差的同时，不对另一方产生过多不良的影响，这个是深度学习对监督式学习大有裨益的一个重要原因，也是我们不用太过关注如何平衡偏差和方差的一个重要原因。</p>
@@ -529,6 +529,10 @@ Check=\frac{||d\theta_{approx}-d\theta||_{2}}{||d\theta_{approx}||_{2}+||d\theta
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/12/12/dl06/" rel="prev" title="Optimization Algorithms">
+                Optimization Algorithms <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -601,7 +605,7 @@ Check=\frac{||d\theta_{approx}-d\theta||_{2}}{||d\theta_{approx}||_{2}+||d\theta
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -623,7 +627,7 @@ Check=\frac{||d\theta_{approx}-d\theta||_{2}}{||d\theta_{approx}||_{2}+||d\theta
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

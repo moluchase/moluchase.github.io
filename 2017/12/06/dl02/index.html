@@ -114,14 +114,14 @@
 
 
 
-<meta name="description" content="【第二周】 Basic of Neural Network ProgrammingNg的深度学习视频笔记，长期更新">
+<meta name="description" content="神经网络和深度学习[1-2]Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Basic of Neural Network Programming">
 <meta property="og:url" content="http://yoursite.com/2017/12/06/dl02/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="【第二周】 Basic of Neural Network ProgrammingNg的深度学习视频笔记，长期更新">
+<meta property="og:description" content="神经网络和深度学习[1-2]Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl0201.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0201.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0202.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0203.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0204.png">
@@ -129,11 +129,11 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0206.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0207.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0208.png">
-<meta property="og:updated_time" content="2017-12-10T11:18:11.000Z">
+<meta property="og:updated_time" content="2017-12-13T09:11:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Basic of Neural Network Programming">
-<meta name="twitter:description" content="【第二周】 Basic of Neural Network ProgrammingNg的深度学习视频笔记，长期更新">
-<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl0201.png">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0201.png">
 
 
 
@@ -421,7 +421,7 @@
       
 
       
-        <p>【第二周】 Basic of Neural Network Programming<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p>神经网络和深度学习[1-2]<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="2-3-logistic-Regression-Cost-Function"><a href="#2-3-logistic-Regression-Cost-Function" class="headerlink" title="2.3 logistic Regression: Cost Function"></a>2.3 logistic Regression: Cost Function</h4><p>  二分类问题，每个特征前面有一个权重，然后加上一个偏置项，即<script type="math/tex">y=w^Tx+b</script>，我们想让这个结果要么是0，要么是1，那么就用到了sigmod函数，即<script type="math/tex">\sigma(z)=\frac{1}{1+e^{-z}}</script>，讲义中给出的是对于样本<script type="math/tex">(x^{(i)},y^{(i)})</script>而言，有如下公式：</p>
 <script type="math/tex; mode=display">\hat{y}^{(i)}=\sigma(w^Tx^{(i)}+b)=\frac{1}{1+e^{-(w^Tx^{(i)}+b)}}</script><p>该样本的损失函数（loss function）一般为<script type="math/tex">\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script>，但是在logistic回归中一般使用下面的损失函数：</p>
 <script type="math/tex; mode=display">L(\hat{y}^{(i)},y^{(i)})=-\big(y^{(i)}\,log(\hat{y}^{(i)})+(1-y^{(i)})\,log(1-\hat{y}^{(i)})\big)</script><p>原因是因为平方损失函数（误差平方）在讨论最优化问题的时候是非凸的，即会得到多个局部最优解(梯度下降法可能找不到全局最优解)，而用log损失函数，起着和误差平方相似的作用，会给我们一个凸的优化问题，很容易做优化。<br>对于多个样本的成本函数(cost function) J 如下：</p>
@@ -445,7 +445,8 @@ J=-\big(y\,logP(Y=1|x)+(1-y)\,logP(Y=0|x)\big)</script><p>而log函数是单调�
 <li>Square loss: <script type="math/tex">\min_\theta \sum_i||y^{(i)}-\theta^Tx^{(i)}||^2</script></li>
 </ol>
 <p>Fortunately, hinge loss, logistic loss and square loss are all convex functions. Convexity ensures global minimum and it’s computationally appleaing.<br>参考：<a href="http://www.cs.cmu.edu/~yandongl/loss.html" target="_blank" rel="external">http://www.cs.cmu.edu/~yandongl/loss.html</a><br>继续来看这些函数直观的意义，均匀取-2到2之间的点作为误差值，针对不同的损失函数，采取不同的处理方式，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line">x=np.linspace(<span class="number">-2</span>,<span class="number">2</span>,<span class="number">300</span>)<span class="comment">#均匀间隔</span></div><div class="line"><span class="comment">#Hinge loss</span></div><div class="line">hinge_loss_function = [] </div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">1</span>-x):  </div><div class="line">    <span class="keyword">if</span> i &gt; <span class="number">0</span>:  </div><div class="line">        hinge_loss_function.append(i)  </div><div class="line">    <span class="keyword">else</span>:  </div><div class="line">        hinge_loss_function.append(<span class="number">0</span>) </div><div class="line"><span class="comment">#指数损失</span></div><div class="line">exponential_loss_function = np.exp(-x)</div><div class="line"><span class="comment">#对数损失</span></div><div class="line">logistic_loss_function = np.log(<span class="number">1</span>+np.exp(-x))/np.log(<span class="number">2</span>) </div><div class="line"><span class="comment">#0/1损失</span></div><div class="line">l0_1_loss_function = []  </div><div class="line"><span class="keyword">for</span> j <span class="keyword">in</span> x:  </div><div class="line">    <span class="keyword">if</span> j &lt; <span class="number">0</span>:  </div><div class="line">        l0_1_loss_function.append(<span class="number">1</span>)  </div><div class="line">    <span class="keyword">else</span>:  </div><div class="line">        l0_1_loss_function.append(<span class="number">0</span>) </div><div class="line"><span class="comment">#平方损失</span></div><div class="line">pingfang_loss_function = (x<span class="number">-1</span>) ** <span class="number">2</span> </div><div class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">8</span>))</div><div class="line">plt.plot(x, hinge_loss_function, <span class="string">'r-'</span>)  </div><div class="line"><span class="comment">#plt.plot(x, exponential_loss_function, 'b-')  </span></div><div class="line">plt.plot(x, logistic_loss_function, <span class="string">'g-'</span>)  </div><div class="line">plt.plot(x, l0_1_loss_function, <span class="string">'k-'</span>)  </div><div class="line">plt.plot(x, pingfang_loss_function, <span class="string">'c-'</span>)  </div><div class="line">plt.legend([<span class="string">'hinge_loss_function'</span>, <span class="string">'logistic_loss_function'</span>, <span class="string">'l0_1_loss_function'</span>, <span class="string">'pingfang_loss_function'</span>])  </div><div class="line">plt.ylim(<span class="number">0</span>,<span class="number">4</span>)</div></pre></td></tr></table></figure></p>
-<p><img src="/upload/essayimage/dl0201.png" alt="dl0201"><br>上面这个图需要明白一点，x轴代表的是上面提到的<script type="math/tex">y\cdot f</script>，我们希望达到的目标是该值越大(正值)越好，也就是越远离0，这样我们的模型f就越好，因为这样拟合会很好(可以这样理解：对于坐标上的两种类型的点，我们找到一条直线将其分隔开，这条直线应该是离各类型的点最远的线，虽然靠近某一类型的点来划分也可以，但是这样预测能力就会降低)<br>其中可以看到0/1损失函数是最理想的，只要误差小于0，结果就是1；hinge损失函数是当误差小于1结果才为0，也就是说要求<script type="math/tex">y\cdot f >1</script>就好；而log损失函数就是要求<script type="math/tex">y\cdot f</script>越大越好；其中平方损失函数这个是不适合分类的，如果用分类的化，必须取<script type="math/tex">y\cdot f <0</script>的结果来作为损失函数（感知机就是这样）。<br>关于使用方面：二分类问题一般使用log损失或者是Hinge损失函数，回归问题一般使用平方损失函数。</p>
+<p>如下图：<br><img src="/upload/essayimage/dl/dl0201.png" alt="dl0201"></p>
+<p>上面这个图需要明白一点，x轴代表的是上面提到的<script type="math/tex">y\cdot f</script>，我们希望达到的目标是该值越大(正值)越好，也就是越远离0，这样我们的模型f就越好，因为这样拟合会很好(可以这样理解：对于坐标上的两种类型的点，我们找到一条直线将其分隔开，这条直线应该是离各类型的点最远的线，虽然靠近某一类型的点来划分也可以，但是这样预测能力就会降低)<br>其中可以看到0/1损失函数是最理想的，只要误差小于0，结果就是1；hinge损失函数是当误差小于1结果才为0，也就是说要求<script type="math/tex">y\cdot f >1</script>就好；而log损失函数就是要求<script type="math/tex">y\cdot f</script>越大越好；其中平方损失函数这个是不适合分类的，如果用分类的化，必须取<script type="math/tex">y\cdot f <0</script>的结果来作为损失函数（感知机就是这样）。<br>关于使用方面：二分类问题一般使用log损失或者是Hinge损失函数，回归问题一般使用平方损失函数。</p>
 <h4 id="2-4-Gradient-Descent"><a href="#2-4-Gradient-Descent" class="headerlink" title="2.4 Gradient Descent"></a>2.4 Gradient Descent</h4><p>关于梯度下降，这里放一张图<br><img src="/upload/essayimage/dl/dl0202.png" alt="dl0202"><br>如上图，就以<script type="math/tex">J(w)=wx_{i}^2</script>为例，我们现在要找到使J最小的w，对于给定的<script type="math/tex">w_{0}</script>，我们需要找到最小的J，变量的更新应该是沿着梯度方向，更新w：<script type="math/tex">w=w_{0}-\frac{dJ(w)}{dw}</script><br>如果<script type="math/tex">w_{0}</script>在左边，就增加w；如果<script type="math/tex">w_{0}</script>在右边，就减小w</p>
 <h4 id="2-10-Logistic-regression-on-m-examples"><a href="#2-10-Logistic-regression-on-m-examples" class="headerlink" title="2.10 Logistic regression on m examples"></a>2.10 Logistic regression on m examples</h4><p>这里将2.9节讲到的logistic回归中的梯度下降和对m个样例的梯度下降结合起来，并用python实现最原始的代码<br><img src="/upload/essayimage/dl/dl0203.png" alt="dl0203"><br>上图其实在讲反向传播算法，而且讲到了反向传播算法中的最原始的计算方式<br>这里对其中的每一个变量求导（遵循视频中的讲解，使用da代表损失函数对a的求导）：</p>
 <script type="math/tex; mode=display">
@@ -653,7 +654,7 @@ A=σ(w^TX+b)=(a^{(0)},a^{(1)},...,a^{(m−1)},a^{(m)})</script></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -675,7 +676,7 @@ A=σ(w^TX+b)=(a^{(0)},a^{(1)},...,a^{(m−1)},a^{(m)})</script></li>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

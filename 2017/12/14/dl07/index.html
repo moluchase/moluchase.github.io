@@ -1,0 +1,995 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【2-3】Ng的深度学习视频笔记，长期更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hyperparmeter tuning">
+<meta property="og:url" content="http://yoursite.com/2017/12/14/dl07/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-3】Ng的深度学习视频笔记，长期更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0701.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0702.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0703.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0704.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0705.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0706.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0707.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0708.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0709.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0710.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0711.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0712.png">
+<meta property="og:updated_time" content="2017-12-16T12:36:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hyperparmeter tuning">
+<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-3】Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0701.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/14/dl07/"/>
+
+
+
+
+
+  <title> Hyperparmeter tuning | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/14/dl07/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Hyperparmeter tuning
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-14T15:14:43+08:00">
+                2017-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/14/dl07/" class="leancloud_visitors" data-flag-title="Hyperparmeter tuning">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>改善深层神经网络：超参数调试、正则化以及优化【2-3】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+<h4 id="3-1-Tuning-process"><a href="#3-1-Tuning-process" class="headerlink" title="3.1 Tuning process"></a>3.1 Tuning process</h4><p>此节讲解关于如何系统组织超参调试过程的技巧，从学习率<script type="math/tex">\alpha</script>，momentum<script type="math/tex">\beta</script>，或者是Adam优化算法中的<script type="math/tex">\beta_1，\beta_2，\varepsilon</script>，层数(layers)，隐藏层单元的数量(hidden units)，学习衰退率(decayRate)，还有Mini-batch大小。如下图所示，红色部分框最重要，其次是黄色框部分，然后是紫色框部分，而<script type="math/tex">\beta_1，\beta_2，\varepsilon</script>几乎不用调试，一般为0.9，0.999，<script type="math/tex">10^{-8}</script>。<br><img src="/upload/essayimage/dl/dl0701.png" alt="dl0701"><br>调试参数的过程：先用间隔比较大的区域来选取参数，从其中选择比较优的参数，继续缩小范围即可，如下图：<br><img src="/upload/essayimage/dl/dl0702.png" alt="dl0702"></p>
+<h4 id="3-2-Using-an-appropriate-scale-to-pick-hyperparameters"><a href="#3-2-Using-an-appropriate-scale-to-pick-hyperparameters" class="headerlink" title="3.2 Using an appropriate scale to pick hyperparameters"></a>3.2 Using an appropriate scale to pick hyperparameters</h4><p>上一节讲到，随机取值可以提升搜索效率，但是随机取值并不是在有效范围内的随机均匀取值，而是选择合适的标尺，探究这些超参数。<br>对于隐藏层单元的个数，可以随机的在指定范围内取点，以及选取layers的个数，也是可以随机选取的，但是对于超参数而言不适合。比如假设选取<script type="math/tex">\alpha</script>的值在0.0001到1之间，如果随机取点，则有90%的数值落到0.1到1之间，而0.0001到0.1之间只有10%的搜索资源，显然是不合理的，这里不使用线性轴，而是使用如下轴，0.0001~0.001，0.001~0.01，0.01~0.1，0.1~1，然后对每个区域均匀随机取点，这样在0.0001~0.001之间就会有更多的搜索资源可以用。<br><img src="/upload/essayimage/dl/dl0703.png" alt="dl0703"><br>用python如下实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">r=-<span class="number">4</span>*np.random.rand()</div><div class="line">a=<span class="number">10</span>**r</div></pre></td></tr></table></figure></p>
+<p>左边为<script type="math/tex">10^{-4}</script>，右边为<script type="math/tex">10^{0}</script>.<br>对于计算指数加权平均值<script type="math/tex">\beta</script>，假设<script type="math/tex">\beta</script>的取值在0.9~0.999之间的某个值（我们要搜索的值），这里回忆一下，取0.9就相当于10个值的平均，取0.999就相当于在1000个值总取平均，因此如果要在该范围内搜索，就不能用线性轴取值，此时可以考虑<script type="math/tex">1-\beta</script>，这样范围就变成0.001~0.1之间了，用上面的指数即可。这个直观的理解就是，当<script type="math/tex">\beta</script>接近于1时，<script type="math/tex">\beta</script>就会对细微的变化变得很敏感，所以在整个取值过程中，当<script type="math/tex">\beta</script>接近1的区间，需要更加密集的取值。</p>
+<h4 id="3-4-Normalizing-activations-in-a-network"><a href="#3-4-Normalizing-activations-in-a-network" class="headerlink" title="3.4 Normalizing activations in a network"></a>3.4 Normalizing activations in a network</h4><p>到现在为止，已经讲到了很多关于如何搜索最优超参数的内容。Batch归一化会使模型的参数搜索问题变得很容易，使神经网络对超参数的选择更加稳定，超参数的范围会更庞大，工作效果会很好。之前讲到过的归一化问题，就是将输入的特征归一化后带来的后果是将椭圆形转变得更圆，这样梯度下降曲线就会沿着最短路径走。但是对于深层网络，每一层的输出相当于下一层的输入，我们并不能保证当前层的输出数据就一定是归一化的，这里我们需要对Z处理，如下图所示，将<script type="math/tex">Z^{(i)}</script>进行修正【注意这里是对<script type="math/tex">Z^{(i)}</script>处理，针对的是不同的样本的输出值，对于批量梯度而言】，但是我们不想让隐藏单元总是罕有平均值0和方差1，也许隐藏单元有了不同的分布会有意义，这里需要加上学习参数<script type="math/tex">\gamma，\beta</script>，其作用是可以随意设置<script type="math/tex">\tilde{z}</script>的平均值，这里如果<script type="math/tex">\gamma=\sqrt{\sigma^2+\varepsilon}，\beta=\mu</script>，这样就会回到原来的数值，通过设置<script type="math/tex">\gamma,\beta</script>的值，可以使你构造含其它平均值和方差的隐藏单元值。通过使用Batch归一化一些隐藏单元值中的平均值和方差(或许你不需要使的其0均值，1方差，而是更大的方差，或者均值)，比如输入函数是Sigmoid函数，我们希望数据分散一点，以便能够利用Sigmoid的非线性性，这样方差就不应该是1，这就是为什么有了<script type="math/tex">\gamma,\beta</script>，你可以确保所有的<script type="math/tex">z^{(i)}</script>值可以是你想赋予的任意值，或者它的作用是保证隐藏的单元已使均值和方差标准化，应该是说可以控制均值和方差。<br><img src="/upload/essayimage/dl/dl0704.png" alt="dl0704"></p>
+<h4 id="3-5-Fitting-Batch-Norm-into-a-neural-network"><a href="#3-5-Fitting-Batch-Norm-into-a-neural-network" class="headerlink" title="3.5 Fitting Batch Norm into a neural network"></a>3.5 Fitting Batch Norm into a neural network</h4><p>这节讲Batch在深度网络训练中的拟合，如下图所示，第一层输入的X经过权重后得到的Z，需要作归一化处理，然后进入到激活函数中，作为第二层的输入…<br>这样网络的参数就是<script type="math/tex">W^{[1]},b^{[1]},W^{[2]},b^{[2]},...W^{[L]},b^{[L]}</script>，然后加入新的参数<script type="math/tex">\gamma^{[1]},\beta^{[1]},\gamma^{[2]},\beta^{[2]},...,\gamma^{[L]},\beta^{[L]}</script>(这里的<script type="math/tex">\beta</script> 和之前的不一样)，可以使用梯度更新来变换<script type="math/tex">\beta</script>，即<script type="math/tex">\beta^{[i]}=\beta^{[i]}-\alpha d\beta^{[i]}</script>，也可以使用Adam或RMS prop或momentum来更新参数<script type="math/tex">\beta , \gamma</script>。<br><img src="/upload/essayimage/dl/dl0705.png" alt="dl0705"><br>Batch归一化通常和训练集的mini-batch一起使用，应用Batch的归一化，用第一个mini-batch  <script type="math/tex">X^{\{1\}}</script>计算<script type="math/tex">z^{[1]}</script>，归一化；然后继续第二个mini-batch…<br>这里需要注意一点，对于<script type="math/tex">z^{[l]}</script>，即<script type="math/tex">z^{[l]}=W^{[l]}a^{[l-1]}+b^{[l]}</script>，我们归一化的过程是先将<script type="math/tex">z^{[l]}</script>的结果变为均值为0，方差为1的数据，然后再用<script type="math/tex">\gamma,\beta</script>放缩，这就说明不管<script type="math/tex">b^{[l]}</script>大小多少，因为不同的样本对应的<script type="math/tex">b^{[l]}</script>是相同的（即常数项），即均值会包含该项，而我们归一化后是减去均值，也就是说<script type="math/tex">b^{[l]}</script>的作用被抵消，因此做Batch归一化的时候其实可以消除这个参数。<br>下面是Batch归一化与mini-batch一起使用的梯度下降算法，现在我才有点理解之前为什么会提到<script type="math/tex">\beta , \gamma</script>更新，以及用上面Adam来更新的意义。<br>对于每一个Mini-Batch的输入<script type="math/tex">X^{\{t\}}</script>，对其每个隐藏层，前向传播中使用Batch归一化来得到<script type="math/tex">\tilde z^{[l]}</script>，在反向传播中更新参数<script type="math/tex">dW^{[l]},d\beta^{[l]},d\gamma^{[l]}</script>，最后更新参数。<br><img src="/upload/essayimage/dl/dl0706.png" alt="dl0706"></p>
+<h4 id="3-6-Why-does-Batch-Norm-work"><a href="#3-6-Why-does-Batch-Norm-work" class="headerlink" title="3.6 Why does Batch Norm work?"></a>3.6 Why does Batch Norm work?</h4><p>为什么Batch归一化会有效果，一个原因是你已经看到如何归一化输入特征值x，使其均值为0，方差为1一样，即让这些特征获得一个相似范围的值，可以加速学习。所以batch归一化起作用的原因，直观一点就是它在做类似的工作。<br>batch归一化有效的第二个原因是它可以使权重比训练的网络更滞后或者更深。也就是说比如第10层的网络权重相比于第一层的权重更能承受数据集的变化。[不是很明白，下面有解释]<br><img src="/upload/essayimage/dl/dl0707.png" alt="dl0707"><br>举例说明，如上图，假设我们已经在所有黑猫的图像上训练了数据集，如果现在要把此网络用在有色猫上，如下图所示，左边数据集正样本全是黑猫的情况，黑猫数据训练集显示如图中坐标所示（黑色表示负样本，红色表示正样本），有色猫训练集如右边图所示。我们无法期待在左边训练得很好的模型同样在右边运行得很好，即使存在运行都很好的同一个函数，如图中绿色线所示，但是我们期待学习算法会发现这个模型，如果只有左边数据的话。使数据改变分布，叫做covariate shift，这个意思是说如果你已经学到了一些x到y的映射，如果x的分布改变了，那么你可能需要重新训练你的学习算法，在神经网络中，covariate shift会导致模型预测效果变差。那么covariate shift问题是如何应用到神经网络的呢？[感觉这句话放到这好奇怪，也没提到covariate shift问题的解决方案啊，原文是So,how does this problem of covariate shift apply to a neural network?，虽然翻译的没毛病，但是我觉的这句话的意思应该是：那么covariate shift 问题在神经网络上是怎么表现的呢？]<br>如下图所示的深度网络:<br><img src="/upload/essayimage/dl/dl0708.png" alt="dl0708"><br>从第三层来看学习过程，它从第二层取得输出值，然后使最后的<script type="math/tex">\hat y</script>尽量接近真实值。先遮住左边的，第三层的工作是找到一种方式，使<script type="math/tex">a^{[2]}_{i}</script>这些值映射到<script type="math/tex">\hat y</script>。那么可以说是因为参数<script type="math/tex">W^{[3]},b^{[3]},W^{[4]},b^{[4]}</script>，使得网络模型不错。<br><img src="/upload/essayimage/dl/dl0709.png" alt="dl0709"><br>现在将网络的左边揭开，这个网络的参数还有<script type="math/tex">W^{[2]},b^{[2]},W^{[1]},b^{[1]}</script>，如果这些参数改变的话，<script type="math/tex">a^{[2]}_{i}</script>也会改变，那么从第三层的角度来看，这些隐藏单元的值在不断改变，这就是神经网络的covariate shift问题。<br><img src="/upload/essayimage/dl/dl0710.png" alt="dl0710"><br>那么batch归一化如何影响这个过程的呢？batch归一化的作用是它减少了隐藏值分布变化的数量【这里意思应该是说隐藏层数据被规范到一个范围】。batch归一化可以确保<script type="math/tex">z^{[2]]}_{i}</script>无论怎么变化，其均值和方差保持不变。它限制了前层参数的更新会影响数值分布的程度，使这些值变得更加稳定，也可以理解成它减弱了前层参数的作用和后层参数的作用之间的联系，使得网络每层都可以自己学习。对于后一层而言，前层不会左右移动太多，这样使得后层学习工作变得更容易。<br>batch还有一个作用是它有轻微的正则效果，给隐藏层添加了噪声（因为标准差的缩放和减去均值带来的额外噪声），使得后面层不过分依赖任何一个影藏单元，类似dropout的效果。如果用比较大的Mini-batch，这样噪声就减少，减少了正则化的效果。</p>
+<h4 id="3-8-Softmax"><a href="#3-8-Softmax" class="headerlink" title="3.8 Softmax"></a>3.8 Softmax</h4><p>Softmax用于多分类模型的输出层，之前有讲到过该公式。如下图所示，没有隐藏层，直接使用softmax作为输出层的效果，分别是3分类，4分类，5分类，6分类的例子。每两个类别之间都是线性的：<br><img src="/upload/essayimage/dl/dl0711.png" alt="dl0711"><br>下面介绍Loss function，如下图所示，假设输出层有4个神经元，这里实际为<script type="math/tex">y</script>，预测输出为<script type="math/tex">\hat y</script>，损失函数使用<script type="math/tex">L(\hat y,y)=-\sum_{j=1}^{s^{[l]}}y_{j}log \hat y_{j}</script>，可以发现对于<script type="math/tex">\hat y</script>中错误的输出行，并不会计算到损失函数中，损失函数只关心正确分类的行对应的概率值，而概率值越大，那么损失函数就越接近于0，也就是说要最小化损失函数，这样正确类别对应的概率才会最大。成本函数如右边所示。<br><img src="/upload/essayimage/dl/dl0712.png" alt="dl0712"><br>虽然最后的输出函数由原来的Sigmoid函数变为现在的Softmax函数，但是在反向传播的过程中，梯度求解并不会有影响，即<script type="math/tex">dz^{[l]}=\hat y-y</script>。<br>可以这样理解，Softmax函数如下：</p>
+<script type="math/tex; mode=display">
+\hat y=\begin{bmatrix}
+y_1\\ 
+y_2\\ 
+.\\
+y_C
+\end{bmatrix}=\begin{bmatrix}
+\frac{e^{z_1^{[l]}}}{\sum_i e^{z_i^{[l]}}}\\ 
+\frac{e^{z_2^{[l]}}}{\sum_i e^{z_i^{[l]}}}\\ 
+.\\
+\frac{e^{z_C^{[l]}}}{\sum_i e^{z_i^{[l]}}}
+\end{bmatrix}</script><p>这里如果C=2，那么Softmax就是一个Sigmoid函数：</p>
+<script type="math/tex; mode=display">
+y_1=\frac{e^{z_1^{[l]}}}{\sum_i e^{[z_i^{[l]}]}}=\frac{e^{z_1^{[l]}}}{e^{z_1^{[l]}}+e^{z_2^{[2]}}}=\frac{1}{1+e^{z_2^{[2]}-z_1^{[1]}}}</script><p>只是<script type="math/tex">\hat y</script>的行变为C行了，每行的计算过程和之前二分类是一样的。</p>
+<h4 id="大作业-with-tensorflow"><a href="#大作业-with-tensorflow" class="headerlink" title="大作业 with tensorflow"></a>大作业 with tensorflow</h4><p>作业地址：<a href="https://hub.coursera-notebooks.org/user/ypdhrtkwvkysknaueypgdj/notebooks/week7/Tensorflow%20Tutorial.ipynb" target="_blank" rel="external">Tensorflow Tutorial</a><br>数据集：<a href="https://github.com/stormstone/deeplearning.ai/tree/master/02-%E8%AF%BE%E5%90%8E%E4%BD%9C%E4%B8%9A" target="_blank" rel="external">deeplearning.ai</a><br>按照作业的顺序，这里先简单的介绍tensorflow的使用，部分摘自<a href="https://www.tensorflow.org/get_started/get_started" target="_blank" rel="external">tensorflow</a>，然后给出tensorflow训练多分类的代码</p>
+<p>tensorflow的核心程序由下面两个分离的部分组成</p>
+<ol>
+<li>Building the computational graph.</li>
+<li>Running the computational graph.</li>
+</ol>
+<p>常量<br>没有输入，输出为存储的值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">y_hat = tf.constant(<span class="number">36</span>, name=<span class="string">'y_hat'</span>) <span class="comment">#定义常量，y_hat为36</span></div></pre></td></tr></table></figure></p>
+<p>打印存储的值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Tensor(<span class="string">"Const:0"</span>, shape=(), dtype=int32)</div></pre></td></tr></table></figure></p>
+<p>上面并没有输出36，这里我们需要使用Session来运行计算图，得到结果，如下所示：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sess = tf.Session()</div><div class="line">print(sess.run(y_hat))</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/14/leetcode167/" rel="next" title="Two Sum问题合集">
+                <i class="fa fa-chevron-left"></i> Two Sum问题合集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/15/leetcode169/" rel="prev" title="169. Majority Element">
+                169. Majority Element <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-Tuning-process"><span class="nav-number">1.</span> <span class="nav-text">3.1 Tuning process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Using-an-appropriate-scale-to-pick-hyperparameters"><span class="nav-number">2.</span> <span class="nav-text">3.2 Using an appropriate scale to pick hyperparameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-Normalizing-activations-in-a-network"><span class="nav-number">3.</span> <span class="nav-text">3.4 Normalizing activations in a network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-Fitting-Batch-Norm-into-a-neural-network"><span class="nav-number">4.</span> <span class="nav-text">3.5 Fitting Batch Norm into a neural network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-Why-does-Batch-Norm-work"><span class="nav-number">5.</span> <span class="nav-text">3.6 Why does Batch Norm work?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-8-Softmax"><span class="nav-number">6.</span> <span class="nav-text">3.8 Softmax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大作业-with-tensorflow"><span class="nav-number">7.</span> <span class="nav-text">大作业 with tensorflow</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

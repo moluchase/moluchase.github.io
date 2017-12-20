@@ -1,0 +1,968 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="结构化机器学习项目Ng的深度学习视频笔记，长期更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction to ML strategy">
+<meta property="og:url" content="http://yoursite.com/2017/12/17/dl08/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="结构化机器学习项目Ng的深度学习视频笔记，长期更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0801.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0802.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0803.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0804.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0805.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0806.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0807.png">
+<meta property="og:updated_time" content="2017-12-18T05:42:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introduction to ML strategy">
+<meta name="twitter:description" content="结构化机器学习项目Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0801.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/17/dl08/"/>
+
+
+
+
+
+  <title> Introduction to ML strategy | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/dl08/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Introduction to ML strategy
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T10:56:02+08:00">
+                2017-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/17/dl08/" class="leancloud_visitors" data-flag-title="Introduction to ML strategy">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>结构化机器学习项目<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+<h4 id="1-1-Why-ML-Strategy"><a href="#1-1-Why-ML-Strategy" class="headerlink" title="1.1 Why ML Strategy?"></a>1.1 Why ML Strategy?</h4><p>如下图所示，我们可以从以下几个方面来优化我们的模型：搜集更多的数据，搜集更多的反例，让梯度下降运行更久，使用Adam算法…<br><img src="/upload/essayimage/dl/dl0801.png" alt="dl0801"></p>
+<h4 id="1-2-Orthogonalization"><a href="#1-2-Orthogonalization" class="headerlink" title="1.2 Orthogonalization"></a>1.2 Orthogonalization</h4><p>就讲了一点，正交化的意义，就像电视图像一样，如果说电视图像太宽，调整那个控制宽度的旋钮就可以了；在机器学习中，如果可以观察系统，知道哪一部分是错误的，它在训练集上做的不好，在开发集上做的不好，或者是在测试集上做的不好等等，然后去调节对应的旋钮，刚好可以解决该问题。</p>
+<h4 id="1-3-Single-number-evaluation-metric"><a href="#1-3-Single-number-evaluation-metric" class="headerlink" title="1.3 Single number evaluation metric"></a>1.3 Single number evaluation metric</h4><p>Precision(查准率)和Recall(查全率)的定义<br>Precision：分类器得出的结果与实际结果的重合度（比如分类猫中分类器得出的结果为猫，其中有95%的真猫，说明该分类器的查准率为95%）<br>Recall：表明实际为猫的图片中，有多少被系统识别出来。<br>如下面图所示，我们需要在A和B中选择一个分类器来作为最优的分类器，这里需要一个单一的数字评估指标，如下面的<script type="math/tex">F_{1}</script>。<br><img src="/upload/essayimage/dl/dl0802.png" alt="dl0802"><br>其中<script type="math/tex">F_{1}</script>作为查准率和查全率的调和平均值，如下计算：</p>
+<script type="math/tex; mode=display">
+F_{1}=\frac{2}{\frac{1}{P}+\frac{1}{R}}</script><p>我们可以得到A分类器有一个更高的分数，假设F1分数是一个合理的计算结果，我们就可以淘汰B分类器。</p>
+<h4 id="1-7-When-to-change-dev-test-sets-and-metrics"><a href="#1-7-When-to-change-dev-test-sets-and-metrics" class="headerlink" title="1.7 When to change dev/test sets and metrics"></a>1.7 When to change dev/test sets and metrics</h4><p><img src="/upload/essayimage/dl/dl0803.png" alt="dl0803"><br>如上图所示的模型，算法A由于某些原因把很多色情图像分类成猫，如果部署A，给用户推送猫的错误率虽然降低了很多，但是同时也会推送一些色情图片，公司不能接受这一点；但是算法B虽然有5%的误差，但它不会推送色情图片，所以从公司和用户的角度来看，算法B更为合理。用一个评估函数来表示这些：</p>
+<script type="math/tex; mode=display">
+Error :  \,\,\,\,\frac{1}{m_{dev}}\sum_{i}^{m_{dev}}w^{(i)}I\{y_{pre}^{(i)}\neq y^{(i)}\}</script><p>其中<script type="math/tex">w_{i}</script>的含义表示如果图片不是色情图片则为1，如果是得话，可以加大权重，比如10，或者100之类的，也可以将<script type="math/tex">\frac{1}{m_{dev}}</script>修改为<script type="math/tex">\frac{1}{\sum_{i}w^{(i)}}</script>。这样我们就可以用这个评估函数来更加合理的选择算法。<br>上面这个例子就是正交化的例子，我们在做机器学习的时候，第一步应该是清楚如何定义一个指标来衡量想做事情的表现。我么应该把机器学习任务看成两个独立的步骤，第一步就是设定目标，如何设定目标是一个独立的问题，看成一个单独的按钮，可以调试算法表现的旋钮，如精确瞄准。第二步是设定一个评估函数，比如上面的Error，然后再想如何优化系统来提高这个指标评分。<br>上面的例子中，A算法可能在评估函数上有一个很好的表现，但是在实际的测试集上却没有B算法好，我们就需要修改指标，或者我们使用的看法测试集。</p>
+<h4 id="1-10-Understanding-human-level-performance"><a href="#1-10-Understanding-human-level-performance" class="headerlink" title="1.10 Understanding human-level performance"></a>1.10 Understanding human-level performance</h4><p>Human-level error(人类水平误差)用来估计贝叶斯误差，即理论最低误差，不管是现在还是将来能够达到的最低值。<br>以医学图像分类为例，对于一个放射图像，假设一般人的误差是3%，普通医生的误差是1%，有经验的医生误差是0.7%，一个经验丰富的团队的误差是0.5%，那么我们可以认为人类水平误差为0.5，而贝叶斯误差小于等于0.5%。<br>假设对于上面的例子，我们的训练误差是5%，开发误差是6%，训练误差和人类水平误差之间的差值衡量了可避免的偏差，训练误差和开发误差之间的差值说明了学习算法的方差问题有多么严重，那么对于这个结果我们更应该修正模型的偏差，也就是加更多的神经元等；而对于训练误差为1%，开发误差为5%，那么我们更应该修正模型的方差；如果我们的训练误差是0.7%，而开发误差是0.8%，这里我们就很难做了，比如人类水平误差是0.5%，那么我们就该修正偏差，但是如果人类水平误差是0.7%，我们就要修正方差。<br><img src="/upload/essayimage/dl/dl0804.png" alt="dl0804"><br>如上表明了当机器学习任务的接近人类水平的时候，就会发现其进展越来越困难。见下面这个图：<br><img src="/upload/essayimage/dl/dl0805.png" alt="dl0805"><br>这里将一个团队的误差作为贝叶斯误差，左边的训练误差为0.6%，开发误差为0.8%，我们知道应该修正模型的方差；右边的图训练误差已经低于我们人类水平误差，我们不知道实际的贝叶斯误差是多少，如果是0.5%，说明模型过拟合了，但是如果贝叶斯误差是0.1%，说明我们需要修正的是偏差，这样我们就不知道如何优化我们的模型了，没有了明确的选项和前进的方向。</p>
+<h4 id="1-11-Improving-your-model-performance"><a href="#1-11-Improving-your-model-performance" class="headerlink" title="1.11 Improving your model performance"></a>1.11 Improving your model performance</h4><p>这一节是总结，对于偏差和方差应该采取哪些方法，如下图所示：<br><img src="/upload/essayimage/dl/dl0806.png" alt="dl0806"></p>
+<h4 id="2-1-Carrying-out-error-analysis"><a href="#2-1-Carrying-out-error-analysis" class="headerlink" title="2.1 Carrying out error analysis"></a>2.1 Carrying out error analysis</h4><p>对于猫分类的例子中，对于出现的误差，假设你有几个改善猫检测器的想法，如改善针对狗图的性能，或者要注意那些猫科动物，它们经常被分类成猫，或者发现图像是模糊的，等等（发现一种方法可以更好的处理模糊图像），现在我们要对误差分析来评估这三个想法，可以建立如下的表格：<br><img src="/upload/essayimage/dl/dl0807.png" alt="dl0807"><br>左边一列为要分析的图像集（错误集），第一行为我们要评估的想法（狗的问题，猫科动物，模糊图像），然后在对应的列上打勾，最后一行统计概率，这样我们就知道对于某一列的问题如果解决了对我们模型性能会有多大的提升。</p>
+<p>看不下去了，感觉功力不够，吸收的太少了，有时间再慢慢看吧…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/15/leetcode171/" rel="next" title="171.Excel Sheet Column Number">
+                <i class="fa fa-chevron-left"></i> 171.Excel Sheet Column Number
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Why-ML-Strategy"><span class="nav-number">1.</span> <span class="nav-text">1.1 Why ML Strategy?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Orthogonalization"><span class="nav-number">2.</span> <span class="nav-text">1.2 Orthogonalization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-Single-number-evaluation-metric"><span class="nav-number">3.</span> <span class="nav-text">1.3 Single number evaluation metric</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-When-to-change-dev-test-sets-and-metrics"><span class="nav-number">4.</span> <span class="nav-text">1.7 When to change dev/test sets and metrics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-10-Understanding-human-level-performance"><span class="nav-number">5.</span> <span class="nav-text">1.10 Understanding human-level performance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-11-Improving-your-model-performance"><span class="nav-number">6.</span> <span class="nav-text">1.11 Improving your model performance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Carrying-out-error-analysis"><span class="nav-number">7.</span> <span class="nav-text">2.1 Carrying out error analysis</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

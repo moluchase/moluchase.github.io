@@ -1,0 +1,993 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【2-2】Ng的深度学习视频笔记，长期更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Optimization Algorithms">
+<meta property="og:url" content="http://yoursite.com/2017/12/12/dl06/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-2】Ng的深度学习视频笔记，长期更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0601.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0602.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0603.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0604.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0605.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0606.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0607.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0608.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0609.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0610.png">
+<meta property="og:updated_time" content="2017-12-14T08:53:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Optimization Algorithms">
+<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-2】Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0601.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/12/dl06/"/>
+
+
+
+
+
+  <title> Optimization Algorithms | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/12/dl06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Optimization Algorithms
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-12T20:26:54+08:00">
+                2017-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/12/dl06/" class="leancloud_visitors" data-flag-title="Optimization Algorithms">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>改善深层神经网络：超参数调试、正则化以及优化【2-2】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+<h4 id="2-1-Mini-batch-gradient-descent"><a href="#2-1-Mini-batch-gradient-descent" class="headerlink" title="2.1 Mini-batch gradient descent"></a>2.1 Mini-batch gradient descent</h4><p>本周学习的是优化算法，可以让神经网络运行更快。机器学习的应用是一个高度依赖经验的过程，伴随着大量的迭代过程，需要训练诸多模型，然后找到一个合适的，因此优化算法能够帮助机器学习快速训练模型，其中一个难点在于深度学习没有在大数据领域发挥最大的效果，我们可以在一个大的数据集上训练神经网络，但是巨大的数据集上进行训练速度很慢，使用优化算法能够大大提高团队的效率。<br>向量化能够让多个样本放到一个矩阵中，从而有效的进行计算，允许处理整个训练集。即X的维度是(n,m)，而Y的维度是(1,m)，那么如果m比较大的话，比如500万或者更大的数，在对整个训练集执行梯度下降法时，需要处理整个训练集，然后才能进行梯度下降。而如果在处理整个训练集的过程中，将处理完的前部分数据进行梯度下降，这样算法就会更快。如下图所示，将数据集每一1000个样本作为一个batch，分成<script type="math/tex">X^{\{1\}},X^{\{2\}},...</script>，则<script type="math/tex">X^{\{t\}}</script>的维度为<script type="math/tex">(n_x,1000)</script>，对应的标签集<script type="math/tex">Y^{\{t\}}</script>的维度为<script type="math/tex">(1,1000)</script>.<br><img src="/upload/essayimage/dl/dl0601.png" alt="dl0601"><br>该梯度下降的训练算法和之前的是一样的，如下图所示：<br><img src="/upload/essayimage/dl/dl0602.png" alt="dl0602"></p>
+<h4 id="2-2-Understanding-mini-batch-gradient-descent"><a href="#2-2-Understanding-mini-batch-gradient-descent" class="headerlink" title="2.2 Understanding mini-batch gradient descent"></a>2.2 Understanding mini-batch gradient descent</h4><p>这里讲到了三种梯度下降的形式，先对比了批量梯度下降和mini-batch下降，批量梯度下降会计算全部的样本，可以预期每次迭代的成本函数都会下降，所以如果成本函数J是迭代次数的一个函数，它会随着每次迭代而减小，如果J在某次迭代中增加了，那肯定是出问题了，或许运行方式太大【前边[1-2]部分最后一个图就有问题(学习率为0.01)，成本函数有上升的情况，这里就是因为学习率过大】。使用mini-batch梯度下降法，每次迭代成本函数并不都是下降的，因为每部分样本的随机性等因素导致（有可能第一个batch比较容易拟合的样本集，但是第二个batch就比较难拟合的样本集，比如在里面有一些残缺的样本，这样就会出现摆幅），但是整体的走势是下降的，如下图所示：<br><img src="/upload/essayimage/dl/dl0603.png" alt="dl0603"><br>不同的size的比较，batch梯度下降，训练全部的样本，每一次迭代时间较长，但是J总是在减小，并达到最小值；随机梯度下降，每次对一个样本训练，这样丢失了向量化带来的计算加速，J总体趋势下降，但是摆幅严重，并且无法达到全局最小值；Mini-batch梯度下降，是前两者的折中，可以快速迭代，同样无法达到全局最小值。<br>一般对于小于2000的样本直接使用batch梯度下降，否则使用mini-batch梯度下降，大小一般为64，128，256，512这样的数字</p>
+<h4 id="2-3-Exponentially-weighted-averages"><a href="#2-3-Exponentially-weighted-averages" class="headerlink" title="2.3 Exponentially weighted averages"></a>2.3 Exponentially weighted averages</h4><p>【这一块不是特别明白，只能说是前人得经验吧】<br>如下面的图，显示的是London温度和时间(days)之间的关系，如果要计算其变化趋势的话，即温度的局部平均值或者移动平均值【统计学中叫做指数加权平均数】，需要用到下面的公式，其中<script type="math/tex">\theta_{t}</script>表示的是温度，用<script type="math/tex">\frac{1}{1-\beta}</script>表示平均的天数：</p>
+<script type="math/tex; mode=display">
+V_0=0\\
+V_t=\beta V_{t-1}+(1-\beta)\theta_{t}</script><p>对上面这个式子分析:</p>
+<script type="math/tex; mode=display">
+V_0=0\\
+V_1=\beta V_0+(1-\beta)\theta_{1}=(1-\beta)\theta_1\\
+V_2=\beta V_1+(1-\beta)\theta_2=\beta(1-\beta)\theta_1+(1-\beta)\theta_2\\
+V_3=\beta V_2+(1-\beta)\theta_3=\beta^2(1-\beta)\theta_1+\beta (1-\beta)\theta_2+(1-\beta)\theta_3\\
+...\\
+V_t=\beta^{t-1}(1-\beta)\theta_1+...+(1-\beta)\theta_t</script><p>上面拟合的值对应的曲线如下图所示，红线对应的是<script type="math/tex">\beta=0.9</script>，黄线对应的是<script type="math/tex">\beta=0.98</script>，绿线对应的是<script type="math/tex">\beta=0.5</script>：<br><img src="/upload/essayimage/dl/dl0604.png" alt="dl0604"></p>
+<p>这里<script type="math/tex">\beta</script>越高，线也就越平坦，要平均更多的值，指数加权平均公式在温度变化时，就会变化的更缓慢一些，所以会有延迟。<script type="math/tex">\beta=0.98</script>表示给前一天的值加了太多的权重，只有0.02的权重给了当日的值，所以温度变化时，指数加权平均值变化相应的更慢一些，可以算出这里平均了50天的温度。当<script type="math/tex">\beta=0.5</script>的时候，可以算出平均了2天的温度，如上面的黄线所示，由于平均了两天的数据，平均的数据太少，所以得到的曲线有更多的噪声，更有可能出现异常值，但是这个曲线能够更快的适应温度的变换。</p>
+<h4 id="2-4-Bias-correction-in-exponentially-weighted-average"><a href="#2-4-Bias-correction-in-exponentially-weighted-average" class="headerlink" title="2.4 Bias correction in exponentially weighted average"></a>2.4 Bias correction in exponentially weighted average</h4><p>对于上面的式子，如果<script type="math/tex">\beta</script>取值过大，由于需要平均的数值比较多，而最前面却没有那么多的数据，导致前期数据拟合效果差；比如取<script type="math/tex">\beta=0.98</script>的情况，第一天的实际值是40，那么<script type="math/tex">V_1=0.02 \cdot 40=8</script>，其结果远小于实际值，而由于前一个值的比重过大，导致<script type="math/tex">V_2</script>的结果也比较小，同样远低于实际值：</p>
+<script type="math/tex; mode=display">
+V_0=0\\
+V_1=0.98V_0+0.02θ_1=0.02θ_1\\
+V_2=0.98V_1+0.02θ_2=(0.98×0.02)θ_1+0.02θ_2=0.0196θ_1+0.02θ_2</script><p>而偏差修正就可以让估计的值变得更好，对得到的<script type="math/tex">V_t</script>作如下处理：</p>
+<script type="math/tex; mode=display">
+V_t'=\frac{V_t}{1-\beta^t}</script><p>当t=2时，<script type="math/tex">V_2'=\frac{V_2}{1-\beta^2}=\frac{0.0196\theta_1+0.02\theta_2}{0.0396}</script>，显然让值变大了，而且随着t的增减，<script type="math/tex">\beta^t</script>的值会接近于0，即当t非常大时，偏差几乎没有作用，也就是说偏差只会对前期起到作用，而这恰恰是我们需要的。在实际过程中，一般会忽略前期均值偏差的影响，也就是说大家不在乎执行偏差的修正。<br>实际效果如下图，之间讲到绿线是<script type="math/tex">\beta=0.98</script>的图，实际下图中的紫线才是原始的图，而绿线是加了偏差修正后的图：<br><img src="/upload/essayimage/dl/dl0605.png" alt="dl0605"></p>
+<h4 id="2-5-Gradient-descent-with-momentum"><a href="#2-5-Gradient-descent-with-momentum" class="headerlink" title="2.5 Gradient descent with momentum"></a>2.5 Gradient descent with momentum</h4><p>这里将前面讲到的指数加权平均数用在梯度上，即计算梯度的指数加权平均数，并利用该值去更新权重。比如，我们要优化的成本函数(cost function)如下图所示，椭圆形：<br><img src="/upload/essayimage/dl/dl0606.png" alt="dl0606"><br>之前讲到过归一化中的例子，但是不是所有的数据都可以转换后就变成球形的，这样就会导致梯度下降的过程如图中蓝色线所示（可以这样理解：上下，左右梯度更新不一样，上下梯度更新每次需要一个较小的值(即希望学习率小一点，因为不希望摆动)，但是左右梯度更新每次却需要一个较大的值(希望加速学习)）；我们还不能加大学习率，如果加大学习率后，就会导致偏离函数的范围，如紫色线所示；由于上下每次梯度更新的值都是在来回波动，而左右的梯度更新都在向右趋近，所以如果用指数加权平均数后，上下梯度的更新值就会被平均接近于0(正负相互抵消，摆动变小，即纵轴放慢学习速度)，左右梯度(横纵方向)，所有的微分都指向右，因此平均值仍然很大。在算法迭代几次后，就会如图中红色线所示方向趋近于最小值，这样这个算法就走了一条更加直接的路径，从而缩短了训练时间。</p>
+<p>这里用球在碗里向下滚动的例子来解释动量梯度下降：V作为球的速度，dV作为前一时间给当前时间球的加速度，<script type="math/tex">\beta V</script>是由于摩擦力导致速度衰减后的结果，也就是说指数加权平均的梯度下降算法不同于普通的梯度下降，它每一步都受前一步的影响，并加大这个影响（让球的速度越来越快【这里为什么会让球的速度越来越快呢，我的理解是这样的：从图中可以看到原始的梯度下降前期迭代幅度大，后期迭代幅度小，但是使用指数加权平均后，后期迭代是前面的平均，很显然相对之前的后期幅度而言变大了，即球的速度越来越快】）【这里又抛出一个问题，为什么前期迭代幅度大，后期迭代幅度小？我可能理解有偏差了…我觉得应该不能让横轴加快速度吧】，而普通梯度下降每一步都是独立的。<br>算法实现如下：<br><img src="/upload/essayimage/dl/dl0607.png" alt="dl0607"><br>一般<script type="math/tex">\beta=0.9</script>，实际使用中人们也不会使用偏差修正，在有些介绍中，上图的<script type="math/tex">(1-\beta)</script>被去掉。</p>
+<h4 id="2-6-RMSprop-root-mean-square-prop"><a href="#2-6-RMSprop-root-mean-square-prop" class="headerlink" title="2.6 RMSprop(root mean square prop)"></a>2.6 RMSprop(root mean square prop)</h4><p>RMSprop也可以加速梯度下降，同样用之前的图举例，为了分析，纵轴代表参数b，横轴代表参数W，我们需要减缓b方向的学习，而加速或者至少不是减少横轴方向的学习，而RMSprop可以实现这一点。如下图所示：<br><img src="/upload/essayimage/dl/dl0608.png" alt="dl0608"><br>用<script type="math/tex">S_{dw},S_{db}</script>来计算梯度的指数加权平均，对梯度更新的时候不同的梯度使用不同的学习率，关于求梯度的指数加权平均的时候用<script type="math/tex">dw^2,db^2</script>的原因视频中说这样能够保留微分平方的加权平均数，我的理解是和加绝对值是一个效果，这里是为了计算大小，而不是方向，只是平方后会让明显的更加明显；这里还需要明确一点，梯度值代表的是导数，也就是斜率，上图中蓝线所示的是梯度的方向，即b的斜率<script type="math/tex">db</script>比较大，而<script type="math/tex">dW</script>就比较小，那么对应的<script type="math/tex">S_{dw}</script>比较小，<script type="math/tex">S_{db}</script>比较大，那么对于w而言，梯度更新我们希望学习率大，除以小的值；对于b而言，梯度更新我们希望学习率很小，除以大的值。这样垂直方向就能消除大的摆动，最后的梯度线如图绿线所示。【这里有一点，为什么蓝线所示的dw比较小，db比较大，蓝线为什么这样画？ 我的理解走得很慢才到最小值，说明最小值方向的梯度比较小，而其它方向的梯度比较大】<br>可以用一个更大的<script type="math/tex">\alpha</script>来加速学习【这里是因为我们已经将梯度归一了（即基本沿着最小路径方向），学习率变大也不会离最小路径有太大的偏离】；这里如果<script type="math/tex">S_{dw}</script>非常小，得到的答案就会非常大，为了确保数值稳定，实际中通常会加上一个很小的<script type="math/tex">\varepsilon</script>，这样就可以保证除数一定大于<script type="math/tex">\varepsilon</script>，也就不会得到一个很大的值。</p>
+<h4 id="2-7-Adam"><a href="#2-7-Adam" class="headerlink" title="2.7 Adam"></a>2.7 Adam</h4><p>在深度学习的历史上，很多学者提出的优化算法，很好的解决了一些问题，但随后这些算法被指出并不能一般化，并不适合于多种神经网络。这样学者们就开始质疑新的优化算法，RMSprop和Adam优化算法是少有的经受住人们考验的两种算法，适用于不同的深度学习结构。Adam算法基本上就是将RMSprop和Momentum结合在一起的。<br>Adam算法如下：<br><img src="/upload/essayimage/dl/dl0609.png" alt="dl0609"><br>前两行分别计算RMSprop和Momentum，后面两行是偏差修正，最后一行梯度更新，结合之前的讲解可以知道最后一行就是对前面两个算法的叠加。<br>关于算法中的参数说明：<script type="math/tex">\alpha</script>经常需要调试，<script type="math/tex">\beta_1</script>一般默认为0.9，<script type="math/tex">\beta_2</script>推荐为0.999，<script type="math/tex">\varepsilon</script>并不是很重要，不会影响算法的表现，Adam的作者建议为<script type="math/tex">10^{-8}</script>。</p>
+<h4 id="2-8-Learning-rate-decay"><a href="#2-8-Learning-rate-decay" class="headerlink" title="2.8 Learning rate decay"></a>2.8 Learning rate decay</h4><p><img src="/upload/essayimage/dl/dl0610.png" alt="dl0610"><br>如上图所示，假设我们使用mini-batch梯度下降法，mini-batch数量不大，在迭代过程中会有噪声，图中蓝色线所示，不会精确的收敛，而是在最小值附近波动，因为我们用的<script type="math/tex">\alpha</script>是固定的值。如果我们在训练的过程中慢慢的减少学习率<script type="math/tex">\alpha</script>，在初期<script type="math/tex">\alpha</script>的学习率比较大，学习相对较快，但随着<script type="math/tex">\alpha</script>的变小，步伐也慢慢变小，如图中绿线所示，最后会在最小值附近一小块区域摆动，而不是在训练区域大幅度摆动。<br>可以如下设置学习率：</p>
+<script type="math/tex; mode=display">
+\alpha=\frac{1}{1+decayRate\cdot epochNum}\alpha_0</script><p>其中decayRate为衰减率（另外一个需要调整的超参数），epochNum为迭代次数，<script type="math/tex">\alpha_0</script>为初始学习率。<br>指数衰减：</p>
+<script type="math/tex; mode=display">
+\alpha=decayRate^{epochNum}\cdot \alpha_0</script><p>…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/11/dl05/" rel="next" title="Setting up your ML application">
+                <i class="fa fa-chevron-left"></i> Setting up your ML application
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/13/leetcode153/" rel="prev" title="153. Find Minimum in Rotated Sorted Array">
+                153. Find Minimum in Rotated Sorted Array <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Mini-batch-gradient-descent"><span class="nav-number">1.</span> <span class="nav-text">2.1 Mini-batch gradient descent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Understanding-mini-batch-gradient-descent"><span class="nav-number">2.</span> <span class="nav-text">2.2 Understanding mini-batch gradient descent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-Exponentially-weighted-averages"><span class="nav-number">3.</span> <span class="nav-text">2.3 Exponentially weighted averages</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-Bias-correction-in-exponentially-weighted-average"><span class="nav-number">4.</span> <span class="nav-text">2.4 Bias correction in exponentially weighted average</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-Gradient-descent-with-momentum"><span class="nav-number">5.</span> <span class="nav-text">2.5 Gradient descent with momentum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-RMSprop-root-mean-square-prop"><span class="nav-number">6.</span> <span class="nav-text">2.6 RMSprop(root mean square prop)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-Adam"><span class="nav-number">7.</span> <span class="nav-text">2.7 Adam</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-Learning-rate-decay"><span class="nav-number">8.</span> <span class="nav-text">2.8 Learning rate decay</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
