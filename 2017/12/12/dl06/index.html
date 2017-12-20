@@ -114,12 +114,12 @@
 
 
 
-<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【2-2】Ng的深度学习视频笔记，长期更新">
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Optimization Algorithms">
 <meta property="og:url" content="http://yoursite.com/2017/12/12/dl06/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-2】Ng的深度学习视频笔记，长期更新">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0601.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0602.png">
@@ -131,10 +131,10 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0608.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0609.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0610.png">
-<meta property="og:updated_time" content="2017-12-14T08:53:53.000Z">
+<meta property="og:updated_time" content="2017-12-20T08:56:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Optimization Algorithms">
-<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-2】Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0601.png">
 
 
@@ -423,7 +423,7 @@
       
 
       
-        <p>改善深层神经网络：超参数调试、正则化以及优化【2-2】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a><br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="2-1-Mini-batch-gradient-descent"><a href="#2-1-Mini-batch-gradient-descent" class="headerlink" title="2.1 Mini-batch gradient descent"></a>2.1 Mini-batch gradient descent</h4><p>本周学习的是优化算法，可以让神经网络运行更快。机器学习的应用是一个高度依赖经验的过程，伴随着大量的迭代过程，需要训练诸多模型，然后找到一个合适的，因此优化算法能够帮助机器学习快速训练模型，其中一个难点在于深度学习没有在大数据领域发挥最大的效果，我们可以在一个大的数据集上训练神经网络，但是巨大的数据集上进行训练速度很慢，使用优化算法能够大大提高团队的效率。<br>向量化能够让多个样本放到一个矩阵中，从而有效的进行计算，允许处理整个训练集。即X的维度是(n,m)，而Y的维度是(1,m)，那么如果m比较大的话，比如500万或者更大的数，在对整个训练集执行梯度下降法时，需要处理整个训练集，然后才能进行梯度下降。而如果在处理整个训练集的过程中，将处理完的前部分数据进行梯度下降，这样算法就会更快。如下图所示，将数据集每一1000个样本作为一个batch，分成<script type="math/tex">X^{\{1\}},X^{\{2\}},...</script>，则<script type="math/tex">X^{\{t\}}</script>的维度为<script type="math/tex">(n_x,1000)</script>，对应的标签集<script type="math/tex">Y^{\{t\}}</script>的维度为<script type="math/tex">(1,1000)</script>.<br><img src="/upload/essayimage/dl/dl0601.png" alt="dl0601"><br>该梯度下降的训练算法和之前的是一样的，如下图所示：<br><img src="/upload/essayimage/dl/dl0602.png" alt="dl0602"></p>
 <h4 id="2-2-Understanding-mini-batch-gradient-descent"><a href="#2-2-Understanding-mini-batch-gradient-descent" class="headerlink" title="2.2 Understanding mini-batch gradient descent"></a>2.2 Understanding mini-batch gradient descent</h4><p>这里讲到了三种梯度下降的形式，先对比了批量梯度下降和mini-batch下降，批量梯度下降会计算全部的样本，可以预期每次迭代的成本函数都会下降，所以如果成本函数J是迭代次数的一个函数，它会随着每次迭代而减小，如果J在某次迭代中增加了，那肯定是出问题了，或许运行方式太大【前边[1-2]部分最后一个图就有问题(学习率为0.01)，成本函数有上升的情况，这里就是因为学习率过大】。使用mini-batch梯度下降法，每次迭代成本函数并不都是下降的，因为每部分样本的随机性等因素导致（有可能第一个batch比较容易拟合的样本集，但是第二个batch就比较难拟合的样本集，比如在里面有一些残缺的样本，这样就会出现摆幅），但是整体的走势是下降的，如下图所示：<br><img src="/upload/essayimage/dl/dl0603.png" alt="dl0603"><br>不同的size的比较，batch梯度下降，训练全部的样本，每一次迭代时间较长，但是J总是在减小，并达到最小值；随机梯度下降，每次对一个样本训练，这样丢失了向量化带来的计算加速，J总体趋势下降，但是摆幅严重，并且无法达到全局最小值；Mini-batch梯度下降，是前两者的折中，可以快速迭代，同样无法达到全局最小值。<br>一般对于小于2000的样本直接使用batch梯度下降，否则使用mini-batch梯度下降，大小一般为64，128，256，512这样的数字</p>
 <h4 id="2-3-Exponentially-weighted-averages"><a href="#2-3-Exponentially-weighted-averages" class="headerlink" title="2.3 Exponentially weighted averages"></a>2.3 Exponentially weighted averages</h4><p>【这一块不是特别明白，只能说是前人得经验吧】<br>如下面的图，显示的是London温度和时间(days)之间的关系，如果要计算其变化趋势的话，即温度的局部平均值或者移动平均值【统计学中叫做指数加权平均数】，需要用到下面的公式，其中<script type="math/tex">\theta_{t}</script>表示的是温度，用<script type="math/tex">\frac{1}{1-\beta}</script>表示平均的天数：</p>

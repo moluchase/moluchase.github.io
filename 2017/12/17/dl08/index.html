@@ -114,12 +114,12 @@
 
 
 
-<meta name="description" content="结构化机器学习项目Ng的深度学习视频笔记，长期更新">
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Introduction to ML strategy">
 <meta property="og:url" content="http://yoursite.com/2017/12/17/dl08/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="结构化机器学习项目Ng的深度学习视频笔记，长期更新">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0801.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0802.png">
@@ -128,10 +128,10 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0805.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0806.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0807.png">
-<meta property="og:updated_time" content="2017-12-18T05:42:12.000Z">
+<meta property="og:updated_time" content="2017-12-20T08:57:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to ML strategy">
-<meta name="twitter:description" content="结构化机器学习项目Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0801.png">
 
 
@@ -420,7 +420,7 @@
       
 
       
-        <p>结构化机器学习项目<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a><br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="1-1-Why-ML-Strategy"><a href="#1-1-Why-ML-Strategy" class="headerlink" title="1.1 Why ML Strategy?"></a>1.1 Why ML Strategy?</h4><p>如下图所示，我们可以从以下几个方面来优化我们的模型：搜集更多的数据，搜集更多的反例，让梯度下降运行更久，使用Adam算法…<br><img src="/upload/essayimage/dl/dl0801.png" alt="dl0801"></p>
 <h4 id="1-2-Orthogonalization"><a href="#1-2-Orthogonalization" class="headerlink" title="1.2 Orthogonalization"></a>1.2 Orthogonalization</h4><p>就讲了一点，正交化的意义，就像电视图像一样，如果说电视图像太宽，调整那个控制宽度的旋钮就可以了；在机器学习中，如果可以观察系统，知道哪一部分是错误的，它在训练集上做的不好，在开发集上做的不好，或者是在测试集上做的不好等等，然后去调节对应的旋钮，刚好可以解决该问题。</p>
 <h4 id="1-3-Single-number-evaluation-metric"><a href="#1-3-Single-number-evaluation-metric" class="headerlink" title="1.3 Single number evaluation metric"></a>1.3 Single number evaluation metric</h4><p>Precision(查准率)和Recall(查全率)的定义<br>Precision：分类器得出的结果与实际结果的重合度（比如分类猫中分类器得出的结果为猫，其中有95%的真猫，说明该分类器的查准率为95%）<br>Recall：表明实际为猫的图片中，有多少被系统识别出来。<br>如下面图所示，我们需要在A和B中选择一个分类器来作为最优的分类器，这里需要一个单一的数字评估指标，如下面的<script type="math/tex">F_{1}</script>。<br><img src="/upload/essayimage/dl/dl0802.png" alt="dl0802"><br>其中<script type="math/tex">F_{1}</script>作为查准率和查全率的调和平均值，如下计算：</p>

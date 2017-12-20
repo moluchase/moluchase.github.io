@@ -114,12 +114,12 @@
 
 
 
-<meta name="description" content="改善深层神经网络：超参数调试、正则化以及优化【2-3】Ng的深度学习视频笔记，长期更新">
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hyperparmeter tuning">
 <meta property="og:url" content="http://yoursite.com/2017/12/14/dl07/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-3】Ng的深度学习视频笔记，长期更新">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0701.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0702.png">
@@ -133,10 +133,10 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0710.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0711.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0712.png">
-<meta property="og:updated_time" content="2017-12-16T12:36:06.000Z">
+<meta property="og:updated_time" content="2017-12-20T08:57:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hyperparmeter tuning">
-<meta name="twitter:description" content="改善深层神经网络：超参数调试、正则化以及优化【2-3】Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0701.png">
 
 
@@ -425,7 +425,7 @@
       
 
       
-        <p>改善深层神经网络：超参数调试、正则化以及优化【2-3】<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a><br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="3-1-Tuning-process"><a href="#3-1-Tuning-process" class="headerlink" title="3.1 Tuning process"></a>3.1 Tuning process</h4><p>此节讲解关于如何系统组织超参调试过程的技巧，从学习率<script type="math/tex">\alpha</script>，momentum<script type="math/tex">\beta</script>，或者是Adam优化算法中的<script type="math/tex">\beta_1，\beta_2，\varepsilon</script>，层数(layers)，隐藏层单元的数量(hidden units)，学习衰退率(decayRate)，还有Mini-batch大小。如下图所示，红色部分框最重要，其次是黄色框部分，然后是紫色框部分，而<script type="math/tex">\beta_1，\beta_2，\varepsilon</script>几乎不用调试，一般为0.9，0.999，<script type="math/tex">10^{-8}</script>。<br><img src="/upload/essayimage/dl/dl0701.png" alt="dl0701"><br>调试参数的过程：先用间隔比较大的区域来选取参数，从其中选择比较优的参数，继续缩小范围即可，如下图：<br><img src="/upload/essayimage/dl/dl0702.png" alt="dl0702"></p>
 <h4 id="3-2-Using-an-appropriate-scale-to-pick-hyperparameters"><a href="#3-2-Using-an-appropriate-scale-to-pick-hyperparameters" class="headerlink" title="3.2 Using an appropriate scale to pick hyperparameters"></a>3.2 Using an appropriate scale to pick hyperparameters</h4><p>上一节讲到，随机取值可以提升搜索效率，但是随机取值并不是在有效范围内的随机均匀取值，而是选择合适的标尺，探究这些超参数。<br>对于隐藏层单元的个数，可以随机的在指定范围内取点，以及选取layers的个数，也是可以随机选取的，但是对于超参数而言不适合。比如假设选取<script type="math/tex">\alpha</script>的值在0.0001到1之间，如果随机取点，则有90%的数值落到0.1到1之间，而0.0001到0.1之间只有10%的搜索资源，显然是不合理的，这里不使用线性轴，而是使用如下轴，0.0001~0.001，0.001~0.01，0.01~0.1，0.1~1，然后对每个区域均匀随机取点，这样在0.0001~0.001之间就会有更多的搜索资源可以用。<br><img src="/upload/essayimage/dl/dl0703.png" alt="dl0703"><br>用python如下实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">r=-<span class="number">4</span>*np.random.rand()</div><div class="line">a=<span class="number">10</span>**r</div></pre></td></tr></table></figure></p>
 <p>左边为<script type="math/tex">10^{-4}</script>，右边为<script type="math/tex">10^{0}</script>.<br>对于计算指数加权平均值<script type="math/tex">\beta</script>，假设<script type="math/tex">\beta</script>的取值在0.9~0.999之间的某个值（我们要搜索的值），这里回忆一下，取0.9就相当于10个值的平均，取0.999就相当于在1000个值总取平均，因此如果要在该范围内搜索，就不能用线性轴取值，此时可以考虑<script type="math/tex">1-\beta</script>，这样范围就变成0.001~0.1之间了，用上面的指数即可。这个直观的理解就是，当<script type="math/tex">\beta</script>接近于1时，<script type="math/tex">\beta</script>就会对细微的变化变得很敏感，所以在整个取值过程中，当<script type="math/tex">\beta</script>接近1的区间，需要更加密集的取值。</p>

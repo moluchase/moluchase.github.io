@@ -114,12 +114,12 @@
 
 
 
-<meta name="description" content="神经网络和深度学习[1-2]Ng的深度学习视频笔记，长期更新">
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3 Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Basic of Neural Network Programming">
 <meta property="og:url" content="http://yoursite.com/2017/12/06/dl02/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="神经网络和深度学习[1-2]Ng的深度学习视频笔记，长期更新">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3 Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0201.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0202.png">
@@ -129,10 +129,10 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0206.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0207.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0208.png">
-<meta property="og:updated_time" content="2017-12-13T09:11:29.000Z">
+<meta property="og:updated_time" content="2017-12-20T08:55:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Basic of Neural Network Programming">
-<meta name="twitter:description" content="神经网络和深度学习[1-2]Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3 Ng的深度学习视频笔记，长期更新">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0201.png">
 
 
@@ -421,7 +421,8 @@
       
 
       
-        <p>神经网络和深度学习[1-2]<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a></p>
+<p>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="2-3-logistic-Regression-Cost-Function"><a href="#2-3-logistic-Regression-Cost-Function" class="headerlink" title="2.3 logistic Regression: Cost Function"></a>2.3 logistic Regression: Cost Function</h4><p>  二分类问题，每个特征前面有一个权重，然后加上一个偏置项，即<script type="math/tex">y=w^Tx+b</script>，我们想让这个结果要么是0，要么是1，那么就用到了sigmod函数，即<script type="math/tex">\sigma(z)=\frac{1}{1+e^{-z}}</script>，讲义中给出的是对于样本<script type="math/tex">(x^{(i)},y^{(i)})</script>而言，有如下公式：</p>
 <script type="math/tex; mode=display">\hat{y}^{(i)}=\sigma(w^Tx^{(i)}+b)=\frac{1}{1+e^{-(w^Tx^{(i)}+b)}}</script><p>该样本的损失函数（loss function）一般为<script type="math/tex">\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script>，但是在logistic回归中一般使用下面的损失函数：</p>
 <script type="math/tex; mode=display">L(\hat{y}^{(i)},y^{(i)})=-\big(y^{(i)}\,log(\hat{y}^{(i)})+(1-y^{(i)})\,log(1-\hat{y}^{(i)})\big)</script><p>原因是因为平方损失函数（误差平方）在讨论最优化问题的时候是非凸的，即会得到多个局部最优解(梯度下降法可能找不到全局最优解)，而用log损失函数，起着和误差平方相似的作用，会给我们一个凸的优化问题，很容易做优化。<br>对于多个样本的成本函数(cost function) J 如下：</p>

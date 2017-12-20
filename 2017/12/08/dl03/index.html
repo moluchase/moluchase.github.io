@@ -114,12 +114,12 @@
 
 
 
-<meta name="description" content="神经网络和深度学习[1-3]Ng的深度学习视频笔记，长期更新">
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:type" content="article">
 <meta property="og:title" content="One hidden layer Neural Network">
 <meta property="og:url" content="http://yoursite.com/2017/12/08/dl03/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="神经网络和深度学习[1-3]Ng的深度学习视频笔记，长期更新">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0301.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0302.png">
@@ -131,10 +131,10 @@
 <meta property="og:image" content="https://hub.coursera-notebooks.org/user/yfvzoyeraolmacyhglfoec/files/Week%203/Planar%20data%20classification%20with%20one%20hidden%20layer/images/sgd.gif">
 <meta property="og:image" content="https://hub.coursera-notebooks.org/user/yfvzoyeraolmacyhglfoec/files/Week%203/Planar%20data%20classification%20with%20one%20hidden%20layer/images/sgd_bad.gif">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0308.png">
-<meta property="og:updated_time" content="2017-12-12T12:57:30.000Z">
+<meta property="og:updated_time" content="2017-12-20T08:56:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="One hidden layer Neural Network">
-<meta name="twitter:description" content="神经网络和深度学习[1-3]Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
 <meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl0301.png">
 
 
@@ -423,7 +423,7 @@
       
 
       
-        <p>神经网络和深度学习[1-3]<br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a><br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
 <h4 id="3-2-Computing-a-Neural-Network’s-Output"><a href="#3-2-Computing-a-Neural-Network’s-Output" class="headerlink" title="3.2 Computing a Neural Network’s Output"></a>3.2 Computing a Neural Network’s Output</h4><p>如下图所示，在第二周中讲到的logistic回归的例子只是神经网络隐藏层中的一个节点而已<br><img src="/upload/essayimage/dl/dl0301.png" alt="dl0301"><br><img src="/upload/essayimage/dl/dl0302.png" alt="dl0302"><br>其中<script type="math/tex">x_{1},x_{2},x_{3}</script>代表的是样本的特征，这里用向量这矩阵来形象的解释(主要是为了不使用for)<br>以单样本为例：</p>
 <script type="math/tex; mode=display">
 z_{1}^{[1]}=\begin{bmatrix}
