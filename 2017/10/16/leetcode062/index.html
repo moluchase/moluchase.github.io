@@ -123,7 +123,7 @@
 <meta property="og:description" content="description Unique Paths如下图所示：从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？ Unique Paths II如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？ Minimum Path SumGiven a m x n grid filled with non-negative numbers, fin">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/robot_maze.png">
-<meta property="og:updated_time" content="2017-12-20T02:44:15.000Z">
+<meta property="og:updated_time" content="2017-12-26T03:41:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DP问题大集合之一">
 <meta name="twitter:description" content="description Unique Paths如下图所示：从start的位置走，每次只能向下或者向右走，到达Finish的位置有多少种方法？ Unique Paths II如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？ Minimum Path SumGiven a m x n grid filled with non-negative numbers, fin">
@@ -420,7 +420,8 @@
 <li>Unique Paths II<br>如果这些位置有些是不能走的（能走用0表示，不能走用1表示），那么又有多少种方法？</li>
 <li>Minimum Path Sum<br>Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.</li>
 <li>Climbing Stairs<br>You are climbing a stair case. It takes n steps to reach to the top.<br>Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?</li>
-<li>House Robber<br>英文比较啰嗦，意思就是从给定的数组中选取元素，使得选取的元素和最大，要求不能选择相邻的元素。</li>
+<li>House Robber<br>英文比较啰嗦，小偷偷一排房屋，要求不能偷相邻的房屋。意思就是从给定的数组中选取元素，使得选取的元素和最大，要求不能选择相邻的元素。</li>
+<li>House Robber II<br>这道题和上面一样，只不过房屋是一个环形的，也就是上面的情况首尾相连。</li>
 </ol>
 <a id="more"></a>
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><h4 id="leetcode-62-Unique-Paths"><a href="#leetcode-62-Unique-Paths" class="headerlink" title="[leetcode 62] Unique Paths"></a>[leetcode 62] Unique Paths</h4><p>首先想到的当然是用DFS了，每次都有两种走法，向下和向右，而每次的这两种走法又都构成一个子问题，和start点的情况一样，这样便可以写出下面的代码：</p>
@@ -453,13 +454,15 @@ dp[0]=0\\
 dp[1]=1\\
 dp[i]=dp[i-1]+dp[i-2]</script><p>代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">climbStairs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> [] dp=<span class="keyword">new</span> <span class="keyword">int</span>[n+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>)dp[i]=<span class="number">0</span>;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(i==<span class="number">1</span>)dp[i]=<span class="number">1</span>;</div><div class="line">        <span class="keyword">else</span> dp[i]=dp[i-<span class="number">1</span>]+dp[i-<span class="number">2</span>];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> dp[n];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="leetcode-198-House-Robber"><a href="#leetcode-198-House-Robber" class="headerlink" title="[leetcode 198] House Robber"></a>[leetcode 198] House Robber</h4><p>这道题使用一个2维数组，对于第i个元素有两种选择，一种是选取，一种是不选取；<code>dp[0][i]</code>表示不选取第i个元素，<code>dp[1][i]</code>表示选取第i个元素。不选取该元素的话，就取前面结果的最大值，选取该元素的话就要将没有选取该元素的最大值和当前元素相加，返回对最后一个元素分析后的两个结果中的最大值。</p>
+<h4 id="leetcode-198-House-Robber"><a href="#leetcode-198-House-Robber" class="headerlink" title="[leetcode 198] House Robber"></a>[leetcode 198] House Robber</h4><p>这道题使用一个2维数组，对于第i个元素有两种选择，一种是选取，一种是不选取；<code>dp[0][i]</code>表示不选取第i个元素，<code>dp[1][i]</code>表示选取第i个元素。不选取该元素的话，就取前面结果的最大值，选取该元素的话就要将没有选取该元素的最大值和当前元素相加，返回对最后一个元素分析后的两个结果中的最大值。【这道题的代码空间复杂度是可以优化的，因为我们不需要记录全部的值，见下面一道题】</p>
 <script type="math/tex; mode=display">
 dp[0][0]=0,dp[1][0]=0\\
 dp[0][i]=max(dp[0][i-1],dp[1][i-1])\\
 dp[1][i]=dp[0][i-1]+nums[i-1]\\
 return \,\,max(dp[0][n],dp[1][n])</script><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> n=nums.length;</div><div class="line">    <span class="keyword">int</span> [][]dp=<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>][n+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        dp[<span class="number">0</span>][i]=Math.max(dp[<span class="number">0</span>][i-<span class="number">1</span>],dp[<span class="number">1</span>][i-<span class="number">1</span>]);</div><div class="line">        dp[<span class="number">1</span>][i]=dp[<span class="number">0</span>][i-<span class="number">1</span>]+nums[i-<span class="number">1</span>];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> Math.max(dp[<span class="number">0</span>][n],dp[<span class="number">1</span>][n]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>dp问题的难点在于构建dp矩阵，写通项公式。</p>
+<h4 id="leetcode-213-House-Robber-II"><a href="#leetcode-213-House-Robber-II" class="headerlink" title="[leetcode 213] House Robber II"></a>[leetcode 213] House Robber II</h4><p>前面一道题目使用dp的数组目的是为了更加的好理解，其实完全没有必要用数组的，如下面的代码，这道题无非就是上面题目的两种情况，一种是1到n-1，一种是2到n，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] num, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> include = <span class="number">0</span>, exclude = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = lo; j &lt;= hi; j++) &#123;</div><div class="line">        <span class="keyword">int</span> i = include, e = exclude;</div><div class="line">        include = e + num[j];</div><div class="line">        exclude = Math.max(e, i);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> Math.max(include, exclude);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (nums.length == <span class="number">1</span>) <span class="keyword">return</span> nums[<span class="number">0</span>];</div><div class="line">    <span class="keyword">return</span> Math.max(rob(nums, <span class="number">0</span>, nums.length - <span class="number">2</span>), rob(nums, <span class="number">1</span>, nums.length - <span class="number">1</span>));</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>参考：<a href="https://discuss.leetcode.com/topic/14375/simple-ac-solution-in-java-in-o-n-with-explanation" target="_blank" rel="external">Simple AC solution in Java in O(n) with explanation</a></p>
 
       
     </div>
@@ -609,7 +612,7 @@ return \,\,max(dp[0][n],dp[1][n])</script><figure class="highlight java"><table>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-count">82</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -620,7 +623,7 @@ return \,\,max(dp[0][n],dp[1][n])</script><figure class="highlight java"><table>
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -631,7 +634,7 @@ return \,\,max(dp[0][n],dp[1][n])</script><figure class="highlight java"><table>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -686,7 +689,7 @@ return \,\,max(dp[0][n],dp[1][n])</script><figure class="highlight java"><table>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#description"><span class="nav-number">1.</span> <span class="nav-text">description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-62-Unique-Paths"><span class="nav-number">2.1.</span> <span class="nav-text">[leetcode 62] Unique Paths</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-63-Unique-Paths-II"><span class="nav-number">2.2.</span> <span class="nav-text">[leetcode 63] Unique Paths II</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-64-Minimum-Path-Sum"><span class="nav-number">2.3.</span> <span class="nav-text">[leetcode 64] Minimum Path Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-70-Climbing-Stairs"><span class="nav-number">2.4.</span> <span class="nav-text">[leetcode 70] Climbing Stairs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-198-House-Robber"><span class="nav-number">2.5.</span> <span class="nav-text">[leetcode 198] House Robber</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#description"><span class="nav-number">1.</span> <span class="nav-text">description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-62-Unique-Paths"><span class="nav-number">2.1.</span> <span class="nav-text">[leetcode 62] Unique Paths</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-63-Unique-Paths-II"><span class="nav-number">2.2.</span> <span class="nav-text">[leetcode 63] Unique Paths II</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-64-Minimum-Path-Sum"><span class="nav-number">2.3.</span> <span class="nav-text">[leetcode 64] Minimum Path Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-70-Climbing-Stairs"><span class="nav-number">2.4.</span> <span class="nav-text">[leetcode 70] Climbing Stairs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-198-House-Robber"><span class="nav-number">2.5.</span> <span class="nav-text">[leetcode 198] House Robber</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-213-House-Robber-II"><span class="nav-number">2.6.</span> <span class="nav-text">[leetcode 213] House Robber II</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -709,7 +712,7 @@ return \,\,max(dp[0][n],dp[1][n])</script><figure class="highlight java"><table>
         <div class="copyright" >
   
   &copy;  2017/04 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1,0 +1,972 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DFS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="DFS 的优化问题，当然是在想不到DP数组的情况下的优化，第二道是括号匹配问题，也是DFS，这种常考类型，很不好做。  Given an unsorted array of integers, find the length of longest increasing subsequence.For example,Given[10, 9, 2, 5, 3, 7, 101, 18],The lon">
+<meta name="keywords" content="DFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="300. Longest Increasing Subsequence">
+<meta property="og:url" content="http://yoursite.com/2018/01/09/leetcode301/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="DFS 的优化问题，当然是在想不到DP数组的情况下的优化，第二道是括号匹配问题，也是DFS，这种常考类型，很不好做。  Given an unsorted array of integers, find the length of longest increasing subsequence.For example,Given[10, 9, 2, 5, 3, 7, 101, 18],The lon">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-09T03:43:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="300. Longest Increasing Subsequence">
+<meta name="twitter:description" content="DFS 的优化问题，当然是在想不到DP数组的情况下的优化，第二道是括号匹配问题，也是DFS，这种常考类型，很不好做。  Given an unsorted array of integers, find the length of longest increasing subsequence.For example,Given[10, 9, 2, 5, 3, 7, 101, 18],The lon">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/09/leetcode301/"/>
+
+
+
+
+
+  <title> 300. Longest Increasing Subsequence | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/09/leetcode301/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                300. Longest Increasing Subsequence
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-09T10:28:37+08:00">
+                2018-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/09/leetcode301/" class="leancloud_visitors" data-flag-title="300. Longest Increasing Subsequence">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>DFS 的优化问题，当然是在想不到DP数组的情况下的优化，第二道是括号匹配问题，也是DFS，这种常考类型，很不好做。</p>
+<ol>
+<li><p>Given an unsorted array of integers, find the length of longest increasing subsequence.<br>For example,<br>Given<code>[10, 9, 2, 5, 3, 7, 101, 18]</code>,<br>The longest increasing subsequence is<code>[2, 3, 7, 101]</code>, therefore the length is 4. Note that there may be more than one LIS combination, it is only necessary for you to return the length.<br>Your algorithm should run in O(n^2) complexity.</p>
+</li>
+<li><p>Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.<br>Note: The input string may contain letters other than the parentheses ( and ).<br>Examples:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;()())()&quot; -&gt; [&quot;()()()&quot;, &quot;(())()&quot;]</div><div class="line">&quot;(a)())()&quot; -&gt; [&quot;(a)()()&quot;, &quot;(a())()&quot;]</div><div class="line">&quot;)(&quot; -&gt; [&quot;&quot;]</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<a id="more"></a>
+<h4 id="leetcode-300-Longest-Increasing-Subsequence"><a href="#leetcode-300-Longest-Increasing-Subsequence" class="headerlink" title="[leetcode 300] Longest Increasing Subsequence"></a>[leetcode 300] Longest Increasing Subsequence</h4><p>最简单的方法就是遍历一遍该数组，分别以每一个元素作为开头，然后向后查找大于前一个元素的数，将所有的情况走一遍，记录最大值，然后返回即可找到最大值，这个是万无一失也不用思考的解法，但是显然会超时，所以不可取，然后我就想如果用一个boolean类型记录走过的结点，不以走过的结点为起始结点即可，leetcode上提交后是21/24，上面的情况后面是会重复的，比如<code>1,2,3,4,5,6,7,8</code>我第一个for循环只能走1，到第二个for循环就能走<code>1-&gt;2,1-&gt;3,1-&gt;4...</code>，进一步是：<code>1-&gt;2-&gt;3-&gt;4,1-&gt;3-&gt;4,1-&gt;4...</code>，显然第二个走到3的没必要继续走了，第三个走到4的也没有必要继续走了，但是怎么样判断呢，于是想到用一个整形数组来记录当前数对应的最大步数，如果后面走到该数的时候，没有该数组对应的值大，那么就不向下走了，这样就不会重复了，那么果然leetcode就通过了，代码如下(当然是可以继续优化的，懒了…)：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">lengthOfLIS</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(nums==<span class="keyword">null</span>||nums.length==<span class="number">0</span>)<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> count=<span class="number">0</span>;</div><div class="line">    <span class="keyword">boolean</span> []flag=<span class="keyword">new</span> <span class="keyword">boolean</span>[nums.length];</div><div class="line">    <span class="keyword">int</span>[] curMax=<span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(!flag[i])&#123;</div><div class="line">            flag[i]=<span class="keyword">true</span>;</div><div class="line">            count=Math.max(count,dfs(i,nums,nums[i],<span class="number">1</span>,flag,curMax));</div><div class="line">            <span class="comment">//System.out.println("flag:"+i);</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> count;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span>[] nums, <span class="keyword">int</span> num,<span class="keyword">int</span> out,<span class="keyword">boolean</span>[]flag,<span class="keyword">int</span>[]currMax)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(i==nums.length-<span class="number">1</span>)&#123;</div><div class="line">        <span class="keyword">return</span> out;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> temp=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&lt;nums.length;j++)&#123;</div><div class="line">        <span class="keyword">if</span>(nums[j]&gt;num&amp;&amp;out&gt;currMax[j])&#123;</div><div class="line">            flag[j]=<span class="keyword">true</span>;</div><div class="line">            currMax[j]=out;</div><div class="line">            temp=Math.max(temp,dfs(j,nums,nums[j],out+<span class="number">1</span>,flag,currMax));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> Math.max(temp,out);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我想这种方法还是太过普通，于是看了一下leetcode上的discuss，果然不出所料，dp解法，我虽然知道dp可解，但是想不出来这个dp数组如何构造，下面这个代码主要是能够理解<code>Arrays.binarySearch</code>这个函数，我这里摘抄一下<a href="http://blog.csdn.net/qwed070/article/details/73028508" target="_blank" rel="external">Arrays.binarySearch() 方便记忆版</a>上面的解释：<br>1） binarySearch(Object[] a, Object key)<br>a: 要搜索的数组<br>key：要搜索的值<br>如果key在数组中，则返回搜索值的索引；<br>否则返回-1或“-”（插入点）。插入点是指索引键key将要插入数组的那一点，即第一个大于该键key的元素的索引。<br>[1] 搜索值不是数组元素，且在数组大小范围内，从0开始计数，得“ - 插入点索引值 -1”；<br>[2] 搜索值是数组元素，从0开始计数，得搜索值的索引值；<br>[3] 搜索值不是数组元素，且大于数组内元素，索引值为 – (length + 1)，其实也是 - 插入点索引值 -1，只不过在此插入点索引值为length;<br>[4] 搜索值不是数组元素，且小于数组内元素，索引值为 – 1( - 0 -1=-1)。</p>
+<p>2） binarySearch(Object[], int fromIndex, int toIndex, Object key)<br>a：要搜索的数组<br>fromIndex：指定范围的开始处索引（包含）<br>toIndex：指定范围的结束处索引（不包含）<br>key：要搜索的值<br>如果要搜索的元素key在指定的范围内，则返回搜索值的索引；否则返回-1或“-”（插入点）。<br>[1] 该搜索键在范围内，但不是数组元素，由0开始计数，得“ - 插入点索引值 -1”；<br>[2] 该搜索键在范围内，且是数组元素，由0开始计数，得搜索值的索引值；<br>[3] 该搜索键不在范围内，且小于范围（数组）内元素，返回–fromIndex - 1；<br>[4] 该搜索键不在范围内，且大于范围（数组）内元素，返回 –toIndex - 1。</p>
+<p>如上，理解后，实质上就是用dp记录一个最长的链，不断的更新这个链，只有超过链的长度，len才会更新，不然只是修改对应的dp值<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLIS</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</div><div class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> x : nums) &#123;</div><div class="line">        <span class="keyword">int</span> i = Arrays.binarySearch(dp, <span class="number">0</span>, len, x);</div><div class="line">        <span class="keyword">if</span>(i &lt; <span class="number">0</span>) i = -(i + <span class="number">1</span>);</div><div class="line">        dp[i] = x;</div><div class="line">        <span class="keyword">if</span>(i == len) len++;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> len;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="leetcode-301-Remove-Invalid-Parentheses"><a href="#leetcode-301-Remove-Invalid-Parentheses" class="headerlink" title="[leetcode 301] Remove Invalid Parentheses"></a>[leetcode 301] Remove Invalid Parentheses</h4><p>这道题不好做，我是直接参考了discuss上第一的解答，其解决办法是先判断右括号多的情况，消去右括号的原则是要么是第一个要么前面一个不是右括号，这样就不会出现重复；至于左括号呢，将字符串反转就可以重复利用原先的代码了，详细见<a href="https://leetcode.com/problems/remove-invalid-parentheses/discuss/75027" target="_blank" rel="external">Easy, Short, Concise and Fast Java DFS 3 ms solution</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">removeInvalidParentheses</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">    List&lt;String&gt; ans = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    remove(s, ans, <span class="number">0</span>, <span class="number">0</span>, <span class="keyword">new</span> <span class="keyword">char</span>[]&#123;<span class="string">'('</span>, <span class="string">')'</span>&#125;);</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(String s, List&lt;String&gt; ans, <span class="keyword">int</span> last_i, <span class="keyword">int</span> last_j,  <span class="keyword">char</span>[] par)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> stack = <span class="number">0</span>, i = last_i; i &lt; s.length(); ++i) &#123;</div><div class="line">        <span class="keyword">if</span> (s.charAt(i) == par[<span class="number">0</span>]) stack++;</div><div class="line">        <span class="keyword">if</span> (s.charAt(i) == par[<span class="number">1</span>]) stack--;</div><div class="line">        <span class="keyword">if</span> (stack &gt;= <span class="number">0</span>) <span class="keyword">continue</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = last_j; j &lt;= i; ++j)</div><div class="line">            <span class="keyword">if</span> (s.charAt(j) == par[<span class="number">1</span>] &amp;&amp; (j == last_j || s.charAt(j - <span class="number">1</span>) != par[<span class="number">1</span>]))</div><div class="line">                remove(s.substring(<span class="number">0</span>, j) + s.substring(j + <span class="number">1</span>, s.length()), ans, i, j, par);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    String reversed = <span class="keyword">new</span> StringBuilder(s).reverse().toString();</div><div class="line">    <span class="keyword">if</span> (par[<span class="number">0</span>] == <span class="string">'('</span>) <span class="comment">// finished left to right</span></div><div class="line">        remove(reversed, ans, <span class="number">0</span>, <span class="number">0</span>, <span class="keyword">new</span> <span class="keyword">char</span>[]&#123;<span class="string">')'</span>, <span class="string">'('</span>&#125;);</div><div class="line">    <span class="keyword">else</span> <span class="comment">// finished right to left</span></div><div class="line">        ans.add(reversed);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DFS/" rel="tag"><i class="fa fa-tag"></i> DFS</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/06/leetcode282/" rel="next" title="字符串中的DFS">
+                <i class="fa fa-chevron-left"></i> 字符串中的DFS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/09/nlp01/" rel="prev" title="NLP学习笔记I">
+                NLP学习笔记I <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-300-Longest-Increasing-Subsequence"><span class="nav-number">1.</span> <span class="nav-text">[leetcode 300] Longest Increasing Subsequence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-301-Remove-Invalid-Parentheses"><span class="nav-number">2.</span> <span class="nav-text">[leetcode 301] Remove Invalid Parentheses</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

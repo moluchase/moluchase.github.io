@@ -1,0 +1,1001 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP学习笔记I">
+<meta property="og:url" content="http://yoursite.com/2018/01/09/nlp01/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.my.csdn.net/uploads/201011/22/0_12903943943q96.gif">
+<meta property="og:image" content="http://img.my.csdn.net/uploads/201011/19/0_1290159313dffa.gif">
+<meta property="og:updated_time" content="2018-01-10T09:21:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP学习笔记I">
+<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。">
+<meta name="twitter:image" content="http://img.my.csdn.net/uploads/201011/22/0_12903943943q96.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/09/nlp01/"/>
+
+
+
+
+
+  <title> NLP学习笔记I | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/09/nlp01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NLP学习笔记I
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-09T19:53:36+08:00">
+                2018-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/09/nlp01/" class="leancloud_visitors" data-flag-title="NLP学习笔记I">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。</p>
+<a id="more"></a>
+<h4 id="N-Gram"><a href="#N-Gram" class="headerlink" title="N-Gram"></a>N-Gram</h4><p>这里首先有个语料库，记录了很多条句子，然后预测给定句子出现的概率。给定一个句子，这里句子的长度为n，也就是<script type="math/tex">|V|=n</script>，第i个单词用字母<script type="math/tex">x_i</script>表示，那么概率公式表示为：<script type="math/tex">P(X_1=x_1,X_2=x_2,...X_n=x_n)</script><br>使用马尔科夫假设第i个单词出现只与前面几个单词有关，这里如果和前面的全部单词有关，则有：</p>
+<script type="math/tex; mode=display">
+P(X_1=x_1,X_2=x_2,...X_n=x_n)=P(X_1=x_1)\Pi_{i=2}^{n}{P(X_i=x_i|X_1=x_1,...,X_{i-1}=x_{i-1})}</script><p>这里如果我们使用bigram模型的话，且<script type="math/tex">x_0=x_{-1}=*</script> ，该式子就变为如下：</p>
+<script type="math/tex; mode=display">
+P(X_1=x_1,X_2=x_2,...X_n=x_n)=\Pi_{i=1}^{n}{P(X_i=x_i|X_{i-1}=x_{i-1})}</script><p>摘抄<a href="http://blog.csdn.net/lengyuhong/article/details/6022053" target="_blank" rel="external">这个博客</a>举的例子：<br>假设语料库总词数为13,748<br>词和词频表如下所示：</p>
+<p><div align="center">
+<img src="http://img.my.csdn.net/uploads/201011/22/0_12903943943q96.gif">
+</div><br>bigram模型的参数，词序列频度：</p>
+<p><div align="center">
+<img src="http://img.my.csdn.net/uploads/201011/19/0_1290159313dffa.gif">
+</div><br>那么对于句子<code>I want to eat Chinese food</code>，其概率</p>
+<script type="math/tex; mode=display">
+P(I\, want\, to \,eat\, Chinese\, food)\\
+=P(I)*P(want|I)*P(to|want)*P(eat|to)*P(Chinese|eat)*P(food|Chinese)\\
+=0.25*1087/3437*786/1215*860/3256*19/938*120/213\\
+=0.000154171</script><p>这里讲一下参数个数是<script type="math/tex">|V|^2</script>，可以从上面的第二个图中看到，是词序列频度的大小。</p>
+<h4 id="Evaluating-Language-Models：Perplexity"><a href="#Evaluating-Language-Models：Perplexity" class="headerlink" title="Evaluating Language Models：Perplexity"></a>Evaluating Language Models：Perplexity</h4><p>这里给出了评估语言模型的指标——困惑度，选取一些句子，这些句子不在语料库中，也就是新的句子，用<script type="math/tex">x^{(i)}</script>表示第i个句子，其中第i个句子又由单词<script type="math/tex">x_{1}^{(i)},x_{2}^{(i)},x_{3}^{(i)},...</script>组成，那么对于这些测试的句子，计算所有句子的概率积：</p>
+<script type="math/tex; mode=display">
+\Pi_{i=1}^{m}p(x^{(i)})</script><p>直观的感受是该结果越大，说明语言模型越好。[至于此处为什么，我也讲不清楚，可以理解成模型对未知句子的预测能力吧]<br>这里设第i个句子的长度是<script type="math/tex">n_i</script>，那么记<script type="math/tex">M=\sum_{i=1}^{m}n_{i}</script>，定义平均log概率如下：</p>
+<script type="math/tex; mode=display">
+\frac{1}{M}log_2\Pi_{i=1}^mp(x^{(i)})\\
+=\frac{1}{M}\sum_{i=1}^{m}log_2p(x^{(i)})</script><p>定义困惑度为<script type="math/tex">2^{-l}</script>，其中<script type="math/tex">l=\frac{1}{M}\sum_{i=1}^{m}log_2p(x^{(i)})</script>。于是有困惑度越低，语言模型在未知数据上表现越好，最后给出了对于词汇表为50000时，trigram模型的困惑度是74，bigram模型的困惑度是137，unigram模型的困惑度是955</p>
+<h4 id="Smoothed-Estimation-of-Trigram-Models"><a href="#Smoothed-Estimation-of-Trigram-Models" class="headerlink" title="Smoothed Estimation of Trigram Models"></a>Smoothed Estimation of Trigram Models</h4><p>比较常见的两种平滑技术 linear interpolation和 discounting methods。</p>
+<p><font color="#FF0000"><strong>1.  Linear interpolation</strong></font></p>
+<script type="math/tex; mode=display">
+q_{ML}(w|u,v)=\frac{c(u,v,w)}{c(u,v)}\\
+q_{ML}(w|v)=\frac{c(v,w)}{c(v)}\\
+q_{ML}(w)=\frac{c(w)}{c()}</script><p>这个主要的思想是将上面三个评估相加，如下：</p>
+<script type="math/tex; mode=display">
+q(w|u,v)=\lambda_1q_{ML}(w|u,v)+\lambda_2q_{ML}(w|v)+\lambda_3q_{ML}(w)</script><p>其中 <script type="math/tex">\lambda_1\geq 0,\lambda_2\geq 0,\lambda_3\geq 0</script>且<script type="math/tex">\lambda_1+\lambda_2+\lambda_3=1</script><br>那么如何得到参数<script type="math/tex">\lambda_1,\lambda_2,\lambda_3</script>呢，这里用到log似然估计，其中选取held-out data（记 development data），这部分数据独立于training和test数据，其中记<script type="math/tex">c'(u,v,w)</script>为development data中trigram<script type="math/tex">(u,v,w)</script>出现的次数，L函数如下：</p>
+<script type="math/tex; mode=display">
+L(\lambda_1,\lambda_2,\lambda_3)=\sum_{u,v,w}c'(u,v,w)log\,q(w|u,v)\\
+=\sum_{u,v,w}c'(u,v,w)log(\lambda_1q_{ML}(w|u,v)+\lambda_2q_{ML}(w|v)+\lambda_3q_{ML}(w))</script><p>然后求解如下式子：</p>
+<script type="math/tex; mode=display">
+arg\,\,\,\,max_{\lambda_1,\lambda_2,\lambda_3}\,\,L(\lambda_1,\lambda_2,\lambda_3)\\
+\lambda_1\geq 0,\lambda_2\geq 0,\lambda_3\geq 0\\
+\lambda_1+\lambda_2+\lambda_3=1</script><p>当然还有bucketing方法来求解<script type="math/tex">\lambda</script>，这里就不记录了，在Michael Collins上有</p>
+<p><font color="#FF0000"><strong>2.  Discounting Methods</strong></font><br>notes上讲的也很清楚，就是设置一个参数<script type="math/tex">\beta</script>，且<script type="math/tex">\beta</script>在0到1之间。<br>然后对于bigram模型来说，将原来的<script type="math/tex">c(v,w)</script>减去<script type="math/tex">\beta</script>作为<script type="math/tex">c^*(v,w)</script>，这里针对的是语料库，那么本来有<script type="math/tex">\sum_{c(v,w)>0}\frac{c(v,w)}{c(v)}=1</script>，但是变为<script type="math/tex">c^*(v,w)</script>后就小于1了，这里记</p>
+<script type="math/tex; mode=display">\alpha (v)=1-\sum_{c(v,w)>0}\frac{c^*(v,w)}{c(v)}</script><p>定义如下两个集合：</p>
+<script type="math/tex; mode=display">
+A(v)=\{w:c(v,w)>0\}</script><script type="math/tex; mode=display">
+B(v)=\{w:c(v,w)=0\}</script><p>A(v)表示在语料库中有的，B(v)表示在语料库中没有的，主要是B(v)，虽然语料库中没有，但不能为0，所以将其变为N-1 gram，这里变为unigram，具体公式如下：</p>
+<script type="math/tex; mode=display">
+q_D(w|v)=\left\{\begin{matrix}
+ \frac{c^*(v,w)}{c(v)}& If \,\,w\in A(v) \\ 
+\alpha(v) \frac{q_{ML}(w)}{\sum_{w \in B(v)}q_{ML}(w)} & If\,\,w\in B(v)
+\end{matrix}\right.</script><p>trigram模型同理，见notes。<br>那么怎么估计<script type="math/tex">\beta</script>呢，和前面的一样，使用log似然函数，即：</p>
+<script type="math/tex; mode=display">
+\sum_{u,v,w}c'(u,v,w)log\,q(w|u,v)</script><p>然后给定一组<script type="math/tex">\beta</script>集合{0.1,0.2,0.3,…0.9}，然后用上面的公式计算最大值对应的值就为<script type="math/tex">\beta</script>的值。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/09/leetcode301/" rel="next" title="300. Longest Increasing Subsequence">
+                <i class="fa fa-chevron-left"></i> 300. Longest Increasing Subsequence
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#N-Gram"><span class="nav-number">1.</span> <span class="nav-text">N-Gram</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Evaluating-Language-Models：Perplexity"><span class="nav-number">2.</span> <span class="nav-text">Evaluating Language Models：Perplexity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Smoothed-Estimation-of-Trigram-Models"><span class="nav-number">3.</span> <span class="nav-text">Smoothed Estimation of Trigram Models</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
