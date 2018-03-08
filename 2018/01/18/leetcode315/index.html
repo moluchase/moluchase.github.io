@@ -1,0 +1,963 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Tree," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="You are given an integer array nums and you have to return a new counts array. The counts array has the property wherecounts[i]is the number of smaller elements to the right of nums[i].Example:12345Gi">
+<meta name="keywords" content="Tree">
+<meta property="og:type" content="article">
+<meta property="og:title" content="315. Count of Smaller Numbers After Self">
+<meta property="og:url" content="http://yoursite.com/2018/01/18/leetcode315/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="You are given an integer array nums and you have to return a new counts array. The counts array has the property wherecounts[i]is the number of smaller elements to the right of nums[i].Example:12345Gi">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-18T06:21:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="315. Count of Smaller Numbers After Self">
+<meta name="twitter:description" content="You are given an integer array nums and you have to return a new counts array. The counts array has the property wherecounts[i]is the number of smaller elements to the right of nums[i].Example:12345Gi">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/18/leetcode315/"/>
+
+
+
+
+
+  <title> 315. Count of Smaller Numbers After Self | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/leetcode315/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                315. Count of Smaller Numbers After Self
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T10:56:43+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/18/leetcode315/" class="leancloud_visitors" data-flag-title="315. Count of Smaller Numbers After Self">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>You are given an integer array nums and you have to return a new counts array. The counts array has the property where<code>counts[i]</code>is the number of smaller elements to the right of <code>nums[i]</code>.<br>Example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Given nums = [5, 2, 6, 1]</div><div class="line">To the right of 5 there are 2 smaller elements (2 and 1).</div><div class="line">To the right of 2 there is only 1 smaller element (1).</div><div class="line">To the right of 6 there is 1 smaller element (1).</div><div class="line">To the right of 1 there is 0 smaller element.</div></pre></td></tr></table></figure></p>
+<p>Return the array<code>[2, 1, 1, 0]</code>.<br><a id="more"></a></p>
+<h4 id="leetcode-315-Count-of-Smaller-Numbers-After-Self"><a href="#leetcode-315-Count-of-Smaller-Numbers-After-Self" class="headerlink" title="[leetcode 315] Count of Smaller Numbers After Self"></a>[leetcode 315] Count of Smaller Numbers After Self</h4><p>之前做笔试题的时候见到过这道题，我的解法就是最直接的，对每一个元素，每次遍历它后面的元素，找到比它小的元素个数，然后超时了，显然这种最直接的方法对于笔试是应该摒弃的。。。<br>下面给出discuss上的两种解法，分别使用二叉搜索树和归并排序实现，特别的好。<br>二叉搜索树<br>这个是排名第一的答案，遍历给定数组的过程就是建立一棵二叉搜索树的过程，一个节点有这么几个属性：左右节点，节点值，节点值相同的元素个数，节点左子树的个数。<br>对当前遍历的元素（从后往前），如下插入：从根节点出发，如果小于根节点，就直接转到根节点的左子树，如果等于根节点，将根节点的相同元素个数++，该元素对应的<code>count[i]</code>为节点左子树个数加先前的元素个数，如果大于，转到根节点右子树，并将节点的左子树的个数传入。代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BSTNode</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> lSum,dup=<span class="number">1</span>,val;<span class="comment">//java中不能在全局变量中赋值</span></div><div class="line">    BSTNode left,right;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BSTNode</span><span class="params">(<span class="keyword">int</span> lSum,<span class="keyword">int</span> val)</span></span>&#123;</div><div class="line">        <span class="keyword">this</span>.lSum=lSum;</div><div class="line">        <span class="keyword">this</span>.val=val;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">countSmaller</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    Integer res[]=<span class="keyword">new</span> Integer[nums.length];</div><div class="line">    BSTNode root=<span class="keyword">null</span>;<span class="comment">//=new BSTNode(0,1);</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=nums.length-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</div><div class="line">        root=insert(root,nums[i],res,i,<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> Arrays.asList(res);<span class="comment">//对象数组转list</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> BSTNode <span class="title">insert</span><span class="params">(BSTNode root, <span class="keyword">int</span> num, Integer[] res, <span class="keyword">int</span> i, <span class="keyword">int</span> preSum)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</div><div class="line">        root=<span class="keyword">new</span> BSTNode(<span class="number">0</span>,num);</div><div class="line">        res[i]=preSum;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(root.val==num)&#123;</div><div class="line">        root.dup++;</div><div class="line">        res[i]=preSum+root.lSum;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(root.val&lt;num)&#123;</div><div class="line">        root.right=insert(root.right,num,res,i,preSum+root.lSum+root.dup);</div><div class="line">    &#125;<span class="keyword">else</span> &#123;</div><div class="line">        root.lSum++;</div><div class="line">        root.left=insert(root.left,num,res,i,preSum);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> root;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>归并排序<br>这个比较好理解，只要知道归并排序的思想，然后在排序的过程中，记录右边小于左边的个数，并叠加到左边，右边不变，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span>[] count;</div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">countSmaller</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    List&lt;Integer&gt; res = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();     </div><div class="line"></div><div class="line">    count = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</div><div class="line">    <span class="keyword">int</span>[] indexes = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++)&#123;</div><div class="line">    	indexes[i] = i;</div><div class="line">    &#125;</div><div class="line">    mergesort(nums, indexes, <span class="number">0</span>, nums.length - <span class="number">1</span>);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count.length; i++)&#123;</div><div class="line">    	res.add(count[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> res;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergesort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span>[] indexes, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(end &lt;= start)&#123;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">int</span> mid = (start + end) / <span class="number">2</span>;</div><div class="line">	mergesort(nums, indexes, start, mid);</div><div class="line">	mergesort(nums, indexes, mid + <span class="number">1</span>, end);</div><div class="line">	</div><div class="line">	merge(nums, indexes, start, end);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span>[] indexes, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> mid = (start + end) / <span class="number">2</span>;</div><div class="line">	<span class="keyword">int</span> left_index = start;</div><div class="line">	<span class="keyword">int</span> right_index = mid+<span class="number">1</span>;</div><div class="line">	<span class="keyword">int</span> rightcount = <span class="number">0</span>;    	</div><div class="line">	<span class="keyword">int</span>[] new_indexes = <span class="keyword">new</span> <span class="keyword">int</span>[end - start + <span class="number">1</span>];</div><div class="line"></div><div class="line">	<span class="keyword">int</span> sort_index = <span class="number">0</span>;</div><div class="line">	<span class="keyword">while</span>(left_index &lt;= mid &amp;&amp; right_index &lt;= end)&#123;</div><div class="line">		<span class="keyword">if</span>(nums[indexes[right_index]] &lt; nums[indexes[left_index]])&#123;</div><div class="line">			new_indexes[sort_index] = indexes[right_index];</div><div class="line">			rightcount++;</div><div class="line">			right_index++;</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			new_indexes[sort_index] = indexes[left_index];</div><div class="line">			count[indexes[left_index]] += rightcount;</div><div class="line">			left_index++;</div><div class="line">		&#125;</div><div class="line">		sort_index++;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">while</span>(left_index &lt;= mid)&#123;</div><div class="line">		new_indexes[sort_index] = indexes[left_index];</div><div class="line">		count[indexes[left_index]] += rightcount;</div><div class="line">		left_index++;</div><div class="line">		sort_index++;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">while</span>(right_index &lt;= end)&#123;</div><div class="line">		new_indexes[sort_index++] = indexes[right_index++];</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = start; i &lt;= end; i++)&#123;</div><div class="line">		indexes[i] = new_indexes[i - start];</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里我还是举个例子吧（交换值而不是代码中所示的交换索引），比如<code>[5,2,6,1]</code>，分解后变为<code>5</code>，<code>2</code>，<code>6</code>，<code>1</code>，然后是5和2归并，第一个位置，2小于5，那么将count++，但是2对应的<code>count[1]=0</code>不变，第二个位置，将5添加，并将5对应的<code>count[0]</code>和count相加赋给<code>count[0]，count[0]=1</code>,同理对于6和1，<code>count[2]=1,count[3]=0</code>；然后继续归并，<code>2,5</code>和<code>1,6</code>，第一个位置是1，count=1，第二个位置是2，<code>count[1]=count[1]+count=1</code>，第三个位置是5，<code>count[0]=count[0]+count=2</code>，第4个位置是6，<code>count[2]=count[2]</code>，归并完成，这样对应的count数组就是：<code>[2,1,1,0]</code>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tree/" rel="tag"><i class="fa fa-tag"></i> Tree</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/17/nlp05/" rel="next" title="NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2">
+                <i class="fa fa-chevron-left"></i> NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/18/leetcode316/" rel="prev" title="316.Remove Duplicate Letters">
+                316.Remove Duplicate Letters <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-315-Count-of-Smaller-Numbers-After-Self"><span class="nav-number">1.</span> <span class="nav-text">[leetcode 315] Count of Smaller Numbers After Self</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1020 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的《统计自然语言处理》，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs)">
+<meta property="og:url" content="http://yoursite.com/2018/01/13/nlp03/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的《统计自然语言处理》，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0301.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0302.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0303.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0304.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0305.png">
+<meta property="og:updated_time" content="2018-01-14T02:52:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs)">
+<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的《统计自然语言处理》，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0301.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/13/nlp03/"/>
+
+
+
+
+
+  <title> NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs) | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/13/nlp03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T15:56:10+08:00">
+                2018-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/13/nlp03/" class="leancloud_visitors" data-flag-title="NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要学习资料是cs224n的<a href="https://tensorflowkorea.files.wordpress.com/2017/03/cs224n-2017winter-notes-all.pdf" target="_blank" rel="external">notes</a>和Michael Collins的<a href="http://www.cs.columbia.edu/~mcollins/notes-spring2013.html" target="_blank" rel="external">notes</a>，和宗成庆的《统计自然语言处理》，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。</p>
+<a id="more"></a>
+<h4 id="Context-Free-Grammars"><a href="#Context-Free-Grammars" class="headerlink" title="Context-Free Grammars"></a>Context-Free Grammars</h4><p>Noam Chomsky 曾经把语言定义为按照一定规律构成的句子和符号串的有限或无限集合，形式语言是用来精确描述语言及其结构的手段，形式语言学也称为代数语言学。<br>形式语法是一个四元组<script type="math/tex">G=(N,\sum,R,S)</script>，其中：</p>
+<ul>
+<li>N是一个非终结符号(non-terminal symbols)的有限集合</li>
+<li><script type="math/tex">\sum</script> 是一个终结符号(terminal symbols)的有限集合</li>
+<li>R是一个规则集合，其形式如 <script type="math/tex">X \rightarrow Y_1Y_2...Y_n，where\,\,X \in N\,\,,Y_i \in (N\cup \sum )</script></li>
+<li><script type="math/tex">S \in N</script> 作为一个句子的开始符或初始符</li>
+</ul>
+<p>这里举一个最左边推导(left-most derivation)来理解上面的形式语法：<br>对于一个最左边推导的一串字符串<script type="math/tex">s_1...s_n</script>，有如下：</p>
+<ul>
+<li><script type="math/tex">s_1=S</script> 是开始符</li>
+<li><script type="math/tex">s_n \in \sum^*</script>，<script type="math/tex">s_n</script>是有终结符号组成的字符串(<script type="math/tex">\sum^*</script>表示的是由<script type="math/tex">\sum</script>中的单词组成的所有可能单词序列集合)【其实这里有个疑惑，最后的<script type="math/tex">s_n</script>难道不就是句子本身吗，那么就只可能有一个啊，给个求和符是什么意思？？？】</li>
+<li><script type="math/tex">s_i</script>(<script type="math/tex">i=2...n</script>)被从<script type="math/tex">s_{i-1}</script>中派生出来，通过将<script type="math/tex">s_{i-1}</script>中最左端的非终结符号X通过规则R中 <script type="math/tex">X \rightarrow \beta</script>替换</li>
+</ul>
+<p>如下例子：<br><img src="/upload/essayimage/nlp/nlp0301.png" alt="nlp0301"><br>上面关于四元组的定义不懂的话，结合这个图应该能够看懂。非终止符就是S，NP，VP等这样的符号，比如NP代表名词性短语，等等；S=S只是一个句子的开始符标记；终止符就是具体的单词，比如sleeps，等等；而规则R表示的就是递进组合关系，比如VP可以由Vi组成，也可以由Vt和NP组成，等等。下面就是上面讲的序列<script type="math/tex">s_1...s_n</script>，以句子<code>the man sleeps</code>为例:</p>
+<ul>
+<li>其中<script type="math/tex">s_1</script>为开始符，即<script type="math/tex">s_1=S</script></li>
+<li>而<script type="math/tex">s_2</script>就是在<script type="math/tex">s_1</script>中找最左边的第一个非终止符，是S，在规则R中找到S可能对应的<script type="math/tex">\beta</script>，即<script type="math/tex">S \rightarrow NP\,\,VP</script>，这样<script type="math/tex">s_2=NP\,\,VP</script></li>
+<li><script type="math/tex">s_3=DT \,\,NN \,\,NP</script>，由前面的<script type="math/tex">s_2</script>中的NP在规则R中找，最为符合的就是DT NN </li>
+<li><script type="math/tex">s_4=the\,\, NN \,\,NP</script>，由前面的<script type="math/tex">s_3</script>中的DT在规则中找到对应的<script type="math/tex">\beta</script>为the</li>
+<li><script type="math/tex">s_5= the\,\,man\,\,VP</script>，..</li>
+<li><script type="math/tex">s_6= the\,\,man\,\,Vi</script>，..</li>
+<li><script type="math/tex">s_7= the\,\,man\,\,sleeps.</script>，..</li>
+</ul>
+<h4 id="Ambiguity"><a href="#Ambiguity" class="headerlink" title="Ambiguity"></a>Ambiguity</h4><p>这里和前面章节一样，讲到了句子通过形式语言来表示的话，会有歧义，比如句子<code>the man saw the dog with the telescope</code>用解析树(前面分析的串s可以被表示为parse tree)表示如下两种parse tree：<br><img src="/upload/essayimage/nlp/nlp0302.png" alt="nlp0302"></p>
+<h4 id="Probabilistic-Context-Free-Grammars-PCFGs"><a href="#Probabilistic-Context-Free-Grammars-PCFGs" class="headerlink" title="Probabilistic Context-Free Grammars(PCFGs)"></a>Probabilistic Context-Free Grammars(PCFGs)</h4><p>下面就来计算一个句子用形式语法表示成的不同种parse tree的概率，选择概率最大的作为该句子的形式语法的表示，这里需要做一些说明。<br>记<script type="math/tex">T_G</script>为在grammar G下的所有可能的parse tree，<script type="math/tex">T_G(s)</script>表示对于句子s的所有可能的parse tree集合，其中<script type="math/tex">s \in \sum^*，\{t:t \in T_G,yield(t)=s\}</script>。<br>这里用<script type="math/tex">p(t)</script>表示对于任意的<script type="math/tex">t \in T_G</script>，生成该树的概率，这样有下面两个公式：</p>
+<script type="math/tex; mode=display">
+p(t)\geq0\\
+\sum_{t \in T_G}p(t)=1</script><p>这样就将我们的问题转为如下式子：</p>
+<script type="math/tex; mode=display">
+arg\,\, \max_{t\in T_G(s)}p(t)</script><p>此处讲义给出了三个问题：</p>
+<ul>
+<li>如何定义函数p(t)？</li>
+<li>如何学习p(t)模型的参数？</li>
+<li>对于给定的句子s，如何求解最大似然树？</li>
+</ul>
+<p>下面就围绕上面的三个问题来回答，这里就是我们要讲到的PCFGs，给出如下定义：</p>
+<ol>
+<li>A context-free grammar <script type="math/tex">G=(N,\sum,S,R)</script></li>
+<li>参数 <script type="math/tex">q(\alpha \rightarrow \beta)</script>，对于规则<script type="math/tex">\alpha \rightarrow \beta \in R</script>且任意<script type="math/tex">X \in N</script>，有如下约束：<script type="math/tex; mode=display">
+\sum_{\alpha \rightarrow \beta \in R: \alpha=X}q(\alpha \rightarrow \beta)=1</script></li>
+</ol>
+<p>那么p(t)的定义也就迎刃而解了：</p>
+<script type="math/tex; mode=display">
+p(t)=\prod_{i=1}^{n}q(\alpha_i \rightarrow \beta_i )</script><p>在规则R中加入出现的概率，如下图<br><img src="/upload/essayimage/nlp/nlp0303.png" alt="nlp0303"><br>以句子<code>the dog sleeps</code>为例，下面解析树出现的概率如下：<br><img src="/upload/essayimage/nlp/nlp0304.png" alt="nlp0304"><br>其中<script type="math/tex">q(\alpha \rightarrow \beta)</script>用最大似然估计：</p>
+<script type="math/tex; mode=display">
+q_{ML}(\alpha \rightarrow \beta)=\frac{Count(\alpha \rightarrow \beta)}{Count(\alpha)}</script><p>参数<script type="math/tex">Count(\alpha \rightarrow \beta)</script>表示在所有的解析树<script type="math/tex">t_1...t_m</script>中，规则<script type="math/tex">\alpha \rightarrow \beta</script>出现的次数，参数<script type="math/tex">Count(\alpha)</script>表示在所有的解析树<script type="math/tex">t_1...t_m</script>中，<script type="math/tex">\alpha</script>出现的次数。<br>最后一个问题是如何求解<script type="math/tex">arg\,\, \max_{t\in T_G(s)}p(t)</script>   ?   用下面的算法</p>
+<h4 id="CKY-algorithm"><a href="#CKY-algorithm" class="headerlink" title="CKY algorithm"></a>CKY algorithm</h4><p>CKY算法是一个动态规划的算法，如下：</p>
+<ul>
+<li>对于一个句子<script type="math/tex">x_1...x_n</script>，对任意的<script type="math/tex">X \in N,1<=i<=j<=n</script>，定义<script type="math/tex">T(i,j,X)</script>表示以X为根，句子<code>x_i...x_j</code>的所有解析树的集合。</li>
+<li>定义<script type="math/tex; mode=display">
+\pi(i,j,X)=\max_{t \in T(i,j,X)}p(t)</script></li>
+</ul>
+<p>我们最终要求解的式子就可以表示为<script type="math/tex">\pi(1,n,S)=arg \,\, \max_{t \in T_G(s)} p(t)</script><br>那么动态规划的初始条件如下：</p>
+<script type="math/tex; mode=display">
+\pi(i,i,X)=\left\{\begin{matrix}
+ q(X \rightarrow x_i)& if\,\,X \rightarrow x_i \in R\\ 
+ 0&otherwise 
+\end{matrix}\right.</script><p>通项公式：</p>
+<script type="math/tex; mode=display">
+\pi(i,j,X)=\max_{X\rightarrow Y\,Z \in R \,\,s \in \{i...(j-1)\}}\big(q(X\rightarrow Y\,Z)\pi(i,s,Y)\pi(s+1,j,Z)\big)</script><p>最后用bp来记录规则<script type="math/tex">X \rightarrow Y\,Z</script>和分隔符s，算法如下：<br><img src="/upload/essayimage/nlp/nlp0305.png" alt="nlp0305"></p>
+<h4 id="Inside-Algorithm"><a href="#Inside-Algorithm" class="headerlink" title="Inside Algorithm"></a>Inside Algorithm</h4><p>这个算法我有点懵，不知道为什么要将这些可能的parse tree求和，而且求和的结果难道不是1吗？？？先放到这吧，后期明白了再补上。。。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/11/nlp02/" rel="next" title="NLP学习笔记之 Tagging Problems and Hidden Markov Models">
+                <i class="fa fa-chevron-left"></i> NLP学习笔记之 Tagging Problems and Hidden Markov Models
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/15/nlp04/" rel="prev" title="NLP 学习笔记之Lexicalized Probabilistic Context-Free Grammars">
+                NLP 学习笔记之Lexicalized Probabilistic Context-Free Grammars <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context-Free-Grammars"><span class="nav-number">1.</span> <span class="nav-text">Context-Free Grammars</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ambiguity"><span class="nav-number">2.</span> <span class="nav-text">Ambiguity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Probabilistic-Context-Free-Grammars-PCFGs"><span class="nav-number">3.</span> <span class="nav-text">Probabilistic Context-Free Grammars(PCFGs)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CKY-algorithm"><span class="nav-number">4.</span> <span class="nav-text">CKY algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inside-Algorithm"><span class="nav-number">5.</span> <span class="nav-text">Inside Algorithm</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

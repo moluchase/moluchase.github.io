@@ -1,0 +1,1011 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP学习笔记之 Tagging Problems and Hidden Markov Models">
+<meta property="og:url" content="http://yoursite.com/2018/01/11/nlp02/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0201.png">
+<meta property="og:updated_time" content="2018-01-13T08:00:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP学习笔记之 Tagging Problems and Hidden Markov Models">
+<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0201.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/11/nlp02/"/>
+
+
+
+
+
+  <title> NLP学习笔记之 Tagging Problems and Hidden Markov Models | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/11/nlp02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NLP学习笔记之 Tagging Problems and Hidden Markov Models
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T16:39:01+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/11/nlp02/" class="leancloud_visitors" data-flag-title="NLP学习笔记之 Tagging Problems and Hidden Markov Models">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要学习资料是cs224n的<a href="https://tensorflowkorea.files.wordpress.com/2017/03/cs224n-2017winter-notes-all.pdf" target="_blank" rel="external">notes</a>和Michael Collins的<a href="http://www.cs.columbia.edu/~mcollins/notes-spring2013.html" target="_blank" rel="external">notes</a>，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。</p>
+<a id="more"></a>
+<h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>对于一个句子，我们要做的是给每一个单词打上词性标记，比如句子<code>the dog saw a cat</code>对应的tag sequence是<code>D N V D N</code>，这个句子的长度是5，对应的输入<script type="math/tex">x_1=the,x_2=dog,x_3=saw,x_4=the,x_5=cat</script>，用<script type="math/tex">y_1y_2...y_n</script>来表示tagging model的output，对应上面的有<script type="math/tex">y_1=D,y_2=N,y_3=V,...</script>。匹配句子<script type="math/tex">x_1...x_n</script>的tag sequence <script type="math/tex">y_1...y_n</script>的问题叫做 sequence labeling problem 或者是 tagging problem。</p>
+<h4 id="Two-Example-Tagging-Problems-POS-Tagging-and-Named-Entity-Recognition"><a href="#Two-Example-Tagging-Problems-POS-Tagging-and-Named-Entity-Recognition" class="headerlink" title="Two Example Tagging Problems : POS Tagging and Named-Entity Recognition"></a>Two Example Tagging Problems : POS Tagging and Named-Entity Recognition</h4><p>前面讲到的就是POS Tagging，其有两大挑战，第一个是tagging的歧义问题，因为一个单词有可能是动词又有可能是名词；第二个是词库中的单词有限，导致训练例子中的单词可能在词库中没有出现，然后是Named-Entity Recognition，notes中提到的实体有<code>PERSON,LOCATION,COMPANY</code>。但是对这一块的讲解非常少，所以这里就不提了[后期如果有用会补上吧。]</p>
+<h4 id="Generative-Models"><a href="#Generative-Models" class="headerlink" title="Generative Models"></a>Generative Models</h4><p>这里主要是讲解隐马尔可夫模型应用在tagging问题上，这里以<script type="math/tex">x^{(i)}</script>作为句子，<script type="math/tex">y^{(i)}</script>作为对应的标签，我们的目的是在语料库集合<script type="math/tex">Y,y \in Y</script>中找到最符合句子<script type="math/tex">x^{(i)}</script>的标签<script type="math/tex">y^{(i)}</script>，即如下：</p>
+<script type="math/tex; mode=display">
+f(x)=arg \, \max_{y\in Y}\,\,p(y|x)</script><p>那么如何对于给定的<script type="math/tex">x^{(i)}</script>，在Y中找到最优的<script type="math/tex">y</script>呢，即如何求解p(y|x)呢，这里我们将上式转换一下，用贝叶斯公式求解：</p>
+<script type="math/tex; mode=display">
+p(y|x)=\frac{p(y)p(x|y)}{p(x)}</script><p>由于对于x而言，求解全部y的概率，因此p(x)可以看成常数，也就是求下面的最大值对应的y：</p>
+<script type="math/tex; mode=display">
+f(x)=arg \,\, \max_y p(y)p(x|y)</script><h4 id="Generative-Tagging-Models"><a href="#Generative-Tagging-Models" class="headerlink" title="Generative Tagging Models"></a>Generative Tagging Models</h4><p>对于单词集<script type="math/tex">V</script>，标记集<script type="math/tex">K</script>，定义<script type="math/tex">S</script>为sequence/tag-sequence对<script type="math/tex"><x_1...x_n,y_1...y_n></script>，对于<script type="math/tex">x_i \in V</script>，<script type="math/tex">y_i \in K</script>，有如下要求：</p>
+<script type="math/tex; mode=display">
+for\,\,any\,\, <x_1...x_n,y_1...y_n> \in S\\
+p(x_1...x_n,y_1...y_n) >=0\\
+\sum_{<x_1...x_n,y_1...y_n> \in S} p(x_1...x_n,y_1...y_n)=1</script><p>那么对于给定的一个生成标记模型，从序列<script type="math/tex">x_1...x_n</script>中标记出序列<script type="math/tex">y_1...y_n</script>被定义如下：</p>
+<script type="math/tex; mode=display">
+f(x_1...x_n)=arg\,\, \max_{y_1...y_n}\,\,p(x_1...x_n,y_1...y_n)</script><p>这里就是找出全部的序列<script type="math/tex">y_1...y_n</script>，其中<script type="math/tex">y_i \in K</script>，计算其中的概率值，将最大的概率值对应的序列<script type="math/tex">y_1...y_n</script>作为模型的输出。那么如何计算这个概率呢，下面有讲到。</p>
+<h4 id="Trigram-Hidden-Markov-Models"><a href="#Trigram-Hidden-Markov-Models" class="headerlink" title="Trigram Hidden Markov Models"></a>Trigram Hidden Markov Models</h4><p>这里是Trigram，也就是说序列中<script type="math/tex">y_i</script>只与<script type="math/tex">y_{i-1}</script>和<script type="math/tex">y_{i-2}</script>有关。<br>给出下面两个参数 ：<br>参数 <script type="math/tex">q(s|u,v)</script>：对于任意的trigram(u,v,s)，其中<script type="math/tex">s \in K \cup \{STOP\}, u,v \in K \cup \{*\}</script>，其概率<script type="math/tex">q(s|u,v)</script>可由在看到s在bigram (u,v)后的概率。<br>参数 <script type="math/tex">e(x|s)</script>：对于任意<script type="math/tex">x \in V, s \in K​</script> 这个值可以表示为看见观测值x配对s的概率。<br>那么之前概率<script type="math/tex">p(x_1...x_n,y_1...y_{n+1})</script>可以表示如下：</p>
+<script type="math/tex; mode=display">
+p(x_1...x_n,y_1...y_{n+1})=p(y_1...y_{n+1})p(x_1...x_n|y_1...y_{n+1})\\
+=\prod_{i=1}^{n+1} q(y_i|y_{i-2},y_{i-1}) \prod_{i=1}^{n} e(x_i|y_i)</script><p>这里有<script type="math/tex">y_{n+1}=STOP，y_0=y_{-1}=*</script>。<br>那么为什么上面这个公式成立呢，这里是有一些假设的，这里使用随机变量序列<script type="math/tex">X_1...X_n</script>和<script type="math/tex">Y_1...Y_n</script>，其中n为序列的长度，假设<script type="math/tex">X_i</script>可以取集合<script type="math/tex">V</script>中的任意的值，<script type="math/tex">Y_i</script>可以取集合<script type="math/tex">K</script>中任意一个标记，那么上式可以被定义为：</p>
+<script type="math/tex; mode=display">
+P(X_1=x_1...X_n=x_n,Y_1=y_1...Y_{n+1}=y_{n+1})\\
+=\prod_{i=1}^{n+1}P(Y_i=y_i|Y_{i-2}=y_{i-2},Y_{i-1}=y_{i-1})\prod_{i=1}^{n}P(X_i=x_i|Y_i=y_i)</script><p>这里第一个连乘是没有问题的，但是第二个连乘是怎么得到的呢，下面一步步分析<br>这里先讲一下概率模型<script type="math/tex">P(X_1=x_1...X_n=x_n)</script>的求解，如下：</p>
+<script type="math/tex; mode=display">
+P(X_1=x_1...X_n=x_n)\\
+=P(X_n=x_n|X_1=x_1...X_{n-1}=x_{n-1})P(X_1=x_1...X_{n-1}=x_{n-1})\\
+其中P(X_1=x_1...X_{n-1}=x_{n-1})\\
+=P(X_{n-1}=x_{n-1}|X_1=x_1...X_{n-2}=x_{n-2})P(X_1=x_1...X_{n-2}=x_{n-2})\\
+...\\
+P(X_1=x_1, X_2=x_2)=P(X_2=x_2|X_1=x_1)P(X_1=x_1)\\
+这样上面可以表示如下：\\
+P(X_1=x_1...X_n=x_n)=\prod_{i=1}^{n}P(X_i=x_i|X_1=x_1...X_{i-1}=x_{i-1})</script><p>那么下面这个公式就知道怎么变来的了吧</p>
+<script type="math/tex; mode=display">
+P(X_1=x_1...X_n=x_n|Y_1=y_1...Y_{n+1}=y_{n+1})\\
+=\prod_{i=1}^{n}P(X_i=x_i|X_1=x_1...X_{i-1}=x_{i-1},Y_1=y_1...Y_{n+1}=y_{n+1})</script><p>这里做了一个假设，变量<script type="math/tex">X_i</script>独立于之前的观测变量<script type="math/tex">X_1...X_{i-1}</script>和状态变量<script type="math/tex">Y_1...Y_{i-1},Y_{i+1}...Y_{n+1}</script> ，当被给出变量<script type="math/tex">Y_i</script>时。那么上面的式子就变为：</p>
+<script type="math/tex; mode=display">
+\prod_{i=1}^{n}P(X_i=x_i|X_1=x_1...X_{i-1}=x_{i-1},Y_1=y_1...Y_{n+1}=y_{n+1})\\
+=\prod_{i=1}^{n}P(X_i=x_i|Y_i=y_i)</script><h4 id="Estimating-the-Parameters-of-a-Trigram-HMM"><a href="#Estimating-the-Parameters-of-a-Trigram-HMM" class="headerlink" title="Estimating the Parameters of a Trigram HMM"></a>Estimating the Parameters of a Trigram HMM</h4><p>这里定义一下<script type="math/tex">c(s \to x)</script>为在语料库中标签s和单词x匹配的次数，那么上述的两个参数在语料库中的最大似然估计如下：</p>
+<script type="math/tex; mode=display">
+q(s|u,v)=\frac{c(u,v,s)}{c(u,v)}\\
+e(x|s)=\frac{c(s \to x)}{c(s)}</script><p>同样对于在语料库中<script type="math/tex">q(s|u,v)</script>为0的情况，我们用上一章中讲到的解决，对于<script type="math/tex">e(x|s)</script>为0的情况，也就是说在语料库中没有出现该单词，这里notes中给出一种解决办法就是使用伪词(pseudo-words)[这块没有细看，后期用到再补]</p>
+<h4 id="Decoding-with-HMMs-the-Viterbi-Algorithm"><a href="#Decoding-with-HMMs-the-Viterbi-Algorithm" class="headerlink" title="Decoding with HMMs: the Viterbi Algorithm"></a>Decoding with HMMs: the Viterbi Algorithm</h4><p>那么知道如何求解<script type="math/tex">q(s|u,v)</script>和<script type="math/tex">e(x|s)</script>，我们又知道 </p>
+<script type="math/tex; mode=display">
+p(x_1...x_n,y_1...y_{n+1})==
+\prod_{i=1}^{n+1} q(y_i|y_{i-2},y_{i-1}) \prod_{i=1}^{n} e(x_i|y_i)</script><p>而我们的原始问题是发现一组使概率值最大的序列<script type="math/tex">y_1...y_{n+1}</script>，即：</p>
+<script type="math/tex; mode=display">
+arg\,\, \max_{y_1...y_n}\,\,p(x_1...x_n,y_1...y_n)</script><p>这里举个例子，对于输入的句子<code>the dog barks</code> ，假设标记集为<script type="math/tex">K=\{D,N,V\}</script>，那么可能的标记序列<script type="math/tex">y_1y_2y_3y_4</script>可以是下面任意一种：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">D	D	D	STOP</div><div class="line">D	D	N	STOP</div><div class="line">D	D	V	STOP</div><div class="line">D	N	D	STOP</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>对于<script type="math/tex">|K|=3</script>时，有27种可能，如果计算这<script type="math/tex">3^3=27</script>种情况中的每一种，找出概率最大的那个序列，显然是不太现实的，我们需要用一种更为简化的方法来解决这个问题。<br>下面的维特比算法就给出这样一种解决办法，可以将时间复杂度由<script type="math/tex">O(|K|^n)</script>缩小到<script type="math/tex">O(n|K|^3)</script>，使用的方法是动态规划，就是对一个长度为n的句子分解，给定初始条件，给出通项公式，即求长度为i的子句最大概率下对应的子标记和长度为i-1的子句最大概率下对应的子标记的关系，这样就可以求出长度为n的原句最大概率下对应的标记。</p>
+<p><font color="#FF0000"><strong>VITERBI ALGORITHM</strong></font><br>输入的句子是<script type="math/tex">x_1...x_n</script>，对任意的<script type="math/tex">k \in \{1...n\}</script> ，任意的序列<script type="math/tex">y_{-1},y_{0},y_{1}...y_{k}</script>，且 <script type="math/tex">y_i \in K , y_{-1}=y_0=*</script>，定义如下函数：</p>
+<script type="math/tex; mode=display">
+r(y_{-1},y_0,y_1,...,y_k)=\prod_{i=1}^{k}q(y_i|y_{i-2},y_{i-1})\prod_{i=1}^{k}e(x_i|y_i)</script><p>这里举个例子如下：</p>
+<script type="math/tex; mode=display">
+p(x_1...x_n,y_1...y_{n+1})=r(*,*,y1,...,y_n)  q(STOP|y_{n-1},y_n)</script><p>继续，定义<script type="math/tex">K_{-1}=K_{0}=\{*\}</script>和<script type="math/tex">K_k=K\,\,for\,\,k \in \{1...n\}</script>,定义<script type="math/tex">S(k,u,v)</script>为序列<script type="math/tex">y_{-1},y_{0},y_1,...,y_{k}</script> 的集合，其中<script type="math/tex">u \in K_{k-1}, v \in K_{k},y_{k-1}=u,y_k=v</script>，定义：</p>
+<script type="math/tex; mode=display">
+\pi(k,u,v)= \max_{<y_{-1},y_0,y_1,...,y_k> \in S(k,u,v)} r(y_{-1},y_0,y_1,...,y_k)</script><p>给定初始条件：<script type="math/tex">\pi(0,*,*)=1</script><br>给定通项公式：</p>
+<script type="math/tex; mode=display">
+\pi(k,u,v)=\max_{w \in K_{k-2}}\big(\pi(k-1,w,u)q(v|w,u)e(x_k|v)\big)</script><p>算法如下：<br><img src="/upload/essayimage/nlp/nlp0201.png" alt="nlp0201"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/11/leetcode309/" rel="next" title="309. Best Time to Buy and Sell Stock with Cooldown">
+                <i class="fa fa-chevron-left"></i> 309. Best Time to Buy and Sell Stock with Cooldown
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/13/nlp03/" rel="prev" title="NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs)">
+                NLP 学习笔记之 Probabilistic Context-Free Grammars (PCFGs) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Two-Example-Tagging-Problems-POS-Tagging-and-Named-Entity-Recognition"><span class="nav-number">2.</span> <span class="nav-text">Two Example Tagging Problems : POS Tagging and Named-Entity Recognition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Generative-Models"><span class="nav-number">3.</span> <span class="nav-text">Generative Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Generative-Tagging-Models"><span class="nav-number">4.</span> <span class="nav-text">Generative Tagging Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Trigram-Hidden-Markov-Models"><span class="nav-number">5.</span> <span class="nav-text">Trigram Hidden Markov Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Estimating-the-Parameters-of-a-Trigram-HMM"><span class="nav-number">6.</span> <span class="nav-text">Estimating the Parameters of a Trigram HMM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Decoding-with-HMMs-the-Viterbi-Algorithm"><span class="nav-number">7.</span> <span class="nav-text">Decoding with HMMs: the Viterbi Algorithm</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

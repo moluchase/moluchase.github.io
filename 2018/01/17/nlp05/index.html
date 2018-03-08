@@ -1,0 +1,1006 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2">
+<meta property="og:url" content="http://yoursite.com/2018/01/17/nlp05/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0501.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0502.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0503.png">
+<meta property="og:updated_time" content="2018-01-22T08:19:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2">
+<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0501.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/17/nlp05/"/>
+
+
+
+
+
+  <title> NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/nlp05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T17:15:30+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/17/nlp05/" class="leancloud_visitors" data-flag-title="NLP 学习笔记之Statistical Machine Translation：IBM Models 1 and 2">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要学习资料是cs224n的<a href="https://tensorflowkorea.files.wordpress.com/2017/03/cs224n-2017winter-notes-all.pdf" target="_blank" rel="external">notes</a>和Michael Collins的<a href="http://www.cs.columbia.edu/~mcollins/notes-spring2013.html" target="_blank" rel="external">notes</a>，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。</p>
+<a id="more"></a>
+<h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>这部分讲机器翻译，尤其是在统计机器翻译（SMT）系统上，此部分关注IBM翻译模型。这里以翻译法语(源语言)为英语(目标语言)为例，用<script type="math/tex">f</script>表示法语句子，即<script type="math/tex">f_1,f_2...f_m</script>，其中<script type="math/tex">m</script>为句子的长度；用<script type="math/tex">e</script>表示英语句子，即<script type="math/tex">e_1,e_2...e_l</script>，其中<script type="math/tex">l</script>表示英语句子的长度。用<script type="math/tex">(f^{(k)},e^{k})</script>表示第k个法语句子和英语句子。</p>
+<h4 id="The-Noisy-Channel-Approach"><a href="#The-Noisy-Channel-Approach" class="headerlink" title="The Noisy-Channel Approach"></a>The Noisy-Channel Approach</h4><p>IBM模型是一个噪声通道模型的例子，给出两个参数，用<script type="math/tex">p(e)</script>表示任意一个句子<script type="math/tex">e_1...e_l</script>在英语中的概率，用<script type="math/tex">p(f|e)</script>表示出现法语/英语对的概率，那么对于该模型，给定一个新的法语句子，其输出的结果是（即对应的英语句子）：</p>
+<script type="math/tex; mode=display">
+e^{*}=arg \,\, \max_{e \in E} \,\,p(e)p(f|e)</script><p>这个前面的章节中有讲到为什么，这里就直接用了。此时的重点在于如何定义模型<script type="math/tex">p(f|e)</script>，以及如何从训练集<script type="math/tex">(f^{(k)},e^{(k)}) \,\,for\,\,k=1...n</script>中评估模型的参数？</p>
+<h4 id="The-IBM-Models"><a href="#The-IBM-Models" class="headerlink" title="The IBM Models"></a>The IBM Models</h4><p>直接求解<script type="math/tex">p(f_1...f_m|e_1...e_l,m)</script>比较难，将其条件概率细化为<script type="math/tex">p(f_1...f_m,a_1...a_m|e_1...e_l,m)</script>，其中变量<script type="math/tex">a_1...a_m</script>的<script type="math/tex">a_i \in \{0,0,...,l\}</script>表示法语的第i个单词对应英语的某个单词，这样再回到原条件概率：</p>
+<script type="math/tex; mode=display">
+p(f_1...f_m|e_1...e_l)=\sum_{a_1=0}^{l}\sum_{a_2=0}^{l}...\sum_{a_m=0}^{l}p(f_1...f_m,a_1...a_m|e_1...e_l)</script><p><strong>IBM Model 2</strong><br>用一个有限集<script type="math/tex">\varepsilon</script>表示英语单词集，用<script type="math/tex">F</script>表示法语集，用<script type="math/tex">M</script>和<script type="math/tex">L</script>分别表示法语的最大长度和英语的最大长度，下面给出两个参数：</p>
+<ul>
+<li>一个是<script type="math/tex">t(f|e)</script>，表示从英语单词e生成法语单词f的条件概率，其中<script type="math/tex">f \in F , e \in \varepsilon \cup \{NULL\}</script></li>
+<li>一个是<script type="math/tex">q(j|i,l,m)</script>，表示在法语句子和英语句子长度分别为m和l的条件下，对齐变量<script type="math/tex">a_i</script>值为j的概率，其中<script type="math/tex">l \in\{1...L\}，m \in \{1...M\}，i \in \{1...m\}，j \in \{0...l\}</script></li>
+</ul>
+<p>前面讲到的条件概率有如下等价：</p>
+<script type="math/tex; mode=display">
+p(f_1...f_m,a_1...a_m|e_1...e_l,m)=\prod_{i=1}^mq(a_i|i,l,m)t(f_i|e_{a_i})</script><p>此处定义<script type="math/tex">e_0</script>为<code>NULL</code>。<br>上式为什么就等价呢，下面用随机变量来讲解：<br>定义<script type="math/tex">E_1...E_l</script>为对应英语句子中单词的随机变量序列，L为英语句子长度的随机变量，<script type="math/tex">F_1...F_m</script>为法语单词的随机变量序列，M为法语句子长度的随机变量，<script type="math/tex">A_1...A_m</script>为对齐变量，这样建立模型为:</p>
+<script type="math/tex; mode=display">
+P(F_1=f_1...F_m=f_m,A_1=a_1...A_m=a_m|E_1=e_1...E_l=e_l,L=l,M=m)</script><p>上式用条件概率展开如下：</p>
+<script type="math/tex; mode=display">
+P(F_1=f_1...F_m=f_m,A_1=a_1...A_m=a_m|E_1=e_1...E_l=e_l,L=l,M=m)\\
+=P(A_1=a_1...A_m=a_m|E_1=e_1...E_l=e_l,L=l,M=m)\cdot \\
+P(F_1=f_1...F_m=f_m|A_1=a_1...A_m=a_m,E_1=e_1...E_l=e_l,L=l,M=m)</script><p>上面两部分分别做如下两个假设：<br>1.</p>
+<script type="math/tex; mode=display">
+P(A_1=a_1...A_m=a_m|E_1=e_1...E_l=e_l,L=l,M=m)\\
+=\prod_{i=1}^{m}P(A_i=a_i|A_1=a_1...A_{i-1}=a_{i-1},E_1=e_1...E_l=e_l,L=l,M=m)\\
+=\prod_{i=1}^{m}P(A_i=a_i|L=l,M=m)</script><p>第一个等式是链式规则导出的，主要是第二个等式，假设随机变量<script type="math/tex">A_i</script>仅仅与随机变量L和M有关(即和英语单词序列，其它对齐变量独立)。<br>2.</p>
+<script type="math/tex; mode=display">
+P(F_1=f_1...F_m=f_m|A_1=a_1...A_m=a_m,E_1=e_1...E_l=e_l,L=l,M=m)\\
+=\prod_{i=1}^{m}P(F_i=f_i|F_1=f_1...F_{i-1}=f_{i-1},A_1=a_1...A_m=a_m,E_1=e_1...E_l=e_l,L=l,M=m)\\
+=\prod_{i=1}^{m}P(F_i=f_i|E_{a_i}=e_{a_i})</script><p>第二行假设随机变量<script type="math/tex">F_i</script>仅仅依赖于<script type="math/tex">E_{a_i}</script><br>【【此处假设有点强，<script type="math/tex">F_i</script>竟然和其它的法语变量没关系…有点不太懂？？？】】</p>
+<h4 id="Applying-IBM-Model-2"><a href="#Applying-IBM-Model-2" class="headerlink" title="Applying IBM Model 2"></a>Applying IBM Model 2</h4><p>前面讲到了IBM Model 2 中的参数<script type="math/tex">q(j|i,l,m)</script>和<script type="math/tex">t(f|e)</script>，即我们知道了分布<script type="math/tex">p(f,a|e)</script>，而我们需要知道对于任意的<script type="math/tex">f,a,e</script>，得出如下分布：</p>
+<script type="math/tex; mode=display">
+p(f|e)=\sum_ap(f,a|e)</script><p>最后，假定我们已经估计了语言模型<script type="math/tex">p(e)</script>，那么我们对任意一个法语句子f的翻译结果就是：</p>
+<script type="math/tex; mode=display">
+arg\,\, \max_ep(e)p(f|e)</script><p>IBM模型并不是一个好的翻译系统，但是仍然是一个关键的算法 ，这里说道的两种原因：<script type="math/tex">t(f|e)</script>被用到各种翻译系统，现代的翻译模型都是建立在IBM模型上的。<br>继续接上面最后的公式，对于由英语句子和法语句子对组成的训练集中，我们可以分析出一组对齐变量，使得下面的概率最大，也就是最符合的对齐变量：</p>
+<script type="math/tex; mode=display">
+arg \,\, \max_{a_1...a_l}p(a_1...a_m|f_1...f_m,e_1...e_l,m)</script><p>继而求解如下子问题：</p>
+<script type="math/tex; mode=display">
+a_i=arg\,\, \max_{j \in (0...l)}(q(j|i,l,m)t(f_i|e_j))</script><h4 id="Parameter-Estimation"><a href="#Parameter-Estimation" class="headerlink" title="Parameter Estimation"></a>Parameter Estimation</h4><p>定义<script type="math/tex">c(e,f)</script>表示在训练集中单词e和单词l对齐的次数，<script type="math/tex">c(e)</script>表示e和任意一个法语单词对齐的次数，<script type="math/tex">c(j|i,l,m)</script>表示在看到长度为l的英语句子和长度为m的法语句子，且在看到单词i对应的是单词j的次数(就是<script type="math/tex">a_i=j</script>的次数)，<script type="math/tex">c(i,l,m)</script>表示长度为l的英语句子和长度为m的法语句子下标为i的个数。<br>上面的含义有点乱，而且下面给出的算法我也是看了好一会才理解什么意思，如下分别对全部语料库和部分语料库给出的算法，这里先分析对全部语料库的算法：<br><img src="/upload/essayimage/nlp/nlp0501.png" alt="nlp0501"><br>接上面定义的变量的含义，这里当<script type="math/tex">a_i^{(k)}=j</script>时，有<script type="math/tex">\delta(k,i,j)=1</script>，否则为0；算法中每次都会一起加1，看着值一样，其实是有区别的，这里我举个例子：<br>训练集中的数据为<script type="math/tex">f^{(k)},e^{(k)},a^{(k)}</script>，拿书中的一个句子为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">l=6,m=7</div><div class="line">e= And the programma has been implemented</div><div class="line">f= Le programme a ete mis en application</div><div class="line">a=&#123;2,3,4,5,6,6,6&#125;</div></pre></td></tr></table></figure></p>
+<p>这里<script type="math/tex">c(e)</script>就没什么好说的，就是统计如<script type="math/tex">c(And),c(the)</script>的个数，<script type="math/tex">c(e,f)</script>就是统计如<script type="math/tex">c(the ,Le)</script>的个数，<script type="math/tex">c(j|i,l,m)</script>作如下解释，比如f中第一个单词Le对应e中第二个单词the，那么就将<script type="math/tex">c(2|1,6,7)</script>的值增加1，当然，对于<script type="math/tex">c(the),c(the,Le),c(1,6,7)</script>都会增加1，也就是说如果还有这样一个样本l=6，m=7，同时f中的第一个单词对应着e中第二个单词，那么<script type="math/tex">c(2|1,6,7),c(1,6,7)</script>也会增加1，但是<script type="math/tex">c(the),c(the,Le)</script>就不会增加了，这样就理解上面的算法了吧。接着看下面的算法：<br><img src="/upload/essayimage/nlp/nlp0502.png" alt="nlp0502"><br>观察两个算法的区别，主要在于<script type="math/tex">\delta(k,i,j)</script>计算不同，<script type="math/tex">\delta(k,i,j)</script>表示第k组平行预料（训练集中法文-英文句子）里的第i个法文词，第j个英文词。如果是上帝模式，那<script type="math/tex">\delta(k,i,j)=1/0</script>分别表示这两个词之间应当/不应当对齐，其问题在于我们不可能有全部语料库，也就是说等于1或者0，没有人能够知道，所以采用最大似然估计来估计（EM算法），于是就采用如下公式：</p>
+<script type="math/tex; mode=display">
+\delta(k,i,j)=\frac{q(j|i,l_k,m_k)t(f_i^{(k)}|e_j^{(k)})}{\sum_{j=0}^{l_k}q(j|i,l_k,m_k)t(f_i^{(k)}|e_j^{(k)})}</script><p>最开始的值是使用随机数，后面再不断更新。</p>
+<h4 id="More-on-the-EM-Algorithm-Maximum-likelihood-Estimation"><a href="#More-on-the-EM-Algorithm-Maximum-likelihood-Estimation" class="headerlink" title="More on the EM Algorithm: Maximum-likelihood Estimation"></a>More on the EM Algorithm: Maximum-likelihood Estimation</h4><p>这部分好像没什么用额，功力不够，就不写了</p>
+<h4 id="Initialzation-using-IBM-Model-1"><a href="#Initialzation-using-IBM-Model-1" class="headerlink" title="Initialzation using IBM Model 1"></a>Initialzation using IBM Model 1</h4><p>EM算法对IBM模型2的初始化敏感，依赖初始值(随机数)，这里使用IBM模型1，主要区别在于将模型2开始对<script type="math/tex">q(j|i,l,m)</script>的概率设为定值：</p>
+<script type="math/tex; mode=display">
+q(j|i,l,m)=\frac{1}{l+1}</script><p>注意这里的分母<script type="math/tex">l+1</script>表示的是j全部的取值个数，<script type="math/tex">j \in \{0,1,...,l\}</script>，这样做的意思就是说，在长度分别为l和m的英语句子和法语句子中，<script type="math/tex">a_i</script>对应<script type="math/tex">j</script>的关系是同概率的，没有什么相关性。<br>那么句子预测结果的概条件率公式可重写如下：</p>
+<script type="math/tex; mode=display">
+p(f_1...f_m,a_1...a_m|e_1...e_l,m)=\prod \frac{1}{l+1}t(f_i|e_{a_i})=\frac{1}{(1+l)^m}\prod_{i=1}^{m}t(f_i|e_{a_i})</script><p>EM算法重写如下：</p>
+<script type="math/tex; mode=display">
+\delta(k,i,j)=\frac{q(j|i,l_k,m_k)t(f_i^{(k)}|e_j^{(k)})}{\sum_{j=0}^{l_k}q(j|i,l_k,m_k)t(f_i^{(k)}|e_j^{(k)})}
+=\frac{t(f_i^{(k)}|e_j^{(k)}}{\sum_{j=0}^{l_k}t(f_i^{(k)}|e_j^{(k)})}</script><p>算法如下：<br><img src="/upload/essayimage/nlp/nlp0503.png" alt="nlp0503"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/15/nlp04/" rel="next" title="NLP 学习笔记之Lexicalized Probabilistic Context-Free Grammars">
+                <i class="fa fa-chevron-left"></i> NLP 学习笔记之Lexicalized Probabilistic Context-Free Grammars
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/18/leetcode315/" rel="prev" title="315. Count of Smaller Numbers After Self">
+                315. Count of Smaller Numbers After Self <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Noisy-Channel-Approach"><span class="nav-number">2.</span> <span class="nav-text">The Noisy-Channel Approach</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-IBM-Models"><span class="nav-number">3.</span> <span class="nav-text">The IBM Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Applying-IBM-Model-2"><span class="nav-number">4.</span> <span class="nav-text">Applying IBM Model 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parameter-Estimation"><span class="nav-number">5.</span> <span class="nav-text">Parameter Estimation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#More-on-the-EM-Algorithm-Maximum-likelihood-Estimation"><span class="nav-number">6.</span> <span class="nav-text">More on the EM Algorithm: Maximum-likelihood Estimation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Initialzation-using-IBM-Model-1"><span class="nav-number">7.</span> <span class="nav-text">Initialzation using IBM Model 1</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

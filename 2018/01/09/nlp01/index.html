@@ -114,19 +114,19 @@
 
 
 
-<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。">
+<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NLP学习笔记I">
+<meta property="og:title" content="NLP学习笔记之Language Modeling">
 <meta property="og:url" content="http://yoursite.com/2018/01/09/nlp01/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。">
+<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.my.csdn.net/uploads/201011/22/0_12903943943q96.gif">
 <meta property="og:image" content="http://img.my.csdn.net/uploads/201011/19/0_1290159313dffa.gif">
-<meta property="og:updated_time" content="2018-01-10T09:21:51.000Z">
+<meta property="og:updated_time" content="2018-01-13T08:00:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NLP学习笔记I">
-<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。">
+<meta name="twitter:title" content="NLP学习笔记之Language Modeling">
+<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
 <meta name="twitter:image" content="http://img.my.csdn.net/uploads/201011/22/0_12903943943q96.gif">
 
 
@@ -161,7 +161,7 @@
 
 
 
-  <title> NLP学习笔记I | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> NLP学习笔记之Language Modeling | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -331,7 +331,7 @@
             
             
               
-                NLP学习笔记I
+                NLP学习笔记之Language Modeling
               
             
           </h1>
@@ -386,7 +386,7 @@
 
           
           
-             <span id="/2018/01/09/nlp01/" class="leancloud_visitors" data-flag-title="NLP学习笔记I">
+             <span id="/2018/01/09/nlp01/" class="leancloud_visitors" data-flag-title="NLP学习笔记之Language Modeling">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -415,13 +415,16 @@
       
 
       
-        <p>主要学习资料是cs224n的notes和Michael Collins的notes，这里并不是一个完整的笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记。</p>
+        <p>主要学习资料是cs224n的<a href="https://tensorflowkorea.files.wordpress.com/2017/03/cs224n-2017winter-notes-all.pdf" target="_blank" rel="external">notes</a>和Michael Collins的<a href="http://www.cs.columbia.edu/~mcollins/notes-spring2013.html" target="_blank" rel="external">notes</a>，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。</p>
 <a id="more"></a>
 <h4 id="N-Gram"><a href="#N-Gram" class="headerlink" title="N-Gram"></a>N-Gram</h4><p>这里首先有个语料库，记录了很多条句子，然后预测给定句子出现的概率。给定一个句子，这里句子的长度为n，也就是<script type="math/tex">|V|=n</script>，第i个单词用字母<script type="math/tex">x_i</script>表示，那么概率公式表示为：<script type="math/tex">P(X_1=x_1,X_2=x_2,...X_n=x_n)</script><br>使用马尔科夫假设第i个单词出现只与前面几个单词有关，这里如果和前面的全部单词有关，则有：</p>
 <script type="math/tex; mode=display">
-P(X_1=x_1,X_2=x_2,...X_n=x_n)=P(X_1=x_1)\Pi_{i=2}^{n}{P(X_i=x_i|X_1=x_1,...,X_{i-1}=x_{i-1})}</script><p>这里如果我们使用bigram模型的话，且<script type="math/tex">x_0=x_{-1}=*</script> ，该式子就变为如下：</p>
+P(X_1=x_1,X_2=x_2,...X_n=x_n)=P(X_1=x_1)\prod_{i=2}^{n}{P(X_i=x_i|X_1=x_1,...,X_{i-1}=x_{i-1})}</script><p>如果是TRIGRAM LANGUAGE MODELS ，有</p>
 <script type="math/tex; mode=display">
-P(X_1=x_1,X_2=x_2,...X_n=x_n)=\Pi_{i=1}^{n}{P(X_i=x_i|X_{i-1}=x_{i-1})}</script><p>摘抄<a href="http://blog.csdn.net/lengyuhong/article/details/6022053" target="_blank" rel="external">这个博客</a>举的例子：<br>假设语料库总词数为13,748<br>词和词频表如下所示：</p>
+P(X_1=x_1,X_2=x_2,...X_n=x_n)=\Pi_{i=1}^{n}{P(X_i=x_i|X_{i-2
+}=x_{i-2},X_{i-1}=x_{i-1})}</script><p>即<script type="math/tex">p(x_1,x_2,...,x_n)=\Pi_{i=1}^{n}q(x_i|x_{i-2},x_{i-1})</script>，而<script type="math/tex">q(w|u,v)=\frac{c(u,v,w)}{c(u,v)}</script><br>这里如果我们使用bigram模型的话，且<script type="math/tex">x_0=x_{-1}=*</script> ，该式子就变为如下：</p>
+<script type="math/tex; mode=display">
+P(X_1=x_1,X_2=x_2,...X_n=x_n)=\prod_{i=1}^{n}{P(X_i=x_i|X_{i-1}=x_{i-1})}</script><p>摘抄<a href="http://blog.csdn.net/lengyuhong/article/details/6022053" target="_blank" rel="external">这个博客</a>举的例子：<br>假设语料库总词数为13,748<br>词和词频表如下所示：</p>
 <p><div align="center">
 <img src="http://img.my.csdn.net/uploads/201011/22/0_12903943943q96.gif">
 </div><br>bigram模型的参数，词序列频度：</p>
@@ -437,7 +440,7 @@ P(I\, want\, to \,eat\, Chinese\, food)\\
 <script type="math/tex; mode=display">
 \Pi_{i=1}^{m}p(x^{(i)})</script><p>直观的感受是该结果越大，说明语言模型越好。[至于此处为什么，我也讲不清楚，可以理解成模型对未知句子的预测能力吧]<br>这里设第i个句子的长度是<script type="math/tex">n_i</script>，那么记<script type="math/tex">M=\sum_{i=1}^{m}n_{i}</script>，定义平均log概率如下：</p>
 <script type="math/tex; mode=display">
-\frac{1}{M}log_2\Pi_{i=1}^mp(x^{(i)})\\
+\frac{1}{M}log_2\prod_{i=1}^mp(x^{(i)})\\
 =\frac{1}{M}\sum_{i=1}^{m}log_2p(x^{(i)})</script><p>定义困惑度为<script type="math/tex">2^{-l}</script>，其中<script type="math/tex">l=\frac{1}{M}\sum_{i=1}^{m}log_2p(x^{(i)})</script>。于是有困惑度越低，语言模型在未知数据上表现越好，最后给出了对于词汇表为50000时，trigram模型的困惑度是74，bigram模型的困惑度是137，unigram模型的困惑度是955</p>
 <h4 id="Smoothed-Estimation-of-Trigram-Models"><a href="#Smoothed-Estimation-of-Trigram-Models" class="headerlink" title="Smoothed Estimation of Trigram Models"></a>Smoothed Estimation of Trigram Models</h4><p>比较常见的两种平滑技术 linear interpolation和 discounting methods。</p>
 <p><font color="#FF0000"><strong>1.  Linear interpolation</strong></font></p>
@@ -533,6 +536,10 @@ q_D(w|v)=\left\{\begin{matrix}
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/01/11/leetcode307/" rel="prev" title="数组求和问题">
+                数组求和问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -605,7 +612,7 @@ q_D(w|v)=\left\{\begin{matrix}
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-count">104</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -616,7 +623,7 @@ q_D(w|v)=\left\{\begin{matrix}
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

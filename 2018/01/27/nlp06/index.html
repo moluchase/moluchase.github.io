@@ -1,0 +1,1006 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP 学习笔记之 Log-Linear Models">
+<meta property="og:url" content="http://yoursite.com/2018/01/27/nlp06/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0601.png">
+<meta property="og:updated_time" content="2018-01-31T04:17:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP 学习笔记之 Log-Linear Models">
+<meta name="twitter:description" content="主要学习资料是cs224n的notes和Michael Collins的notes，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0601.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/27/nlp06/"/>
+
+
+
+
+
+  <title> NLP 学习笔记之 Log-Linear Models | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/27/nlp06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NLP 学习笔记之 Log-Linear Models
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T15:04:10+08:00">
+                2018-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/27/nlp06/" class="leancloud_visitors" data-flag-title="NLP 学习笔记之 Log-Linear Models">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要学习资料是cs224n的<a href="https://tensorflowkorea.files.wordpress.com/2017/03/cs224n-2017winter-notes-all.pdf" target="_blank" rel="external">notes</a>和Michael Collins的<a href="http://www.cs.columbia.edu/~mcollins/notes-spring2013.html" target="_blank" rel="external">notes</a>，和宗成庆的统计自然语言处理，这里并不是一个完整的翻译笔记，而是在阅读的过程中对其中不懂的东西的一些解释，以及避免遗忘做的一些笔记，当然初入NLP，难免对一些知识理解不透或者有所偏差。</p>
+<a id="more"></a>
+<h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>Phrase-Based Translation Models这一章节比较深奥，自己也是看的半懂，就不写上来了。<br>log-linear 模型在自然语言处理上使用非常广泛，其最主要的原因在于其灵活性，允许很多特征被使用在该模型上，相比于之前的简单估计技术(比如HMMs的标记问题，PCFGs的解析问题)。</p>
+<h4 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h4><p>再次思考语言模型问题，其任务是得出下面条件概率的估计：</p>
+<script type="math/tex; mode=display">
+P(W_i=w_i|W_1=w_1...W_{i-1}=w_{i-1})=p(w_i|w_1...w_{i-1})</script><p>对于任一序列<script type="math/tex">w_1...w_i</script>，得出在序列<script type="math/tex">w_1...w_{i-1}</script>条件下，出现单词<script type="math/tex">w_i</script>的概率。在trigram语言模型中，我们有如下假设：</p>
+<script type="math/tex; mode=display">
+p(w_i|w_1...w_{i-1})=q(w_i|w_{i-2},w_{i-1})</script><p>对于上面的概率求解，我们前面提到过使用一种平滑技术：</p>
+<script type="math/tex; mode=display">
+q(w|u,v)=\lambda_1q_{ML}(w|u,v)+\lambda_2q_{ML}(w|v)+\lambda_3q_{ML}(w)</script><p>Trigram语言模型十分有效，但是在使用上下文<script type="math/tex">w_1...w_{i-1}</script>上相对狭窄了，比如我们想去估计单词<code>model</code>出现的概率在<script type="math/tex">w_1...w_{i-1}</script>条件下：</p>
+<script type="math/tex; mode=display">
+P(W_i=model|W_1=w_1...W_{i-1}=w_{i-1})</script><p>我们可以思考在单词<script type="math/tex">w_{i-2}</script>下的概率，而忽略<script type="math/tex">w_{i-1}</script>：<script type="math/tex">P(W_i=model|W_{i-2}=any)</script>；我们也可以考虑前一个单词的词性来对当前单词的概率：<script type="math/tex">P(W_i=model|pos(W_{i-1})=adj)</script>；实考前一个单词后缀对当前单词的影响：<script type="math/tex">P(W_i=model|suff4(W_{i-1})=ical)</script>…..等等很多，这样我们给每一个赋予权重参数，就可以写成如下形式：</p>
+<script type="math/tex; mode=display">
+p(model|w_1...w_{i-1})=\\
+\lambda_1q_{ML}(model|w_{i-2}=any,w_{i-1}=statistical)+\\
+\lambda_2q_{ML}(model|w_{i-1}=statistical)+\\
+\lambda_3q_{ML}(model)+\\
+\lambda_4q_{ML}(model|w_{i-2}=any)+\\
+\lambda_5q_{ML}(model|w_{i-1}\,\,is\,\,an\,\,adj)+\\
+\lambda_6q_{ML}(model|w_{i-1}\,\,ends\,\,in\,\,"ical")+\\
+...</script><p>显然如果这样做的话，会非常的麻烦，那么如何做呢，见下面部分。</p>
+<h4 id="Log-Linear-Models"><a href="#Log-Linear-Models" class="headerlink" title="Log-Linear Models"></a>Log-Linear Models</h4><p>基本定义：<script type="math/tex">X</script>作为输入集，<script type="math/tex">Y</script>作为输出集(标签集，假设是一个有限集)。<script type="math/tex">d</script>表示模型特征和参数的个数，函数<script type="math/tex">f</script>表示任意一个<script type="math/tex">(x,y)</script>对匹配的特征向量<script type="math/tex">f(x,y)</script>，参数向量<script type="math/tex">v \in R^d</script>.<br>将模型<script type="math/tex">p(y|x)</script>加上参数后定义的条件概率模型如下：</p>
+<script type="math/tex; mode=display">
+p(y|x;v)=\frac{e^{v\cdot f(x,y)}}{\sum_{y' \in Y}e^{v \cdot f(x,y')}}</script><p>其中<script type="math/tex">v\cdot f(x,y)=\sum_{k=1}^{d}v_kf_k(x,y)</script>，<script type="math/tex">p(y|x;v)</script>读作在参数<script type="math/tex">v</script>下，基于<script type="math/tex">x</script>的<script type="math/tex">y</script>的条件概率。</p>
+<h4 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h4><p>关于上面提到的特征向量<script type="math/tex">f</script>的计算如下图所示：<br><img src="/upload/essayimage/nlp/nlp0601.png" alt="nlp0601"><br>这里提到了<code>trigram</code>模型的例子，如上面所示，如果词汇表的大小为<script type="math/tex">V</script>，那么对<code>trigram</code>模型来说将会有<script type="math/tex">V^3</script>个特征，这里用<script type="math/tex">N(u,v,w)</script>表示将每一个trigram对应到一个独一无二的整数。同理<code>bigram</code>模型，<code>Unigram</code>模型也是如此，而且这三个模型对应的整数不重叠。<br>从上面来说，特征会非常的稀疏，这里我们只取值为1的特征：</p>
+<script type="math/tex; mode=display">
+Z(x,y)=\{k:f_k(x,y)=1\}</script><p>这样就将特征的复杂度从<script type="math/tex">O(d)</script>降到<script type="math/tex">O(|Z(x,y)|)</script>，且<script type="math/tex">|Z(x,y)| \ll d</script>，这样特征向量的求解就变成如下：</p>
+<script type="math/tex; mode=display">
+v\cdot f(x,y)=\sum_{k=1}^{d}v_kf_k(x,y)=\sum_{k \in Z(x,y)}v_k</script><h4 id="Parameter-Estimation-in-Log-Linear-Models"><a href="#Parameter-Estimation-in-Log-Linear-Models" class="headerlink" title="Parameter Estimation in Log-Linear Models"></a>Parameter Estimation in Log-Linear Models</h4><p>这里对上面的条件概率取对数就是我们的对数线性模型，假设我们有训练集<script type="math/tex">(x^{(i)},y^{(i)}), \,\,i \in \{1...n\},\,\,x^{(i)} \in X,\,\,y^{(i)} \in Y</script>，给定一个参数<script type="math/tex">v</script>，对于任意的例子<script type="math/tex">i</script>，其对数条件概率如下：</p>
+<script type="math/tex; mode=display">
+log \,p(y^{(i)}|x^{(i)};v)</script><p>那么全部训练集中最大似然的对数条件概率和如下：</p>
+<script type="math/tex; mode=display">
+L(v)=\sum_{i=1}^{n}log\,p(y^{(i)}|x^{(i)};v)</script><p>我们要找到使<script type="math/tex">L(v)</script>最大的<script type="math/tex">v</script>，即：</p>
+<script type="math/tex; mode=display">
+v_{ML}=arg\,\,\max_{v \in R^d} L(v)</script><p>这里举个例子，假设在训练集中的第100个例子中的trigram有:</p>
+<script type="math/tex; mode=display">
+f_{N(any,statistical,model)}(x^{(100)},y^{(100)})=1</script><p>在其它例子中都没有，我们的目的是希望<script type="math/tex">L(v)</script>最大，这样在<script type="math/tex">v_{100}</script>就会取无穷大，那么对应例子的对数条件概率就会最大：</p>
+<script type="math/tex; mode=display">
+p(y^{(100)}|x^{(100)};v)=1</script><p>由于其它例子没有该特征，<script type="math/tex">v_{100}</script>不会对其它例子产生影响，但是显然这样是不合理的，模型只会对当前的训练集起到很好的作用，即过拟合，泛化能力变差，我们需要模型的泛化能力变强，需要对参数<script type="math/tex">v</script>进行约束，即加上惩罚项：</p>
+<script type="math/tex; mode=display">
+L'(v)=\sum_{i=1}^{n}log\,p(y^{(i)}|x^{(i)};v)-\frac{\lambda}{2}\sum_{k}v_k^2</script><p>上面这个式子就是机器学习中的损失函数，使用梯度下降就可以找到最优解。<br>对<script type="math/tex">L'(v)</script>求导：</p>
+<script type="math/tex; mode=display">
+\frac{dL'(v)}{dv_k}=\sum_{i=1}^{n}f_k(x^{(i)},y^{(i)})-\sum_{i=1}^{n}\sum_{y \in Y}p(y|x^{(i)};v)f_k(x^{(i)},y)-\lambda v_k</script><p>关于上面的证明如下：<br>取其中的一部分分析</p>
+<script type="math/tex; mode=display">
+log\,p(y^{(i)}|x^{(i)};v)=v\cdot f(x^{(i)},y^{(i)})-log\sum_{y' \in Y}e^{v\cdot f(x^{(i)},y')}</script><p>对上面的第一部分求导：</p>
+<script type="math/tex; mode=display">
+\frac{d}{dv_k}\bigg(v\cdot f(x^{(i)},y^{(i)})\bigg)=\frac{d}{dv_k}\bigg(\sum_kv_k\cdot f_k(x^{(i)},y^{(i)})\bigg)=f_k(x^{(i)},y^{(i)})</script><p>对上面第二部分(应该是看成以e为底，不过常数不影响)：</p>
+<script type="math/tex; mode=display">
+记 g(v)=\sum_{y' \in Y}e^{v\cdot f(x^{(i)},y')}\\
+\frac{d}{dv_k}log\,g(v)=\frac{\frac{d}{dv_k}(g(v))}{g(v)}\\
+=\frac{\sum_{y' \in Y}f_k(x^{(i)},y')e^{v\cdot f(x^{(i)},y')}}{\sum_{y' \in Y}e^{v\cdot f(x^{(i)},y')}}\\
+=\sum_{y' \in Y}\bigg(f_k(x^{(i)},y')\frac{e^{v\cdot f(x^{(i)},y')}}{\sum_{y' \in Y e^{(v\cdot f(x^{(i)},y'))}}}\bigg)\\
+=\sum_{y' \in Y}f_k(x^{(i)},y')p(y'|x;v)</script><p>这样就完了，后面两部分比较简单，都是在讲前面的模型用现在的对数线性模型替换后的结果及其对比，就不再做笔记了，此部分完结。。。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/22/leetcode321/" rel="next" title="321. Create Maximum Number">
+                <i class="fa fa-chevron-left"></i> 321. Create Maximum Number
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/28/cpp04/" rel="prev" title="C++ primer 学习笔记之函数">
+                C++ primer 学习笔记之函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Motivation"><span class="nav-number">2.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Log-Linear-Models"><span class="nav-number">3.</span> <span class="nav-text">Log-Linear Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Features"><span class="nav-number">4.</span> <span class="nav-text">Features</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parameter-Estimation-in-Log-Linear-Models"><span class="nav-number">5.</span> <span class="nav-text">Parameter Estimation in Log-Linear Models</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,985 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自然语言处理与词嵌入">
+<meta property="og:url" content="http://yoursite.com/2018/02/04/dl12/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1201.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1202.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1203.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1204.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1205.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1206.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1207.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1208.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1209.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1210.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1211.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1212.png">
+<meta property="og:updated_time" content="2018-03-08T07:25:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自然语言处理与词嵌入">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl1201.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/04/dl12/"/>
+
+
+
+
+
+  <title> 自然语言处理与词嵌入 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/dl12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自然语言处理与词嵌入
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T11:35:57+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/04/dl12/" class="leancloud_visitors" data-flag-title="自然语言处理与词嵌入">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a><br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+<h4 id="2-1-词汇表征"><a href="#2-1-词汇表征" class="headerlink" title="2.1 词汇表征"></a>2.1 词汇表征</h4><p>前面讲到过，单词的表示，使用<script type="math/tex">|V|=10000</script>，然后用独热编码。对于每一个单词的向量表示，都单独的表示自己，没有一个算法来生成一个向量表示这些交叉单词。如下图所示：<br><img src="/upload/essayimage/dl/dl1201.png" alt="dl1201"><br>看右边的句子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">I want a glass of orange ____</div><div class="line">I want a glass of apple ____</div></pre></td></tr></table></figure></p>
+<p>我们知道第一个句子后的单词可能是<code>juice</code>，第二个句子后的单词也应该是<code>juice</code>，但是对于独热编码表示的单词向量并不能看出<code>orange</code>和<code>apple</code>这两个单词之间的关系，比如<code>Woman</code>和<code>Man</code>等。那么怎么优化独热编码的向量呢，比如如下图：<br><img src="/upload/essayimage/dl/dl1202.png" alt="dl1202"><br>我们将词汇表中的单词都列出来，然后给出一些特征，含有该特征的单词的值越接近1，不含有该特征的单词的值就接近于0，和该特征相反的单词的值就越接近-1。比如我们设置300个特征，那么表示<code>Man</code>的单词向量就是一个300维度的向量。<br>上面提到为每个单词生成一个300维度的词嵌入矩阵，这里有一个算法用两维空间来生成词向量矩阵，可以可视化的观察词之间的联系，如下图所示：<br><img src="/upload/essayimage/dl/dl1203.png" alt="dl1203"><br>可以知道<code>man</code>和<code>woman</code>趋向于一起，<code>king</code>和<code>queen</code>趋向于一起，这四个单词也趋向于一起作为<code>people</code>标签；右边的<code>dog,cat,fish</code>趋向于一起作为<code>anumals</code>等等。</p>
+<h4 id="2-3-词嵌入的特性"><a href="#2-3-词嵌入的特性" class="headerlink" title="2.3 词嵌入的特性"></a>2.3 词嵌入的特性</h4><p>这一节讲到了词嵌入的类比推理，比如我们用词嵌入向量表示单词后，<code>Man</code>对应<code>Woman</code>，那么<code>King</code>对应着哪个单词呢？比如我们给出4个特征，如下图所示：<br><img src="/upload/essayimage/dl/dl1204.png" alt="dl1204"><br>我们计算<code>Man</code>向量和<code>Woman</code>向量的近似差，同样的我们计算<code>King</code>向量和<code>Queen</code>向量的近似差，其结果矩阵是相同的，也就是说我们需要在词汇表中找到一个向量，使得其与<code>King</code>向量的差结果和<code>Man</code>向量和<code>Woman</code>向量的近似差最接近，那么那个单词就是我们需要找到的。如下图：<br><img src="/upload/essayimage/dl/dl1205.png" alt="dl1205"><br>需要计算一个w词的相似度：</p>
+<script type="math/tex; mode=display">
+arg\,\, \max_w \,\,sim(e_w,e_{king}-e_{man}+e_{woman})</script><p>求解相似度的公式如下：</p>
+<script type="math/tex; mode=display">
+sim(u,v)=\frac{u^Tv}{||u||_2||v||_2}\\
+sim(u,v) \in [-1,1]</script><p>这样我们就可以得到很多相似推理，比如<code>Big</code>和<code>Bigger</code>相当于<code>Tall</code>对<code>Taller</code>，<code>Yen</code>对<code>Japan</code>相当于<code>Ruble</code>对<code>Russia</code>…</p>
+<h4 id="2-4-嵌入矩阵"><a href="#2-4-嵌入矩阵" class="headerlink" title="2.4 嵌入矩阵"></a>2.4 嵌入矩阵</h4><p>这一节比较简单，就讲了一下嵌入矩阵，如下图所示：<br><img src="/upload/essayimage/dl/dl1206.png" alt="dl1206"><br>这里嵌入矩阵的行表示特征数，列是词汇库大小，之前提到的独热编码向量是原始的单词向量，我们需要学习的是嵌入向量，比如单词<code>orange</code>的嵌入向量求解如上图所示。</p>
+<h4 id="2-5-学习词嵌入"><a href="#2-5-学习词嵌入" class="headerlink" title="2.5 学习词嵌入"></a>2.5 学习词嵌入</h4><p>比如你正在使用神经网络建立一个语言模型，去预测下面句子最后一个单词，单词下面的数字代表在词汇表中的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> I   want a glass of orange ______.</div><div class="line">4343 9665 1 3852 6163 6257</div></pre></td></tr></table></figure></p>
+<p>将这些用词嵌入向量表示，然后构建神经网络，输出，如下图：<br><img src="/upload/essayimage/dl/dl1207.png" alt="dl1207"></p>
+<h4 id="2-6-Word2Vec"><a href="#2-6-Word2Vec" class="headerlink" title="2.6 Word2Vec"></a>2.6 Word2Vec</h4><p>这一部分在cs224n中有讲解到，这里就一一记录了，讲一下SoftMax</p>
+<script type="math/tex; mode=display">
+p(t|c)=\frac{e^{\theta_{t}^{T}e_c}}{\sum_{j=1}^{10000}e^{\theta_{j}^{T}e_c}}</script><p>这里主要的问题是计算速度，对于softmax模型，每次我们想估计这个概率，我们需要对10000各单词求和，如果词汇库更大，这个求和就显得非常慢。关于这个问题的一种解法是使用层级softmax分类，比如第一个分类告诉你目标单词在词汇表的前5000个单词中，第二个分类又告诉你目标词在前2500个单词中或者在后2500个单词中…这样我们不需要对10000个单词求和，这样词汇库的计算大小就是<script type="math/tex">log|V|</script>，这里构建的树使用的是哈夫曼编码，常见的单词在树的顶部，不常见的单词在树的深处。当然这里并没有加速太多，下一节讲到的负采样是一个更简单的方法。【关于这块的使用我还是不是很理解…】</p>
+<h4 id="2-7-负采样"><a href="#2-7-负采样" class="headerlink" title="2.7 负采样"></a>2.7 负采样</h4><p>这部分就是说不用计算全部的单词，我们只用将训练集中的目标单词作为正样本，然后随机的从词汇库中选取k个单词作为负样本(非目标单词)，然后计算其Sigmoid函数值，如下图所示：<br><img src="/upload/essayimage/dl/dl1208.png" alt="dl1208"><br>即计算如下概率：</p>
+<script type="math/tex; mode=display">
+p(y=1|c,t)=\sigma(\theta_t^Te_c)\,\,\,\,这里为正样本\\ 
+p(y=0|c,t)=\sigma(\theta_t^Te_c)\,\,\,\,这里为负样本</script><h4 id="2-8-GloVe-词向量"><a href="#2-8-GloVe-词向量" class="headerlink" title="2.8 GloVe 词向量"></a>2.8 GloVe 词向量</h4><p>我们已经学习到了不同的算法来计算词嵌入，这里介绍另一种算法，是一个在NLP社区有一些动力的算法，它的使用没有Word2Vec模型和skip-gram模型常见，但是它仍然有一些爱好者，这部分是由于它的简单性。GloVe代表用单词表示的全局向量，前面我们通过选择文本语料库中彼此靠近的两个单词来对单词进行抽样，用<script type="math/tex">X_{ij}</script>表示单词i出现在j的上下文中的次数(这里也就是说i表示的是target，j表示的center).<br>。。。</p>
+<h4 id="2-9-情绪分类"><a href="#2-9-情绪分类" class="headerlink" title="2.9 情绪分类"></a>2.9 情绪分类</h4><p>比如下面这些句子（作为输入），对应着不同的分数（作为输出）：<br><img src="/upload/essayimage/dl/dl1209.png" alt="dl1209"><br>从上面的句子可以看出并不能通过某些词来判断结果y，比如第一个句子中有<code>excellent</code>，表示正面的，但是最后一个句子中也有类似的词<code>good</code>，但最后的句子展现的却是负面的，因为前面有<code>lack</code>，反向了。<br>通过学习词嵌入矩阵，对这些向量求和输出到softmax中，这是<code>many-to-one</code>类型，如下图所示：<br><img src="/upload/essayimage/dl/dl1210.png" alt="dl1210"></p>
+<h4 id="2-10-词嵌入除偏"><a href="#2-10-词嵌入除偏" class="headerlink" title="2.10 词嵌入除偏"></a>2.10 词嵌入除偏</h4><p>前面讲到通过词向量来学习单词的相似性，但是这是有问题的，如下图所示：<br><img src="/upload/essayimage/dl/dl1211.png" alt="dl1211"><br>下面给出一种解决办法，我没有看懂什么意思。。。【先放着了，结合这篇论文看看 Man is to computer programmer as woman is to homemaker?】<br><img src="/upload/essayimage/dl/dl1212.png" alt="dl1212"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/03/dl11/" rel="next" title="循环序列模型">
+                <i class="fa fa-chevron-left"></i> 循环序列模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/05/dl13/" rel="prev" title="序列模型和注意力机制">
+                序列模型和注意力机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-词汇表征"><span class="nav-number">1.</span> <span class="nav-text">2.1 词汇表征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-词嵌入的特性"><span class="nav-number">2.</span> <span class="nav-text">2.3 词嵌入的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-嵌入矩阵"><span class="nav-number">3.</span> <span class="nav-text">2.4 嵌入矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-学习词嵌入"><span class="nav-number">4.</span> <span class="nav-text">2.5 学习词嵌入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-Word2Vec"><span class="nav-number">5.</span> <span class="nav-text">2.6 Word2Vec</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-负采样"><span class="nav-number">6.</span> <span class="nav-text">2.7 负采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-GloVe-词向量"><span class="nav-number">7.</span> <span class="nav-text">2.8 GloVe 词向量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-9-情绪分类"><span class="nav-number">8.</span> <span class="nav-text">2.9 情绪分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-10-词嵌入除偏"><span class="nav-number">9.</span> <span class="nav-text">2.10 词嵌入除偏</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -114,18 +114,18 @@
 
 
 
-<meta name="description" content="description之前讲到过简单的DP问题参见此处，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。">
+<meta name="description" content="之前讲到过简单的DP问题参见此处，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。">
 <meta name="keywords" content="DP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DP问题大集合之二">
 <meta property="og:url" content="http://yoursite.com/2017/10/19/leetcode072/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="description之前讲到过简单的DP问题参见此处，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。">
+<meta property="og:description" content="之前讲到过简单的DP问题参见此处，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-18T02:36:44.000Z">
+<meta property="og:updated_time" content="2018-01-12T03:13:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DP问题大集合之二">
-<meta name="twitter:description" content="description之前讲到过简单的DP问题参见此处，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。">
+<meta name="twitter:description" content="之前讲到过简单的DP问题参见此处，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。">
 
 
 
@@ -413,13 +413,13 @@
       
 
       
-        <h3 id="description"><a href="#description" class="headerlink" title="description"></a>description</h3><p>之前讲到过简单的DP问题<a href="https://moluchase.github.io/2017/10/16/leetcode062/" target="_blank" rel="external">参见此处</a>，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。<br><a id="more"></a><br>72.Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)<br>  You have the following 3 operations permitted on a word:<br>  a) Insert a character<br>  b) Delete a character<br>  c) Replace a character</p>
+        <p>之前讲到过简单的DP问题<a href="https://moluchase.github.io/2017/10/16/leetcode062/" target="_blank" rel="external">参见此处</a>，是由DFS引出来的，现在来看看正规的DP问题，DP集合之二。<br><a id="more"></a><br>72.Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)<br>  You have the following 3 operations permitted on a word:<br>  a) Insert a character<br>  b) Delete a character<br>  c) Replace a character</p>
 <p>87.Given a string <em>s1</em>, we may represent it as a binary tree by partitioning it to two non-empty substrings recursively.<br>Below is one possible representation of <em>s1</em> = <code>&quot;great&quot;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">    great</div><div class="line">   /    \</div><div class="line">  gr    eat</div><div class="line"> / \    /  \</div><div class="line">g   r  e   at</div><div class="line">           / \</div><div class="line">          a   t</div></pre></td></tr></table></figure></p>
 <p>To scramble the string, we may choose any non-leaf node and swap its two children.<br>For example, if we choose the node <code>&quot;gr&quot;</code> and swap its two children, it produces a scrambled string <code>&quot;rgeat&quot;</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">    rgeat</div><div class="line">   /    \</div><div class="line">  rg    eat</div><div class="line"> / \    /  \</div><div class="line">r   g  e   at</div><div class="line">           / \</div><div class="line">          a   t</div></pre></td></tr></table></figure></p>
 <p>We say that <code>&quot;rgeat&quot;</code> is a scrambled string of <code>&quot;great&quot;</code>.<br>Similarly, if we continue to swap the children of nodes <code>&quot;eat&quot;</code> and <code>&quot;at&quot;</code>, it produces a scrambled string <code>&quot;rgtae&quot;</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">    rgtae</div><div class="line">   /    \</div><div class="line">  rg    tae</div><div class="line"> / \    /  \</div><div class="line">r   g  ta  e</div><div class="line">       / \</div><div class="line">      t   a</div></pre></td></tr></table></figure></p>
 <p>We say that <code>&quot;rgtae&quot;</code> is a scrambled string of <code>&quot;great&quot;</code>.<br>Given two strings <em>s1</em> and <em>s2</em> of the same length, determine if <em>s2</em> is a scrambled string of <em>s1</em>.</p>
 <p>174.Dungeon Game<br>  The demons had captured the princess (P) and imprisoned her in the bottom-right corner of a dungeon. The dungeon consists of M x N rooms laid out in a 2D grid. Our valiant knight (K) was initially positioned in the top-left room and must fight his way through the dungeon to rescue the princess.<br>  The knight has an initial health point represented by a positive integer. If at any point his health point drops to 0 or below, he dies immediately.<br>  Some of the rooms are guarded by demons, so the knight loses health (negative integers) upon entering these rooms; other rooms are either empty (0’s) or contain magic orbs that increase the knight’s health (positive integers).<br>  In order to reach the princess as quickly as possible, the knight decides to move only rightward or downward in each step.</p>
-<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>都是hard难度…</p>
+<p>都是hard难度…</p>
 <h4 id="leetcode-72-Edit-Distance"><a href="#leetcode-72-Edit-Distance" class="headerlink" title="[leetcode 72] Edit Distance"></a>[leetcode 72] Edit Distance</h4><p>求使得两个字符串相等需要编辑的最小步数<br>其中编辑包括删除，增加，替换，均为1步<br>DP问题的通项公式：<br>用<code>dp[i][j]</code>表示使长度为i的字符串和长度为j的字符串相等需要编辑的最小步数<br>求解第一个字符串从0到i和第二个字符串从0到j需要编辑的最小步数（从后往前编辑），无非由以下几种情况得到：</p>
 <ol>
 <li>删除第一个字符串的第i个字符</li>
@@ -602,7 +602,7 @@ dp[i][j]=temp-dungeon[i][j]\,\,if\,\,temp-dungeon[i][j]>0\,\,else\,\,1</script><
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-count">104</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -613,7 +613,7 @@ dp[i][j]=temp-dungeon[i][j]\,\,if\,\,temp-dungeon[i][j]>0\,\,else\,\,1</script><
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -679,7 +679,7 @@ dp[i][j]=temp-dungeon[i][j]\,\,if\,\,temp-dungeon[i][j]>0\,\,else\,\,1</script><
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#description"><span class="nav-number">1.</span> <span class="nav-text">description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-72-Edit-Distance"><span class="nav-number">2.1.</span> <span class="nav-text">[leetcode 72] Edit Distance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-87-Scramble-String"><span class="nav-number">2.2.</span> <span class="nav-text">[leetcode 87]  Scramble String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-174-Dungeon-Game"><span class="nav-number">2.3.</span> <span class="nav-text">[leetcode 174] Dungeon Game</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-72-Edit-Distance"><span class="nav-number">1.</span> <span class="nav-text">[leetcode 72] Edit Distance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-87-Scramble-String"><span class="nav-number">2.</span> <span class="nav-text">[leetcode 87]  Scramble String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-174-Dungeon-Game"><span class="nav-number">3.</span> <span class="nav-text">[leetcode 174] Dungeon Game</span></a></li></ol></div>
             
 
           </div>

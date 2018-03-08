@@ -1,0 +1,993 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这里是学习C++ primer做的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ primer学习笔记之变量和基本类型">
+<meta property="og:url" content="http://yoursite.com/2018/01/19/cpp01/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="这里是学习C++ primer做的笔记">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-08T07:19:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ primer学习笔记之变量和基本类型">
+<meta name="twitter:description" content="这里是学习C++ primer做的笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/19/cpp01/"/>
+
+
+
+
+
+  <title> C++ primer学习笔记之变量和基本类型 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/19/cpp01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C++ primer学习笔记之变量和基本类型
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-19T18:53:50+08:00">
+                2018-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/19/cpp01/" class="leancloud_visitors" data-flag-title="C++ primer学习笔记之变量和基本类型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这里是学习C++ primer做的笔记<br><a id="more"></a></p>
+<h3 id="基本内置类型"><a href="#基本内置类型" class="headerlink" title="基本内置类型"></a>基本内置类型</h3><p>C++定义了一套算数类型和空类型在内的基本数据类型</p>
+<h4 id="算术类型"><a href="#算术类型" class="headerlink" title="算术类型"></a>算术类型</h4><p>算术类型分为两大类：整型（包括字符和布尔类型）和浮点型。分别如下：</p>
+<ul>
+<li>bool(布尔类型)：取值是真(true)或者假(false)</li>
+<li>char(字符)：一个char空间应该确保可以存放机器基本字符集中任意字符对应的数字值，即一个char的大小和一个机器字节一样。</li>
+<li>wchat_t(宽字符)，char16_t(Unicode字符)，char32_t(Unicode字符)：wchat_t类型用于确保可以存放机器最大扩展字符集中的任意一个字符，类型char16_t和char32_t则为Unicode字符集服务。</li>
+<li>short(短整型,16)，int(整形,16)，long(长整形,32)，long long(长长整形,64)</li>
+<li>float(单精度浮点数)，double(双精度浮点数)，long double(扩展精度浮点数)：float的有效位是7，double的有效位是16，long double 常常被用于有特殊浮点需求的硬件。</li>
+</ul>
+<h4 id="带符号类型和无符号类型"><a href="#带符号类型和无符号类型" class="headerlink" title="带符号类型和无符号类型"></a>带符号类型和无符号类型</h4><ul>
+<li>除去布尔类型和扩展的字符型外，其他整形可以划分为带符号和无符号的两种，带符号的可以表示正数，负数和0，无符号类型仅能表示大于等于0的值。</li>
+<li>类型int，short，long和long long都是带符号的，通过在这些类型名前添加unsigned就可以得到无符号类型，例如 unsigned long，类型unsigned int可以缩写为unsigned。</li>
+<li>字符型和其它的不一样，被分为三种：char,signed char和unsigned char。类型char和signed char并不一样，虽然有三种，但是表现形式却只有两种：带符号的和无符号的。类型char实际上会表现为上述两种形式中的一种，具体由编译器决定。</li>
+<li>无符号的类型中用全部的比特来存储值，比如8比特的unsigned char可以表示0至255区间内的值，对于带符号的，比如signed char理论上可以表示-127纸127区间内的值，但是现在的计算机实际的表示范围是-128至127.</li>
+</ul>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>变量提供一个具名的，可供程序操作的存储空间，C++中的每一个变量都有其数据类型，数据类型决定这变量所占内存空间的大小和布局方式，<strong>该空间能存储的值的范围，以及变量能参与的运算</strong>【这加重的话没看懂额？？？】。</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>C++语言中，初始化和赋值是两个完全不同的操作，初始化不是赋值，初始化的含义是创建变量时赋予其一个初始值，而赋值的含义是把对象的当前值擦除，而以一个新值来代替。<br>这里给出4种初始化的方法，其中<code>{}</code>表示的是列表初始化。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> units=<span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> units=&#123;<span class="number">0</span>&#125;;</div><div class="line"><span class="keyword">int</span> units&#123;<span class="number">0</span>&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">units</span><span class="params">(<span class="number">0</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>这里需要注意一点的是，如果我们使用列表初始化且初始化存在丢失信息的风险，则编译器会报错。比如下面的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">long</span> <span class="keyword">double</span> ld=<span class="number">3.1415926536</span></div><div class="line"><span class="keyword">int</span> a&#123;ld&#125;;<span class="comment">//错误，存在丢失信息的风险</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">a</span><span class="params">(ld)</span></span>;<span class="comment">//正确，只是丢失了部分值</span></div></pre></td></tr></table></figure></p>
+<p>这里如果定义变量时没有指定初值，则变量被默认初始化，定义在任何函数体之外的内置类型(就是前面讲到的已经实现的类型，如int，long等)变量被初始化为0，定义在函数体内部的内置类型变量将不被初始化，一个未被初始化的内置类型变量的值是未定义的，如果试图拷贝或以其他形式访问将引发错误。</p>
+<h4 id="变量声明和定义"><a href="#变量声明和定义" class="headerlink" title="变量声明和定义"></a>变量声明和定义</h4><p>声明使得名字为程序所知，一个文件如果想使用别处定义的名字则必须包含对那个名字的声明，而定义负责创建于名字关联的实体。<br>如果想声明一个变量而非定义它，就在变量名前添加关键词extern，而且不要显示初始化变量。在函数体内部，如果试图初始化一个由extern关键字标记的变量，将引发错误。</p>
+<h3 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h3><p>这里讲到两种：引用和指针</p>
+<h4 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h4><p>为对象起了另外一个名字，并非对象，而是为一个已经存在的对象所起的另外一个名字，引用必须初始化。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> ival=<span class="number">1024</span>;</div><div class="line"><span class="keyword">int</span> &amp;refVal=ival;</div></pre></td></tr></table></figure></p>
+<p>引用只能绑定在对象上，不能与字面值或某个表达式的计算结果绑定在一起<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> &amp; ref=<span class="number">10</span>;<span class="comment">//错误</span></div><div class="line"><span class="keyword">double</span> dval=<span class="number">3.14</span>;</div><div class="line"><span class="keyword">int</span> &amp;refVal=dval;<span class="comment">//错误，引用类型的初始值必须是int类型对象</span></div></pre></td></tr></table></figure></p>
+<h4 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h4><p>利用指针访问对象<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> val=<span class="number">10</span>;</div><div class="line"><span class="keyword">int</span> *p=&amp;val;</div><div class="line"><span class="built_in">cout</span>&lt;&lt; *p;</div></pre></td></tr></table></figure></p>
+<p>空指针，使用<code>nullptr</code>或者是<code>NULL</code><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *p1=<span class="literal">nullptr</span>;<span class="comment">//等价于int *p1=0;</span></div><div class="line"><span class="keyword">int</span> *p2=<span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> *p3=<span class="literal">NULL</span>;<span class="comment">//要先使用#include cstdlib</span></div></pre></td></tr></table></figure></p>
+<p>指针和引用都能提供对其他对象的间接访问，但是一旦定义了引用，就无法令其再绑定到另外的对象了，之后每次使用这个引用都是访问它最初始绑定的那个对象。指针和它存放的地址之间就没有这种限制，和其他任何变量一种，给指针赋值就是令它存放一个新的地址。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i=<span class="number">42</span>;</div><div class="line"><span class="keyword">int</span> *pi=<span class="number">0</span>;</div><div class="line">pi=&amp;i;<span class="comment">//指向i地址</span></div><div class="line">pi=<span class="number">0</span>;<span class="comment">//不指向任何对象</span></div></pre></td></tr></table></figure></p>
+<h4 id="理解符合类型"><a href="#理解符合类型" class="headerlink" title="理解符合类型"></a>理解符合类型</h4><p>定义多个变量的时候，一般的写法是<code>*,&amp;</code>和变量名一起，如果和类型一起容易误导：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span>* p1,p2;<span class="comment">//定义了一个指向int的指针，和一个int型变量</span></div></pre></td></tr></table></figure></p>
+<p>指向指针的指针：声明符中的修饰符的个数并没有限制，多个修饰符连接到一起，只要符合逻辑即可，比如下面：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> ival=<span class="number">1024</span>;</div><div class="line"><span class="keyword">int</span> *pi=&amp;ival;<span class="comment">//指向整形变量的指针</span></div><div class="line"><span class="keyword">int</span> **ppi=&amp;pi;<span class="comment">//指向(指向整形变量的)指针的指针</span></div></pre></td></tr></table></figure></p>
+<p>指向指针的引用：引用本身不是一个对象，因此不能定义指向引用的指针，但指针是对象，所以存在对指针的引用：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i=<span class="number">42</span>;</div><div class="line"><span class="keyword">int</span> *p;</div><div class="line"><span class="keyword">int</span> *&amp;r=p;<span class="comment">//这句话这样看，首先r是一个指针，中间的&amp;表示对p的引用，一般从右往左读，以便分析含义。</span></div><div class="line">r=&amp;i;<span class="comment">//即将p指向i</span></div></pre></td></tr></table></figure></p>
+<h3 id="const-限定符"><a href="#const-限定符" class="headerlink" title="const 限定符"></a>const 限定符</h3><h4 id="const的引用"><a href="#const的引用" class="headerlink" title="const的引用"></a>const的引用</h4><p>前面提到引用类型必须与其所引用对象的类型一致，但是有两个例外，第一个例外是在初始化常量引用时允许用任意表达式作为初始值，只要该表达式的结果能转换成引用的类型即可。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i=<span class="number">42</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r1=i;<span class="comment">//允许const int&amp;绑定到一个普通int对象上</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r2=<span class="number">42</span>;<span class="comment">//正确：r2是一个常量引用</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r3=r1*<span class="number">2</span>;<span class="comment">//正确：r3是一个常量引用</span></div><div class="line"><span class="keyword">int</span> &amp;r4=r1*<span class="number">2</span>;<span class="comment">//错误：r4是一个普通的非常量引用</span></div></pre></td></tr></table></figure></p>
+<h4 id="指针与const"><a href="#指针与const" class="headerlink" title="指针与const"></a>指针与const</h4><p>指向常量的指针<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">double</span> pi=<span class="number">3.14</span>;<span class="comment">//</span></div><div class="line"><span class="keyword">double</span> *ptr=&amp;pi;<span class="comment">//错误，ptr是普通指针，需要一个常量指针</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">double</span> *cptr=&amp;pi;</div><div class="line">*cptr=<span class="number">42</span>;<span class="comment">//错误，不能给常量赋值</span></div></pre></td></tr></table></figure></p>
+<p>常量指针：指针本身为常量，必须初始化，，一旦初始化后，值就不再改变了，但是指向的对象是可变的，指向常量的常量指针都不能变。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> errNum=<span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> *<span class="keyword">const</span> curErr=&amp;errNum;</div><div class="line">errNum=<span class="number">20</span>;</div></pre></td></tr></table></figure></p>
+<p>这里用顶层const指针本身是常量，用底层const表示指针所指的对象是一个常量。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1=&amp;i;<span class="comment">//顶层const，p1不能改变（指针本身不能改变）</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci=<span class="number">42</span>;<span class="comment">//顶层const</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2=&amp;i;<span class="comment">//底层const，p2可以改变</span></div></pre></td></tr></table></figure></p>
+<h4 id="constexpr"><a href="#constexpr" class="headerlink" title="constexpr"></a>constexpr</h4><p>常量表达式是指值不会改变并且编译过程就能得到计算结果的表达式，由数据类型和初始值共同决定，比如下面几种情况：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_files=<span class="number">20</span>;<span class="comment">//max_files是常量表达式</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> limit=max_files+<span class="number">1</span>;<span class="comment">//limit是常量表达式</span></div><div class="line"><span class="keyword">int</span> staff_size=<span class="number">27</span>;<span class="comment">//staff_size不是常量表达式</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> sz=get_size();<span class="comment">//sz不是常量表达式</span></div></pre></td></tr></table></figure></p>
+<h3 id="处理类型"><a href="#处理类型" class="headerlink" title="处理类型"></a>处理类型</h3><p>一是一些类型难于拼写，二是有的时候根本搞不清需要什么类型，程序员不得不回过头从程序的上下文中寻求帮助。</p>
+<h4 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h4><p>有两种方法定义，一是使用typedef，一是使用using<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> wages;<span class="comment">//wages是double的同义词</span></div><div class="line"><span class="keyword">using</span> SI=Sales_item;<span class="comment">//SI是Sales_item的同义词</span></div></pre></td></tr></table></figure></p>
+<p>指针，常量和类型别名<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *pstring;<span class="comment">//pstring是char*的同义词</span></div><div class="line"><span class="keyword">const</span> pstring cstr=<span class="number">0</span>;<span class="comment">//定义cstr是指向char的常量指针</span></div><div class="line"><span class="keyword">const</span> pstring *ps;<span class="comment">//ps是一个指针，它的对象是指向char的常量指针</span></div></pre></td></tr></table></figure></p>
+<p>注意下面两行语句的区别：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> pstring cstr=<span class="number">0</span>;<span class="comment">//定义cstr是指向char的常量指针</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *cstr=<span class="number">0</span>;<span class="comment">//定义cstr是指向常量char的指针</span></div><div class="line"><span class="comment">//上面两行是不同的，加上括号应该就等价了</span></div><div class="line"><span class="keyword">const</span> (<span class="keyword">char</span> *)cstr=<span class="number">0</span>;</div></pre></td></tr></table></figure></p>
+<h4 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h4><p>编程时常常把表达式的值赋给变量，这就要求在声明变量的时候清楚知道表达式的类型，然而要做到这一点并不容易，有时甚至根本做不到，为了解决这个问题，C++11引入auto类型，用它让编辑器替我们分析表达式所属的类型。auto让编译器通过初始值来推算变量的类型。</p>
+<h4 id="decltype"><a href="#decltype" class="headerlink" title="decltype"></a>decltype</h4><p>有时会遇到这种情况，希望从表达式的类型推断出要定义的变量类型，但不想用该表达式的值初始化变量。C++引入第二种类型说明符decltype，其作用是选择并返回操作数的数据类型。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci=<span class="number">0</span>,&amp;cj=ci;<span class="comment">//</span></div><div class="line"><span class="keyword">decltype</span>(cj) y=x;<span class="comment">//</span></div><div class="line"><span class="keyword">decltype</span>(cj) z;<span class="comment">//错误，z是引用，必须初始化</span></div></pre></td></tr></table></figure></p>
+<p>如果decltype使用的表达式不是一个变量，则decltype返回表达式结果对应的类型。<br>decltype((variable))的结果永远是引用，而decltype(variable)结果只有当variable本身就是一个引用时才是引用。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/18/leetcode316/" rel="next" title="316.Remove Duplicate Letters">
+                <i class="fa fa-chevron-left"></i> 316.Remove Duplicate Letters
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/20/leetcode318/" rel="prev" title="318. Maximum Product of Word Lengths">
+                318. Maximum Product of Word Lengths <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本内置类型"><span class="nav-number">1.</span> <span class="nav-text">基本内置类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算术类型"><span class="nav-number">1.1.</span> <span class="nav-text">算术类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#带符号类型和无符号类型"><span class="nav-number">1.2.</span> <span class="nav-text">带符号类型和无符号类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量声明和定义"><span class="nav-number">2.2.</span> <span class="nav-text">变量声明和定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复合类型"><span class="nav-number">3.</span> <span class="nav-text">复合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引用"><span class="nav-number">3.1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针"><span class="nav-number">3.2.</span> <span class="nav-text">指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#理解符合类型"><span class="nav-number">3.3.</span> <span class="nav-text">理解符合类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-限定符"><span class="nav-number">4.</span> <span class="nav-text">const 限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#const的引用"><span class="nav-number">4.1.</span> <span class="nav-text">const的引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针与const"><span class="nav-number">4.2.</span> <span class="nav-text">指针与const</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constexpr"><span class="nav-number">4.3.</span> <span class="nav-text">constexpr</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理类型"><span class="nav-number">5.</span> <span class="nav-text">处理类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型别名"><span class="nav-number">5.1.</span> <span class="nav-text">类型别名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#auto"><span class="nav-number">5.2.</span> <span class="nav-text">auto</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#decltype"><span class="nav-number">5.3.</span> <span class="nav-text">decltype</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

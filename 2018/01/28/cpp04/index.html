@@ -1,0 +1,975 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这里是学习C++ primer做的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ primer 学习笔记之函数">
+<meta property="og:url" content="http://yoursite.com/2018/01/28/cpp04/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="这里是学习C++ primer做的笔记">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-08T07:19:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ primer 学习笔记之函数">
+<meta name="twitter:description" content="这里是学习C++ primer做的笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/28/cpp04/"/>
+
+
+
+
+
+  <title> C++ primer 学习笔记之函数 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/28/cpp04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C++ primer 学习笔记之函数
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T19:01:18+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/28/cpp04/" class="leancloud_visitors" data-flag-title="C++ primer 学习笔记之函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这里是学习C++ primer做的笔记<br><a id="more"></a></p>
+<h4 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h4><p>数组不能被拷贝，所以函数不能返回数组，不过，函数可以返回数组的指针或引用。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">10</span>];<span class="comment">//arrT是一个类型别名，它表示的类型是含有10个整数的数组。(这里有点不好理解)</span></div><div class="line"><span class="keyword">using</span> arrT=<span class="keyword">int</span>[<span class="number">10</span>];<span class="comment">//和上面的等价</span></div><div class="line"><span class="function">arrT* <span class="title">func</span><span class="params">(<span class="keyword">int</span> i)</span></span>;<span class="comment">//func返回一个指向含有10个整数的数组指针</span></div></pre></td></tr></table></figure></p>
+<p>声明一个返回数组指针的函数，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> (*func(<span class="keyword">int</span> i))[<span class="number">10</span>];</div></pre></td></tr></table></figure></p>
+<p>上面的含义是，返回一个指向大小为10的数组指针，数组中的元素是整形。C++ 11新标准使用尾置返回类型，在本应该出现返回类型的地方放置一个<code>auto</code>：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//func接受一个int类型的实参，返回一个指针，该指针指向含有10个整数的数组</div><div class="line">auto func(int i) -&gt; int(*)[10];</div></pre></td></tr></table></figure></p>
+<p>也可以使用<code>decltype</code>，如下，我们只知道返回一个指针的类型，但是不知道到底返回指向那个数组的指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[]=&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[]=&#123;<span class="number">0</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>&#125;;</div><div class="line"><span class="keyword">decltype</span>(odd) *arrPtr(<span class="keyword">int</span> i)&#123;</div><div class="line">  <span class="keyword">return</span> (i%<span class="number">2</span>)? &amp;odd:&amp;even;<span class="comment">//返回一个指向数组的指针</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>decltype</code>并不负责把数组类型转换成对应的指针，所以<code>decltype</code>的结果是个数组，要想表示<code>arrPtr</code>返回指针还必须在函数声明时加一个<code>*</code>符号。</p>
+<h4 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h4><p>如果同一作用域内的几个函数名字相同但是形参列表不同，我们称之为重载函数。<br>不允许两个函数除了返回类型外其他所有要素都相同。如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Account&amp;)</span></span>;<span class="comment">//可以省略形参的名字</span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Account&amp;)</span></span>;<span class="comment">//错误：与上一个函数相比只有返回类型不同</span></div></pre></td></tr></table></figure></p>
+<h4 id="重载与const形参"><a href="#重载与const形参" class="headerlink" title="重载与const形参"></a>重载与const形参</h4><p>这个之前有提到过，一个拥有顶层<code>const</code>的形参无法和另一个没有顶层<code>const</code>的形参区分开来：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone)</span></span>;</div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone)</span></span>;<span class="comment">//重复声明了Record lookup(Phone)</span></div><div class="line"></div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone*)</span></span>;</div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone* <span class="keyword">const</span>)</span></span>;<span class="comment">//重复声明了Record lookup(Phone*)</span></div></pre></td></tr></table></figure></p>
+<p>但是底层<code>const</code>就可以实现重载：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Account&amp;)</span></span>;<span class="comment">//函数作用于Account的引用</span></div><div class="line"><span class="function">Record <span class="title">loopup</span><span class="params">(<span class="keyword">const</span> Account&amp;)</span></span>;<span class="comment">//新函数，作用于常量引用</span></div><div class="line"></div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Account*)</span></span>;<span class="comment">//新函数，作用于指向Account的指针</span></div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Account*)</span></span>;<span class="comment">//新函数，作用于指向常量的指针</span></div></pre></td></tr></table></figure></p>
+<h4 id="内联函数和constexpr函数"><a href="#内联函数和constexpr函数" class="headerlink" title="内联函数和constexpr函数"></a>内联函数和constexpr函数</h4><p>在大多数机器上，一次函数调用其实包含着一系列工作：调用前要先保存寄存器，并在返回时恢复；可能需要拷贝实参；程序转向一个新的位置继续执行。<br>将函数指定为内联函数，通常就是将它在每个调用点上“内联地”展开，比如下面的函数定义为内联函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">const</span> <span class="built_in">string</span> &amp;<span class="title">shorterString</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;s1,<span class="keyword">const</span> <span class="built_in">string</span> &amp;s2)</span></span>&#123;</div><div class="line">  <span class="keyword">return</span> s1.size()&lt;=s2.size()?s1:s2;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样我们调用<code>shorterString</code>函数的时候就会如下展开：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cout</span>&lt;&lt;shorterString(s1,s2)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line"><span class="built_in">cout</span>&lt;&lt;(s1.size()&lt;s2.size()?s1:s2)&lt;&lt;<span class="built_in">endl</span>;</div></pre></td></tr></table></figure></p>
+<p>constexpr函数是指用于常量表达式的函数，其函数的返回类型及所有形参的类型都得是字面值类型，而且函数体中必须有且只有一条return语句：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="title">new_sz</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> <span class="number">42</span>;&#125;</div><div class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> foo=new_sz();</div></pre></td></tr></table></figure></p>
+<p>允许<code>constexpr</code>函数返回值并非是一个常量，也可以是常量表达式：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//如果arg是常量表达式，则scale(arg)也是常量表达式</span></div><div class="line"><span class="function"><span class="keyword">constexpr</span> size_t <span class="title">scale</span><span class="params">(<span class="keyword">size_t</span> cnt)</span></span>&#123;<span class="keyword">return</span> new_sz()*cnt&#125;;</div></pre></td></tr></table></figure></p>
+<h4 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h4><p>函数指针指向的是函数而非对象，函数的类型由它的返回类型和形参类型共同决定，与函数名无关。<br>比如下面的函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">lengthCompare</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;, <span class="keyword">const</span> <span class="built_in">string</span> &amp;)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>该函数的类型是<code>bool(const string&amp;, const string&amp;)</code>，要想申明一个可以指向该函数的指针，只需要用指针替换函数名即可：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//pf指向一个函数，该函数的参数是两个const string的引用，返回值是bool类型</span></div><div class="line"><span class="keyword">bool</span>(*pf)(<span class="keyword">const</span> <span class="built_in">string</span> &amp;,<span class="keyword">const</span> <span class="built_in">string</span> &amp;);</div></pre></td></tr></table></figure></p>
+<p>这里<code>*pf</code>两端的括号必不可少，如果不写这对括号，则pf是一个返回值为bool指针的函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//声明一个名为pf的函数，该函数返回bool*</span></div><div class="line"><span class="function"><span class="keyword">bool</span> *<span class="title">pf</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;, <span class="keyword">const</span> <span class="built_in">string</span> &amp;)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>使用函数指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">pf=lengthCompare;<span class="comment">//pf指向名为lengthCompare的函数</span></div><div class="line">pf=&amp;lengthCompare;<span class="comment">//等价的赋值语句，其中的取地址符是可以选的</span></div><div class="line"></div><div class="line"><span class="comment">//直接使用指向函数的指针调用该函数，无需提前解引用指针</span></div><div class="line"><span class="keyword">bool</span> b1=pf(<span class="string">"hello"</span>,<span class="string">"goodbye"</span>);<span class="comment">//调用lengthCompare函数</span></div><div class="line"><span class="keyword">bool</span> b2=(*pf)(<span class="string">"hello"</span>,<span class="string">"goodbye"</span>);<span class="comment">//一个等价的调用，可以不用使用解引用</span></div><div class="line"><span class="keyword">bool</span> b3=lengthCompare(<span class="string">"hello"</span>,<span class="string">"goodbye"</span>);<span class="comment">//另一个等价的调用</span></div></pre></td></tr></table></figure></p>
+<p>重载函数的指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">ff</span><span class="params">(<span class="keyword">int</span>*)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">ff</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span>)</span></span>;</div><div class="line"><span class="keyword">void</span> (*pf1)(<span class="keyword">unsigned</span> <span class="keyword">int</span>)=ff;<span class="comment">//pf1指向ff(unsigned)</span></div></pre></td></tr></table></figure></p>
+<p>函数指针形参：<br>虽然不能定义函数类型的形参，但是形参可以是指向函数的指针。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//第三个形参是函数类型，它会自动地转换成指向函数的指针</div><div class="line">void useBigger(const string &amp;s1, const string &amp;s2,bool pf(const string &amp;,const string &amp;));</div><div class="line">//等价声明，显示地将形参定义成指向函数的指针</div><div class="line">void useBigger(const string &amp;s1,const string &amp;s2,bool (*pf)(const string &amp;,const string &amp;));</div></pre></td></tr></table></figure></p>
+<p>可以直接把函数作为实参使用：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">useBigger(s1,s2,lengthCompare);</div></pre></td></tr></table></figure></p>
+<p>直接使用函数指针显得冗长，类型别名和<code>decltype</code>能让我们简化使用函数指针的代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Func和Func2是函数类型</span></div><div class="line"><span class="function"><span class="keyword">typedef</span> <span class="keyword">bool</span> <span class="title">Func</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;, <span class="keyword">const</span> <span class="built_in">string</span>&amp;)</span></span>;</div><div class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(lengthCompare)</span> Func2</span>;<span class="comment">//与上面的等价</span></div><div class="line"></div><div class="line"><span class="comment">//FuncP和FuncP2是指向函数的指针</span></div><div class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">bool</span><span class="params">(*FuncP)</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp;, <span class="keyword">const</span> <span class="built_in">string</span>&amp;)</span></span>;</div><div class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(lengthCompare)</span> *FuncP2</span>;<span class="comment">//等价的类型</span></div></pre></td></tr></table></figure></p>
+<p>注意<code>decltype</code>的结果是函数类型，所以只有在结果前面加上<code>*</code>才能得到指针。</p>
+<p>返回指向函数的指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> F=<span class="keyword">int</span>(<span class="keyword">int</span>*, <span class="keyword">int</span>);<span class="comment">//F是函数类型，不是指针</span></div><div class="line"><span class="keyword">using</span> PF=<span class="keyword">int</span>(*)(<span class="keyword">int</span>*, <span class="keyword">int</span>);<span class="comment">//PF是指针类型</span></div><div class="line"></div><div class="line"><span class="function">PF <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;<span class="comment">//正确：PF是指向函数的指针，f1返回指向函数的指针</span></div><div class="line"><span class="function">F <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;<span class="comment">//错误：F是函数类型，f1不能返回一个函数</span></div><div class="line"><span class="function">F *<span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;<span class="comment">//正确：显示指定返回类型是指向函数的指针</span></div></pre></td></tr></table></figure></p>
+<p>直接声明：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> (*f1(<span class="keyword">int</span>))(<span class="keyword">int</span>*, <span class="keyword">int</span>);</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/27/nlp06/" rel="next" title="NLP 学习笔记之 Log-Linear Models">
+                <i class="fa fa-chevron-left"></i> NLP 学习笔记之 Log-Linear Models
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/29/leetcode329/" rel="prev" title="329. Longest Increasing Path in a Matrix">
+                329. Longest Increasing Path in a Matrix <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#返回数组指针"><span class="nav-number">1.</span> <span class="nav-text">返回数组指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数重载"><span class="nav-number">2.</span> <span class="nav-text">函数重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重载与const形参"><span class="nav-number">3.</span> <span class="nav-text">重载与const形参</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内联函数和constexpr函数"><span class="nav-number">4.</span> <span class="nav-text">内联函数和constexpr函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数指针"><span class="nav-number">5.</span> <span class="nav-text">函数指针</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

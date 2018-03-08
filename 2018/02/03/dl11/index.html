@@ -1,0 +1,1006 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环序列模型">
+<meta property="og:url" content="http://yoursite.com/2018/02/03/dl11/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1101.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1102.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1103.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1104.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1105.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1106.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1107.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1108.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1109.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1110.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1111.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1112.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1113.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1114.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1115.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1116.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl1117.png">
+<meta property="og:updated_time" content="2018-03-08T07:25:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="循环序列模型">
+<meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/dl/dl1101.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/03/dl11/"/>
+
+
+
+
+
+  <title> 循环序列模型 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/03/dl11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="song Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                循环序列模型
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-03T11:22:58+08:00">
+                2018-02-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/03/dl11/" class="leancloud_visitors" data-flag-title="循环序列模型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://moluchase.github.io/2017/12/06/dl02/#more" target="_blank" rel="external">神经网络和深度学习[1-2]</a><br><a href="https://moluchase.github.io/2017/12/08/dl03/#more" target="_blank" rel="external">神经网络和深度学习[1-3]</a><br><a href="https://moluchase.github.io/2017/12/10/dl04/#more" target="_blank" rel="external">神经网络和深度学习[1-4]</a><br><a href="https://moluchase.github.io/2017/12/11/dl05/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-1】</a><br><a href="https://moluchase.github.io/2017/12/12/dl06/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-2】</a><br><a href="https://moluchase.github.io/2017/12/14/dl07/#more" target="_blank" rel="external">改善深层神经网络：超参数调试、正则化以及优化【2-3】</a><br><a href="https://moluchase.github.io/2017/12/17/dl08/#more" target="_blank" rel="external">结构化机器学习项目 3</a><br>Ng的深度学习视频笔记，长期更新<br><a id="more"></a></p>
+<h4 id="1-1-为什么选择序列模型"><a href="#1-1-为什么选择序列模型" class="headerlink" title="1.1 为什么选择序列模型"></a>1.1 为什么选择序列模型</h4><p>像递归神经网络，RNNs 已经改变了语音识别，自然语言处理等其他领域。<br>如下图所示：<br><img src="/upload/essayimage/dl/dl1101.png" alt="dl1101"><br>在语言识别方面，给出一个输入语音X和一个需要匹配的文本转录Y，X和Y都是序列数据。音乐生成是是另外一个序列数据的例子，其输入可以是空，整数，或者是一个你想去生成的音乐类型，或者是一些音乐片段，而Y则是一个序列。在情感分析中，X是一个序列，如给出“The is noting to like in the movie”，那么你认为通过这句话这个电影将会有多少明星？序列模型同样对DNA序列的分析非常有用，你的DNA由ATCG这四个碱基表示，通过分析，我们可以知道DNA序列的哪一部分表示一种蛋白质。在机器翻译中，给出一个句子，输出不同语言的句子。在视频行为识别中，给出视频中的某一帧，去识别其中的行为。</p>
+<h4 id="1-2-数学符号"><a href="#1-2-数学符号" class="headerlink" title="1.2 数学符号"></a>1.2 数学符号</h4><p>如下图所示，给定一个输入，找出其中的人名，这个就是命名实体模型：<br><img src="/upload/essayimage/dl/dl1102.png" alt="dl1102"><br>上图显示输出<script type="math/tex">y</script>是人名的部分有1表示，不是人名的部分用0表示。这里用<script type="math/tex">x^{(i)<t>}</script>表示第i个输入例子中第t个元素，用<script type="math/tex">y^{(i)<t>}</script>表示第i个输出例子中第t个元素，<script type="math/tex">T_{x}^{(i)}</script>表示第i个输入例子的长度，<script type="math/tex">T_{y}^{(i)}</script>表示第i个输出例子的长度。<br>那么问题来了，为什么上面显示的<code>Harry</code>就是人名呢，接下来将讨论如何表示句子中的一个独立的单词。<br>首先我们需要有一个词汇表，表示一个单词集合，这里有你将要使用的单词，比如大小为10000的词汇表，当然对于一般的商业应用，词汇表的大小在30到50000之间更加常见，100000是不常见的，一些大型网络公司将使用一百万的词汇库或者更大的。你可以通过查看训练集中前10000个出现的单词来得到词汇库或者通过那些告诉你在英语中最常见的10000个单词的在线词库来得到词汇库。然后通过独热编码来表示每一个单词。有一个问题，如果要编码的单词不再词汇库怎么办？这里的解决办法是创建一个新的token叫做Unknown Word去表示那些在词汇表中没有出现的单词。</p>
+<h4 id="1-3-循环神经网络模型"><a href="#1-3-循环神经网络模型" class="headerlink" title="1.3 循环神经网络模型"></a>1.3 循环神经网络模型</h4><p>现在我们可以使用一个标准的神经网络来做上面的工作，如下图所示<br><img src="/upload/essayimage/dl/dl1103.png" alt="dl1103"><br>但是这样做有两个主要的问题，第一个问题是在不同的例子中输入和输出可以是不同长度的。当然你可以通过添加0来讲这些长度扩展到最大的长度，但是这样看起来似乎不是一个好的表现。第二个问题可能更加的严重，不能通过文本的不同位置来共享学习到的特征。这个就像在卷积神经网络中看到的一样，你想把从图像一部分上学到的事情很快的扩展到图像的其他部分上，我们也希望在序列上有相同的影响。我们希望减少我们模型中参数的数量，上图显示的每个<script type="math/tex">x^{<i>}</script>是一个10000大小的向量，这将是一个非常大的输入层，如果全部的输入大小(句子最大长度)是10000，那么第一层就会有一个巨大数量的参数，接下来要讲的循环神经网络就没有这些缺点。<br>循环神经网络如下图所示：<br><img src="/upload/essayimage/dl/dl1104.png" alt="dl1104"><br>我们需要做的是，每给出<script type="math/tex">x^{<i>}</script>，我么需要预测出<script type="math/tex">y^{<i>}</script>，当然<script type="math/tex">x^{<i-k>}</script>的信息也可以通过<script type="math/tex">a^{<i-k>}</script>的输出来关联到预测<script type="math/tex">y^{<i>}</script>的输入上。此时我们可以看到RNN的缺点是前面的输出不被后面的输入影响，比如<script type="math/tex">y^{<3>}</script>的输出和<script type="math/tex">x^{<4>},x^{<5>}</script>没有关系。为什么是缺点呢，比如给出一个句子：<code>He said,Teddy Roosevelt was a great President.</code>，为了知道单词<code>Teddy</code>是否是一个人名，不仅是<code>Teddy</code>前面的信息，其后面的信息也非常的重要。因为这个句子也可能是如下的形式：<code>He said, &quot;Teddy bears are on sale!&quot;</code>。仅仅给出前面3个单词，并不能确定<code>Teddy</code>是一个人名，第一个例子中是人名，但是第二个例子中就不是人名了，但是这两个句子的前三个单词是一样的。因此这个特定的神经网络结构的一个限制是，在特定时间序列的预测只能使用当前的输入和输入序列中较早得信息，而不是该序列后面的信息，我们将在后面的讲解中讨论这个问题，即双向递归神经网络（BRNN: bidirectional recurrent neural networks ）。这个单向的神经网络架构足够我们结束这些关键的概念了。<br>下面这个图是一个比较清楚的版本：<br><img src="/upload/essayimage/dl/dl1105.png" alt="dl1105"><br>我们令<script type="math/tex">a^{<0>}=\overrightarrow{0}</script><br>那么对于<script type="math/tex">a^{<1>},y^{<1>}</script>有：</p>
+<script type="math/tex; mode=display">
+a^{<1>}=g(W_{aa}a^{<0>}+W_{ax}x^{<1>}+b_a)\\
+\hat{y}^{<1>}=g(W_{ya}a^{<1>}+b_y)</script><p>其中的激活函数g可以是不一样的，一般求解<script type="math/tex">a</script>的激活函数是<code>tanh/ReLU</code>，求解y的激活函数和y有关，如果是二分类问题，就可能使用<code>sigmoid</code>，如果是多分类问题可能就使用<code>softMax</code>。就比如上面的实体命名模型，因为y要么是0要么是1，那么第二个g就是<code>sigmoid</code>，但是通常不这么做？？？<br>给出一般的形式：</p>
+<script type="math/tex; mode=display">
+a^{<t>}=g(W_{aa}a^{<t-1>}+W_{ax}x^{<t>}+b_a)\\
+\hat{y}^{<t>}=g(W_{ya}a^{<t>}+b_y)</script><p>将上面的第一个式子简化一下:</p>
+<script type="math/tex; mode=display">
+a^{<t>}=g(W_{a}[a^{<t-1>},x^{<t>}]+b_a)
+W_a=[W_{aa},W_{ax}]</script><p>这里举个例子来理解，比如<script type="math/tex">a^{<t-1>}</script>的维度是100，<script type="math/tex">x^{<t>}</script>的维度是10000，那么<script type="math/tex">W_{aa}</script>的维度就是(100,100)，<script type="math/tex">w_{ax}</script>的维度就是(100,10000)，如下面图所示，其矩阵的形式一目了然：<br><img src="/upload/essayimage/dl/dl1106.png" alt="dl1106"><br>同样将第二个式子的<script type="math/tex">W_{ya}</script>改写为<script type="math/tex">W_{y}</script></p>
+<h4 id="1-4-通过时间的反向传播"><a href="#1-4-通过时间的反向传播" class="headerlink" title="1.4 通过时间的反向传播"></a>1.4 通过时间的反向传播</h4><p>前面已经学习了RNN的基本结构，此节将讲RNN的反向传播。观察下面这个图：<br><img src="/upload/essayimage/dl/dl1107.png" alt="dl1107"><br>这里由<script type="math/tex">x^{<t>},a^{<t-1>}</script>生成的每一个<script type="math/tex">a^{<t>}</script>中用到的参数均为<script type="math/tex">W_a,b_a</script>，再由<script type="math/tex">a^{<t>}</script>生成的<script type="math/tex">\hat{y}^{<t>}</script>中用到的参数均为<script type="math/tex">W_y,b_y</script>，这里我们需要一个损失函数，这里我们使用常见的log交叉熵来做：</p>
+<script type="math/tex; mode=display">
+L^{<t>}(\hat{y}^{<t>},y^{<t>})=-y^{<t>}log\,\hat{y}^{<t>}-(1-y^{<t>})log(1-\hat{y}^{<t>})</script><p>如上图所示，将这些损失函数求和就是这个句子总的损失函数。红线所示部分是反向传播过程。</p>
+<h4 id="1-5-不同类型的循环神经网络"><a href="#1-5-不同类型的循环神经网络" class="headerlink" title="1.5 不同类型的循环神经网络"></a>1.5 不同类型的循环神经网络</h4><p>我们前面讲到实体命名模型中有<script type="math/tex">T_x=T_y</script>，是<code>many-to-many</code>类型，这里如果用在情感分类上，比如一句话要么是积极的要么是消极的，而不是输出一个序列，这样的模型就是<code>many-to-one</code>类型，如下图所示：<br><img src="/upload/essayimage/dl/dl1108.png" alt="dl1108"><br>再比如音乐生成就是<code>one-to-many</code>类型，输入x可以为空，输出的结果是知道合成音乐作品中的最后一个音符，一般情况是生成的前一个输出通常会作为下一层的输入。前面提到的<code>many-to-many</code>给出的时两个序列长度相同的情况，这里如果不相同呢，比如机器翻译，两个句子是可以不一样长的，如下图所示，【虽然我没有看懂右边这个图的含义，而且为什么不允许有重叠呢，为什么是先encoder，后decoder？？？】：<br><img src="/upload/essayimage/dl/dl1109.png" alt="dl1109"></p>
+<h4 id="1-6-语言模型和序列生成"><a href="#1-6-语言模型和序列生成" class="headerlink" title="1.6 语言模型和序列生成"></a>1.6 语言模型和序列生成</h4><p>什么是语言模型呢？比如对于语音识别中得到的两个例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">The apple and pair salad.</div><div class="line">The apple and pear salad.</div></pre></td></tr></table></figure></p>
+<p>我们知道第二个句子更有可能是一个符合的句子，语言识别系统通过使用一个语言模型来告诉我们哪一个的概率更大，比如使用概率公式</p>
+<script type="math/tex; mode=display">
+P(The\,\,apple\,\, and \,\,pair\,\, salad.)，P(The\,\, apple\,\, and \,\,pear \,\,salad.)</script><p>那么如何构建语言模型呢？使用RNN建立一个这样的模型，首先需要一个训练集，包含很多英文文本语料库，比如下面这个句子(从训练集中选出)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Cats average 15 hours of sleep a day.</div></pre></td></tr></table></figure></p>
+<p>最后句子的结尾标志是<code>EOS</code>，前面有提到当某个单词不在词汇表中的时候，使用UNK代替，那么我们求解语言模型p(Cats average 15 hours of sleep a day.EOS)<br>该语言模型等价<script type="math/tex">p(y^{<1>},y^{<2>},y^{<3>},...y^{<9>}</script>，可以用链式规则展开与下面比较。<br>如下图显示的RNN模型：<br><img src="/upload/essayimage/dl/dl1110.png" alt="dl1110"><br>其中第一个输入<script type="math/tex">x^{<1>}</script>为句子开头，因此这里输入为0向量，输出为第一个单词的概率，即<script type="math/tex">p(Cats)</script>，注意下一层的输入结合语言模型等价形式理解，<script type="math/tex">\hat{y}^{<2>}</script>表示的是<script type="math/tex">p(average|Cats)</script>，…，直到最后输出表示<script type="math/tex">p(EOS|Cats \,\,average\,\, 15...day.)</script>，然后每个输出的损失函数以及整个句子的损失函数如下：</p>
+<script type="math/tex; mode=display">
+L(\hat{y}^{<t>},y^{<t>})=-\sum_iy_i^{<t>}log\,\hat{y_i}^{<t>}\\
+L=\sum_tL^{<t>}(\hat{y}^{<t>},y^{<t>})\\</script><p>我觉得上面的式子不用加t额，应该是<script type="math/tex">L=\sum_tL(\hat{y}^{<t>},y^{<t>})</script></p>
+<h4 id="1-7-对新序列采样"><a href="#1-7-对新序列采样" class="headerlink" title="1.7 对新序列采样"></a>1.7 对新序列采样</h4><p>这节讲的是Sampling a sequence from a trained RNN，见下图：<br><img src="/upload/essayimage/dl/dl1111.png" alt="dl1111"><br>主要的区别就是将上一层的输出作为下一层的输入，但是上面的是<script type="math/tex">y^{<t>}</script>，下面的是<script type="math/tex">\hat{y}^{<t>}</script>，我不太清楚这个有什么具体的区别，难道是上面的输入不可能做到，现有的只能是样本？？？<br>上面的叫做<code>words level RNN</code>，下面介绍<code>Character-level Languange model</code>，这里词汇表由之前的<br><code>Vocabulary=[a,aaron,...,zulu,&lt;UNK&gt;]</code>变为<code>Vocabulary=[a,b,c,d...,,,;,&#39;,A,...,Z]</code><br>这样就不会出现没有的单词了，比如下面的句子对应的<script type="math/tex">y^{<1>}...</script>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Cats average...</div><div class="line">C,a,t,s, ,a,v,e,r,a,g,e,...</div></pre></td></tr></table></figure></p>
+<p>相对于<code>word level language model</code>，这里的RNN层数明显变多，但是由于计算速度的提高，人们逐渐有之前的单词模型转向字符模型。</p>
+<h4 id="1-9-GRU单元"><a href="#1-9-GRU单元" class="headerlink" title="1.9 GRU单元"></a>1.9 GRU单元</h4><p>Gated Recurrent Unit是对RNN影藏层的一个修改，使它更好的体现远距离连接而且对梯度消失问题有帮助。重新来看t时间处的影藏单元如下图：<br><img src="/upload/essayimage/dl/dl1112.png" alt="dl1112"><br>举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The cat, which already ate...,was full.</div></pre></td></tr></table></figure></p>
+<p>句子从左到右，GRU单元将有一个新的变量叫c，表示记忆单元，它将提供一些记忆，比如cat是单数还是复数，以至于当它达到句子的更远处时仍然判断句子的主题是单数还是复数。【这一部分我没看懂…】<br>哗啦哗啦讲了一大堆后如下图所示：<br><img src="/upload/essayimage/dl/dl1113.png" alt="dl1113"><br>对照右边的公式看左图，首先是<script type="math/tex">c^{<t-1>}=a^{<t-1>}</script>，然后进入tanh激活函数和sigmod激活函数，有如下两个公式：</p>
+<script type="math/tex; mode=display">
+\widetilde{c}^{<t>}=tanh(w_c[c^{<t-1>},x^{<t>}]+b_c)\\
+\gamma_u=\sigma(w_u[c^{<t-1>},x^{<t>}]+b_u)</script><p>然后进入到图中紫色方框，公式如下：</p>
+<script type="math/tex; mode=display">
+c^{<t>}=\gamma_u \widetilde{c}^{<t>}+(1-\gamma_u)c^{<t-1>}</script><p>从这个公式中可以看出，如果<script type="math/tex">\gamma_u</script>的值是0的话，<script type="math/tex">c^{<t>}</script>就不会更新，否则才更新。<br>最后是Softmax函数输出<script type="math/tex">\hat{y}^{<t>}</script>。<br>从上面的公式中能看出，如果<script type="math/tex">\gamma_u</script>非常接近于0的话，最终的结果和上一层是一样的，也就是说这样就会减弱梯度消失的问题，这样神经网络就可以走得很长。</p>
+<h4 id="1-10-LSTM"><a href="#1-10-LSTM" class="headerlink" title="1.10 LSTM"></a>1.10 LSTM</h4><p>LSTM是一个更强大，更通用的GRU版本，如下对比图所示：<br><img src="/upload/essayimage/dl/dl1114.png" alt="dl1114"><br>这里有几个不同之处，一个是<script type="math/tex">a^{<t>}</script>和<script type="math/tex">c^{<t>}</script>的关系，一个是<script type="math/tex">c^{<t>}</script>的求解上，<script type="math/tex">\widetilde{c}^{<t>}</script>的求解上实质上是一样的。<br>LSTM单元如下图所示：<br><img src="/upload/essayimage/dl/dl1115.png" alt="dl1115"><br>GRU的好处在于它是一个简单的模型，更容易建立一个大的网络，只有两个门参数，运行的更快，但是LSTM是一个更强大有效的模型，因为它有三个门参数。</p>
+<h4 id="1-11-双向神经网络"><a href="#1-11-双向神经网络" class="headerlink" title="1.11 双向神经网络"></a>1.11 双向神经网络</h4><p>之前提到过，单向神经网络并不好，比如对实体命名而言，是需要后面的单词来决定当前单词的输出的，这里讲解BRNN，如下图所示：<br><img src="/upload/essayimage/dl/dl1116.png" alt="dl1116"><br>紫色部分为正向传播，绿色部分为反向传播，输出的y如上所示，该网络一般与LSTM相结合。</p>
+<h4 id="1-12-深层循环神经网络"><a href="#1-12-深层循环神经网络" class="headerlink" title="1.12 深层循环神经网络"></a>1.12 深层循环神经网络</h4><p>深层循环神经网络就是将多个例子在纵轴上延伸，如下图所示：<br><img src="/upload/essayimage/dl/dl1117.png" alt="dl1117"><br>这部分的意义不是特别的懂，应该说都不是很懂…先放着吧，后期再慢慢理解…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="song Peng WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="song Peng Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/02/dl10/" rel="next" title="Case Studies">
+                <i class="fa fa-chevron-left"></i> Case Studies
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/04/dl12/" rel="prev" title="自然语言处理与词嵌入">
+                自然语言处理与词嵌入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="song Peng" />
+          <p class="site-author-name" itemprop="name">song Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天空任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-为什么选择序列模型"><span class="nav-number">1.</span> <span class="nav-text">1.1 为什么选择序列模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-数学符号"><span class="nav-number">2.</span> <span class="nav-text">1.2 数学符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-循环神经网络模型"><span class="nav-number">3.</span> <span class="nav-text">1.3 循环神经网络模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-通过时间的反向传播"><span class="nav-number">4.</span> <span class="nav-text">1.4 通过时间的反向传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-不同类型的循环神经网络"><span class="nav-number">5.</span> <span class="nav-text">1.5 不同类型的循环神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-语言模型和序列生成"><span class="nav-number">6.</span> <span class="nav-text">1.6 语言模型和序列生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-对新序列采样"><span class="nav-number">7.</span> <span class="nav-text">1.7 对新序列采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-9-GRU单元"><span class="nav-number">8.</span> <span class="nav-text">1.9 GRU单元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-10-LSTM"><span class="nav-number">9.</span> <span class="nav-text">1.10 LSTM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-11-双向神经网络"><span class="nav-number">10.</span> <span class="nav-text">1.11 双向神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-12-深层循环神经网络"><span class="nav-number">11.</span> <span class="nav-text">1.12 深层循环神经网络</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">song Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
