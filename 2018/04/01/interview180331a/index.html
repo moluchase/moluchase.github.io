@@ -1,0 +1,962 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="一共三道题，最后一道为选答题(反正我是在指定时间里做不出来的，出的问题太多了，调了一个小时)  茉莉有一个画板，画板可以抽象成100行，每行100个像素点的正方形，茉莉在画板上画画，她一共画了n次，每次将一个矩形涂上颜色，茉莉想知道一共有多少个像素点被她涂过颜色，若一个像素点被涂了k次，那么认为有k个像素点被涂过颜色。 茉莉邀请她的朋友参加周末的派对，茉莉买了3种颜色的气球，现在她要用这些气球来装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="18年360春招笔试题">
+<meta property="og:url" content="http://yoursite.com/2018/04/01/interview180331a/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="一共三道题，最后一道为选答题(反正我是在指定时间里做不出来的，出的问题太多了，调了一个小时)  茉莉有一个画板，画板可以抽象成100行，每行100个像素点的正方形，茉莉在画板上画画，她一共画了n次，每次将一个矩形涂上颜色，茉莉想知道一共有多少个像素点被她涂过颜色，若一个像素点被涂了k次，那么认为有k个像素点被涂过颜色。 茉莉邀请她的朋友参加周末的派对，茉莉买了3种颜色的气球，现在她要用这些气球来装">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T03:05:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="18年360春招笔试题">
+<meta name="twitter:description" content="一共三道题，最后一道为选答题(反正我是在指定时间里做不出来的，出的问题太多了，调了一个小时)  茉莉有一个画板，画板可以抽象成100行，每行100个像素点的正方形，茉莉在画板上画画，她一共画了n次，每次将一个矩形涂上颜色，茉莉想知道一共有多少个像素点被她涂过颜色，若一个像素点被涂了k次，那么认为有k个像素点被涂过颜色。 茉莉邀请她的朋友参加周末的派对，茉莉买了3种颜色的气球，现在她要用这些气球来装">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/01/interview180331a/"/>
+
+
+
+
+
+  <title> 18年360春招笔试题 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/01/interview180331a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                18年360春招笔试题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T09:38:04+08:00">
+                2018-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔试/" itemprop="url" rel="index">
+                    <span itemprop="name">笔试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/01/interview180331a/" class="leancloud_visitors" data-flag-title="18年360春招笔试题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一共三道题，最后一道为选答题(反正我是在指定时间里做不出来的，出的问题太多了，调了一个小时)</p>
+<ol>
+<li>茉莉有一个画板，画板可以抽象成100行，每行100个像素点的正方形，茉莉在画板上画画，她一共画了n次，每次将一个矩形涂上颜色，茉莉想知道一共有多少个像素点被她涂过颜色，若一个像素点被涂了k次，那么认为有k个像素点被涂过颜色。</li>
+<li>茉莉邀请她的朋友参加周末的派对，茉莉买了3种颜色的气球，现在她要用这些气球来装饰餐桌，每个餐桌只用恰好3个气球装饰，要求3个气球的颜色不能完全一样，可以是2种或者3种，茉莉想知道这些气球最多能装饰多少张餐桌。</li>
+<li>给你一个图，0节点连接着一个联通块a，1节点连接着一个联通块b，ab仅由01这条边相连，现在我们定义奇异路劲为恰好经过0-1这条边一次的路劲，其他边可以经过任意次，且路径不带方向，1-2-3与3-2-1认为是两条路径，重边也算多条路径，在这个图中有无数奇异路径，问第k短的奇异路径长度是多少？</li>
+</ol>
+<a id="more"></a>
+<h4 id="画板"><a href="#画板" class="headerlink" title="画板"></a>画板</h4><p>主要是输入数据如何存储，以便后面的遍历，搞了有10来分钟，不然很快就写完了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Scanner;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengsong</div><div class="line"> * <span class="doctag">@date</span> 18/3/31 下午7:57</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QH36001</span> </span>&#123;</div><div class="line">    <span class="comment">//直接计算矩形的面积相加就可以了</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getNumber</span><span class="params">(List&lt;List&lt;Integer&gt;&gt; lists)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> res=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span> (i&lt;lists.size())&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;lists.get(i).size();j+=<span class="number">4</span>)&#123;</div><div class="line">                res+=(lists.get(i).get(j+<span class="number">2</span>)-lists.get(i).get(j+<span class="number">0</span>)+<span class="number">1</span>)*(lists.get(i).get(j+<span class="number">3</span>)-lists.get(i).get(j+<span class="number">1</span>)+<span class="number">1</span>);</div><div class="line">            &#125;</div><div class="line">            i++;</div><div class="line">            System.out.println(res);</div><div class="line">            res=<span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">    输入</div><div class="line">    第一行一个数 T</div><div class="line">    对于每组数据，第一行一个整数n</div><div class="line">    接下来n行，每行4个整数x1，y1，x2，y2</div><div class="line"></div><div class="line">    输出</div><div class="line">    对于每组数据，输出一行，表示茉莉一共涂了多少个像素点</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> t;</div><div class="line">        t=scanner.nextInt();</div><div class="line">        <span class="keyword">int</span> []n=<span class="keyword">new</span> <span class="keyword">int</span>[t];</div><div class="line">        List&lt;List&lt;Integer&gt;&gt; lists=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;t;i++)&#123;</div><div class="line">            n[i]=scanner.nextInt();</div><div class="line">            ArrayList&lt;Integer&gt; list=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n[i];j++)&#123;</div><div class="line">                list.add(scanner.nextInt());</div><div class="line">                list.add(scanner.nextInt());</div><div class="line">                list.add(scanner.nextInt());</div><div class="line">                list.add(scanner.nextInt());</div><div class="line">            &#125;</div><div class="line">            lists.add(list);</div><div class="line">        &#125;</div><div class="line">        scanner.close();</div><div class="line">        getNumber(lists);</div><div class="line">        <span class="comment">//System.out.println();</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="派对"><a href="#派对" class="headerlink" title="派对"></a>派对</h4><p>我的想法是先取3个，然后再取两个，不知道对不对，帮别人做的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Scanner;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengsong</div><div class="line"> * <span class="doctag">@date</span> 18/3/31 下午8:24</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QH36002</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">    在选两种颜色中最大装饰餐桌数量的时候，同样选取最小的，也就是最多只能装饰最小的个数的数量</div><div class="line">    而且要满足最小的个数乘以3小于等于总的气球个数</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> res=Math.min(i,j);</div><div class="line">        <span class="keyword">while</span> (res*<span class="number">3</span>&gt;i+j)res--;</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">    我的想法是，先选3种颜色的情况，然后再选2种情况的颜色，将其相加作为最大的装饰餐桌数</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">theMaxNumber</span><span class="params">(<span class="keyword">int</span> r,<span class="keyword">int</span> g,<span class="keyword">int</span> b)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> res=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> min=Math.min(Math.min(r,g),b);</div><div class="line">        res+=min;</div><div class="line">        r-=min;</div><div class="line">        g-=min;</div><div class="line">        b-=min;</div><div class="line">        <span class="keyword">if</span>(r==<span class="number">0</span>)res+=getNum(g,b);</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(g==<span class="number">0</span>)res+=getNum(r,b);</div><div class="line">        <span class="keyword">else</span> res+=getNum(r,g);</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getMax</span><span class="params">(<span class="keyword">int</span>[][]rgb)</span></span>&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;rgb.length;i++)&#123;</div><div class="line">            System.out.println(theMaxNumber(rgb[i][<span class="number">0</span>],rgb[i][<span class="number">1</span>],rgb[i][<span class="number">2</span>]));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">    输入</div><div class="line">    第一行一个数T，表示数据数组</div><div class="line">    对于每组数据，第一行3个整数，r，g，b分别表示三种颜色的气球个数</div><div class="line">    输出</div><div class="line">    对于每组数组，输出一行，一个整数表示最多能够装饰的餐桌数</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> t;</div><div class="line">        t=scanner.nextInt();</div><div class="line">        <span class="keyword">int</span> [][]rgb=<span class="keyword">new</span> <span class="keyword">int</span>[t][<span class="number">3</span>];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;t;i++)&#123;</div><div class="line">            rgb[i][<span class="number">0</span>]=scanner.nextInt();</div><div class="line">            rgb[i][<span class="number">1</span>]=scanner.nextInt();</div><div class="line">            rgb[i][<span class="number">2</span>]=scanner.nextInt();</div><div class="line">        &#125;</div><div class="line">        scanner.close();</div><div class="line">        getMax(rgb);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="奇异路径"><a href="#奇异路径" class="headerlink" title="奇异路径"></a>奇异路径</h4><p>这个题目是一道选答题，图的问题一般是不会涉及的，还算比较简单吧，属于直接告诉思路型。<br>这道题我开始用DFS做，也能做，但是如果出现环的问题，就跳不出来了。<br>这里跳出条件是如果当前节点要走的下一个节点和当前节点的前一个节点相同，表明此时这条路径可以终止。用一个boolean类型来记录当前路径是否已经经过了0-1边，终止的时候判断该布尔值，如果为true，则算一条路径。然后将所有的路径全部走完，将长度存在一个数组中，最后对这个数组排序，找出第k小的值返回。<br>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.*;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@author</span> pengsong</div><div class="line"> * <span class="doctag">@date</span> 18/3/31 下午8:42</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QH36003</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">    这个算法写的有点问题，需要满足图中不能出现环，如果有环的话，就会不停的循环，走出不去</div><div class="line">    按理说应该使用BFS做的，我却用DFS做了</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getLength</span><span class="params">(Map&lt;Integer,ArrayList&lt;Integer&gt;&gt;map,<span class="keyword">int</span> key,<span class="keyword">int</span> step,<span class="keyword">boolean</span> flag,ArrayList&lt;Integer&gt;res,<span class="keyword">int</span> preNode)</span></span>&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;map.get(key).size();j++)&#123;</div><div class="line">            <span class="keyword">int</span> value=map.get(key).get(j);</div><div class="line">            <span class="keyword">if</span>(value==preNode)&#123;</div><div class="line">                <span class="keyword">if</span>(flag==<span class="keyword">true</span>)res.add(step);</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span>((key==<span class="number">0</span>&amp;&amp;value==<span class="number">1</span>)||(key==<span class="number">1</span>&amp;&amp;value==<span class="number">0</span>))flag=<span class="keyword">true</span>;</div><div class="line">            getLength(map,value,step+<span class="number">1</span>,flag,res,key);</div><div class="line">            <span class="keyword">if</span>((key==<span class="number">0</span>&amp;&amp;value==<span class="number">1</span>)||(key==<span class="number">1</span>&amp;&amp;value==<span class="number">0</span>))flag=<span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/*</span></div><div class="line">    遍历map的key节点作为路劲的第一个节点</div><div class="line">    使用res记录走到头的路径</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">theKLength</span><span class="params">(Map&lt;Integer,ArrayList&lt;Integer&gt;&gt; map,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">        ArrayList&lt;Integer&gt; res=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> key:map.keySet())&#123;</div><div class="line">            getLength(map,key,<span class="number">0</span>,<span class="keyword">false</span>,res,-<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">        Collections.sort(res);</div><div class="line"><span class="comment">//        for(int i=0;i&lt;res.size();i++) System.out.println(res.get(i));</span></div><div class="line">        System.out.println(res.get(k-<span class="number">1</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">    输入</div><div class="line">    第一行三个整数n，m，k表示有n个节点，0~n-1，有m条边，问第k长？</div><div class="line">    接下来有m行u，v表示边，保证0-1边只出现一次，保证ab联通块只通过0-1相连</div><div class="line"></div><div class="line">    输出</div><div class="line">    一行表示答案</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n,m,k;</div><div class="line">        n=scanner.nextInt();</div><div class="line">        m=scanner.nextInt();</div><div class="line">        k=scanner.nextInt();</div><div class="line">        Map&lt;Integer,ArrayList&lt;Integer&gt;&gt; map=<span class="keyword">new</span> HashMap&lt;&gt;();<span class="comment">//使用map来存储每个节点所连接的其他节点</span></div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</div><div class="line">            <span class="keyword">int</span> key=scanner.nextInt();</div><div class="line">            <span class="keyword">int</span> value=scanner.nextInt();</div><div class="line">            <span class="keyword">if</span>(map.containsKey(key))map.get(key).add(value);</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                ArrayList&lt;Integer&gt; list=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">                list.add(value);</div><div class="line">                map.put(key,list);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        scanner.close();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            <span class="keyword">if</span>(!map.containsKey(i))&#123;</div><div class="line">                map.put(i,<span class="keyword">new</span> ArrayList&lt;&gt;());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//完善map的对应关系</span></div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> key:map.keySet())&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;map.get(key).size();j++)&#123;</div><div class="line">                <span class="keyword">int</span> value=map.get(key).get(j);</div><div class="line">                <span class="keyword">if</span>(!map.get(value).contains(key))map.get(value).add(key);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"><span class="comment">//        for(int key:map.keySet())&#123;</span></div><div class="line"><span class="comment">//            System.out.print(key+":");</span></div><div class="line"><span class="comment">//            for(int j=0;j&lt;map.get(key).size();j++)&#123;</span></div><div class="line"><span class="comment">//                System.out.print(map.get(key).get(j)+",");</span></div><div class="line"><span class="comment">//            &#125;</span></div><div class="line"><span class="comment">//            System.out.println();</span></div><div class="line"><span class="comment">//        &#125;</span></div><div class="line">        <span class="comment">//theKLength(map,k);</span></div><div class="line">        getLengthBFS(map,k);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这是一个很普通很笨的方法，这道题已经暗示了第k小的路径，表明需要用BFS写，将上面的DFS改写为下面的BFS，BFS的原理就是对n种可能的走法同时向前前进一步，正好符合该题意图，每次走一步，然后判断是否该路径终止，如果终止，继续判断是否满足奇异，如果满足则作为一条路径，用一个变量来记录，当这个变量的值达到k的时候，就是第k小的路径，因为BFS每次出去的路径都是当前最小的路径。<br>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getLengthBFS</span><span class="params">(Map&lt;Integer,ArrayList&lt;Integer&gt;&gt;map,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> step=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> res=<span class="number">0</span>;</div><div class="line">        ArrayList&lt;Integer&gt; curNode=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        ArrayList&lt;Integer&gt; preNode=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        ArrayList&lt;Boolean&gt; flag=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> key:map.keySet())&#123;</div><div class="line">            curNode.add(key);</div><div class="line">            preNode.add(-<span class="number">1</span>);</div><div class="line">            flag.add(<span class="keyword">false</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">while</span> (curNode.size()&gt;<span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">int</span> size=curNode.size();</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;size;i++)&#123;</div><div class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> val:map.get(curNode.get(i)))&#123;</div><div class="line">                    <span class="keyword">if</span>(val==preNode.get(i))&#123;</div><div class="line"><span class="comment">//                        System.out.println("----"+preNode.get(i)+"----"+curNode.get(i));</span></div><div class="line">                        <span class="keyword">if</span>(flag.get(i)==<span class="keyword">true</span>)&#123;</div><div class="line">                            res++;</div><div class="line">                            <span class="keyword">if</span>(res==k)&#123;</div><div class="line">                                System.out.println(step);</div><div class="line">                                <span class="keyword">return</span>;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;<span class="keyword">else</span> &#123;</div><div class="line">                        <span class="keyword">boolean</span> f=flag.get(i);</div><div class="line">                        <span class="keyword">if</span>((curNode.get(i)==<span class="number">0</span>&amp;&amp;val==<span class="number">1</span>)||(curNode.get(i)==<span class="number">1</span>&amp;&amp;val==<span class="number">0</span>))f=<span class="keyword">true</span>;</div><div class="line">                        curNode.add(val);</div><div class="line">                        preNode.add(curNode.get(i));</div><div class="line">                        flag.add(f);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;size;i++)&#123;</div><div class="line"><span class="comment">//                System.out.println("----"+curNode.get(0)+"****"+preNode.get(0)+"****"+flag.get(0)+"----");</span></div><div class="line">                curNode.remove(<span class="number">0</span>);</div><div class="line">                preNode.remove(<span class="number">0</span>);</div><div class="line">                flag.remove(<span class="number">0</span>);</div><div class="line">            &#125;</div><div class="line"><span class="comment">//            System.out.println("res="+res);</span></div><div class="line"><span class="comment">//            System.out.println(curNode.size()+","+preNode.size()+","+flag.size());</span></div><div class="line">            step++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/31/interview180331/" rel="next" title="18年阿里测评题">
+                <i class="fa fa-chevron-left"></i> 18年阿里测评题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/nlp07/" rel="prev" title="seq2seq学习笔记">
+                seq2seq学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#画板"><span class="nav-number">1.</span> <span class="nav-text">画板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#派对"><span class="nav-number">2.</span> <span class="nav-text">派对</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#奇异路径"><span class="nav-number">3.</span> <span class="nav-text">奇异路径</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

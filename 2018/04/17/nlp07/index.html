@@ -1,0 +1,996 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这里主要是结合论文来讲述，因为看Attention的时候涉及到了，就简单的介绍一下，后期有需求会继续更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="seq2seq学习笔记">
+<meta property="og:url" content="http://yoursite.com/2018/04/17/nlp07/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="这里主要是结合论文来讲述，因为看Attention的时候涉及到了，就简单的介绍一下，后期有需求会继续更新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0701.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0702.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0703.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0704.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0705.png">
+<meta property="og:updated_time" content="2018-04-18T08:55:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="seq2seq学习笔记">
+<meta name="twitter:description" content="这里主要是结合论文来讲述，因为看Attention的时候涉及到了，就简单的介绍一下，后期有需求会继续更新">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0701.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/17/nlp07/"/>
+
+
+
+
+
+  <title> seq2seq学习笔记 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/nlp07/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                seq2seq学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T11:27:29+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/17/nlp07/" class="leancloud_visitors" data-flag-title="seq2seq学习笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这里主要是结合论文来讲述，因为看Attention的时候涉及到了，就简单的介绍一下，后期有需求会继续更新<br><a id="more"></a></p>
+<h3 id="Learning-Phrase-Representations-using-RNN-Encoder–Decoder-for-Statistical-Machine-Translation"><a href="#Learning-Phrase-Representations-using-RNN-Encoder–Decoder-for-Statistical-Machine-Translation" class="headerlink" title="Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation"></a>Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</h3><p>【14年发表的】这篇论文我只看了前半部分，讲到了RNN Encoder-Decoder和GRU，后面在做测试部分就没看了。</p>
+<h4 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h4><p>RNN模型是由一个影藏状态<script type="math/tex">h</script>和可选的输出<script type="math/tex">y</script>以及输入的可变序列<script type="math/tex">x=(x_1,...,x_T)</script>，对于每一步<script type="math/tex">t</script>，隐藏状态<script type="math/tex">h_{<t>}</script>如下更新：</p>
+<script type="math/tex; mode=display">
+h_{<t>}=f(h_{<t-1>},x_t)</script><p>RNN 可以学习一个概率分布，通过预测一个被训练的句子来预测在句子中的下一个特征，每一步t的输出是一个条件分布，如下使用softmax函数：</p>
+<script type="math/tex; mode=display">
+p(x_{t,j}|x_{t-1},...,x_1)=\frac{exp(w_jh_{<t>})}{\sum_{j'=1}^{K}exp(w_{j'}h_{t})},\,\,\,j \in {1,2,...,K}</script><p>其中<script type="math/tex">x_{t,j}</script>表示在t步的输出可能的取值，有K种取值，对应着<script type="math/tex">w_j</script><br>如下图所示：<br><img src="/upload/essayimage/nlp/nlp0701.png" alt="nlp0701"><br>通过联合这些概率就能够计算出序列x的概率，如下：</p>
+<script type="math/tex; mode=display">
+p(x)=\prod_{t=1}^{T}p(x_t|x_{t-1},...,x_1)</script><h4 id="RNN-Encoder-Decoder"><a href="#RNN-Encoder-Decoder" class="headerlink" title="RNN Encoder-Decoder"></a>RNN Encoder-Decoder</h4><p>这篇文章中提出如下结构：通过学习编码一个可变长度的序列成一个固定长度的向量表示，解码一个给定的固定长度的向量成一个可变长度的序列。其条件概率如下：</p>
+<script type="math/tex; mode=display">
+p(y_1,...,y_{T'}|x_1,...,x_{T})</script><p>其中<script type="math/tex">T</script>不一定等于<script type="math/tex">T'</script><br>模型如下图：<br><img src="/upload/essayimage/nlp/nlp0702.png" alt="nlp0702"><br>对于输出而言，其中隐藏状态如下：</p>
+<script type="math/tex; mode=display">
+h_{<t>}=f(h_{<t-1>},y_{t-1},c)</script><p>而输出序列<script type="math/tex">y_{t}</script>如下求解：</p>
+<script type="math/tex; mode=display">
+P(y_t|y_{t-1},y_{t-2},...,y_1,c)=g(h_{<t>},y_{t-1},c)</script><p>使用最大似然来估计参数：</p>
+<script type="math/tex; mode=display">
+\max_{\theta}\frac{1}{N}\sum_{n=1}^{N}logp_{\theta}(y^{n}|x^{n})</script><p>这里的<script type="math/tex">x^{n},y^{n}</script>是训练集中的输入序列和输出序列，<script type="math/tex">N</script>是训练集的大小</p>
+<h4 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h4><p>是对LSTM的简化，分为重置门和更新门<br>重置门如下计算：</p>
+<script type="math/tex; mode=display">
+r_t=\sigma(W_rx+U_rh_{<t-1>})</script><p>更新门如下计算：</p>
+<script type="math/tex; mode=display">
+z_t=\sigma(W_zx+U_zh_{<t-1>})</script><p>下一个隐藏单元如下计算：</p>
+<script type="math/tex; mode=display">
+h_{<t>}=z_th_{<t-1>}+(1-z_t)\tilde{h_{<t>}}\\
+其中 \tilde{h_{<t>}}=\phi(Wx+U(r\cdot h_{<t-1>}))</script><p>如下图所示：<br><img src="/upload/essayimage/nlp/nlp0703.png" alt="nlp0703"><br>论文中做了如下解释（具体请参考原文）：<br>如果重置门接近于0，则当前影藏状态就忽略了前面的隐藏状态，并将当前的输入作为当前的隐藏状态，这就允许隐藏状态去掉任何信息当发现这些信息在后面并不相关的时候，允许一个更加紧凑的表示。<br>更新门控制有多少的信息从之前的隐藏状态中带到当前的影藏状态中，这可以帮助RNN去记住更长的信息。</p>
+<h3 id="Sequence-to-Sequence-Learning-with-Neural-Networks"><a href="#Sequence-to-Sequence-Learning-with-Neural-Networks" class="headerlink" title="Sequence to Sequence Learning with Neural Networks"></a>Sequence to Sequence Learning with Neural Networks</h3><p>深度神经网络虽然已经在很多困难的学习任务上实现了一个很好的表现，但是仍然不能够使用在序列到序列的问题上，这篇论文提出了一种序列学习的通用端到端的方法，在这个结构上做了最少的假设。先使用一个多层的LSTM将输入序列映射到一个固定维度的向量，而另一个深度LSTM从这个固定的向量中解码出目标的序列，在英语到法语翻译任务中的WMT-14数据集中，test集得到了BLEU分数为34.8，将源语句序列进行逆转显著改善了LSTM的性能，因为这样会在源语句和目标语句之间引入很多短期依赖，从而优化问题更加容易。<br>基本模型如下图所示：<br><img src="/upload/essayimage/nlp/nlp0704.png" alt="nlp0704"><br>注意，前面提到的逆序输入，也就是说本来的输入序列是”CBA”，逆序后如上图所示，这样显著提升了LSTM的性能，对上面的句子我的理解是Encoder最后的输入是序列的第一个单词，而Decoder的第一个输出对应着翻译第一个单词的结果，离得比较近，依赖关系就比较紧，也就是说引入了很多短期依赖。<br>原始论文中Encoder和Decoder都是4层LSTM。</p>
+<h3 id="NEURAL-MACHINE-TRANSLATION-BY-JOINTLY-LEARNING-TO-ALIGN-AND-TRANSLATE"><a href="#NEURAL-MACHINE-TRANSLATION-BY-JOINTLY-LEARNING-TO-ALIGN-AND-TRANSLATE" class="headerlink" title="NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE"></a>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</h3><p>这篇文章对第一篇的结构做了如下改变：</p>
+<ol>
+<li>将RNN改为BRNN</li>
+<li>加入注意力机制，即c可变</li>
+</ol>
+<p>其结构以及注意力机制的计算如下图所示：<br><img src="/upload/essayimage/nlp/nlp0705.png" alt="nlp0705"><br>注意力机制大概就是在说每次预测都是从向量c中进行信息提取，但是如果句子很长的话，c未必能把所有的信息都保留下来，而且比如对于输入句子”我/是/中国人”的目标语言是”I/am/Chinese”，翻译”Chinese”的时候显然取决于”中国人”而与”我/是”基本无关，上面加入注意力机制后，相当于对每一个<script type="math/tex">h_i</script>进行权重求和，每一个输出<script type="math/tex">y_j</script>所对应的上下文是不同的。<br>这里使用BRNN，相当于取当前词的上下文信息。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://arxiv.org/pdf/1406.1078.pdf" target="_blank" rel="external">Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</a></li>
+<li><a href="https://papers.nips.cc/paper/5346-sequence-to-sequence-learning-with-neural-networks.pdf" target="_blank" rel="external">Sequence to Sequence Learning with Neural Networks</a></li>
+<li><a href="https://arxiv.org/pdf/1409.0473.pdf" target="_blank" rel="external">NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE </a></li>
+<li><a href="https://blog.csdn.net/Jerr__y/article/details/53749693" target="_blank" rel="external">seq2seq学习笔记</a></li>
+<li><a href="https://blog.csdn.net/malefactor/article/details/50550211" target="_blank" rel="external">注意力机制原理</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/01/interview180331a/" rel="next" title="18年360春招笔试题">
+                <i class="fa fa-chevron-left"></i> 18年360春招笔试题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/16/nlp09/" rel="prev" title="KBQA 论文阅读笔记">
+                KBQA 论文阅读笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Learning-Phrase-Representations-using-RNN-Encoder–Decoder-for-Statistical-Machine-Translation"><span class="nav-number">1.</span> <span class="nav-text">Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RNN"><span class="nav-number">1.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RNN-Encoder-Decoder"><span class="nav-number">1.2.</span> <span class="nav-text">RNN Encoder-Decoder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GRU"><span class="nav-number">1.3.</span> <span class="nav-text">GRU</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sequence-to-Sequence-Learning-with-Neural-Networks"><span class="nav-number">2.</span> <span class="nav-text">Sequence to Sequence Learning with Neural Networks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEURAL-MACHINE-TRANSLATION-BY-JOINTLY-LEARNING-TO-ALIGN-AND-TRANSLATE"><span class="nav-number">3.</span> <span class="nav-text">NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

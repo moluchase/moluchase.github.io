@@ -1,0 +1,964 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="两个小时5道编程题，非常变态，而且题目还不好理解，AC2道，昨天得知AC两道笔试竟然没过，好吧，头条的算法门槛还是比较高的，最想去的公司了，看来我还需要好好总结方法了，而且下次头条笔试一定要一个人做，在一个安静的环境下…  在n个元素的数组中，找到差值为k的数字对去重后的个数 定义两个字符变量：s和m，再定义两种操作，第一种操作：m=s；s=s+s;第二种操作：s=s+m;假设初始化如下：s=”a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="18年春招今日头条笔试题">
+<meta property="og:url" content="http://yoursite.com/2018/03/31/interview180324/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="两个小时5道编程题，非常变态，而且题目还不好理解，AC2道，昨天得知AC两道笔试竟然没过，好吧，头条的算法门槛还是比较高的，最想去的公司了，看来我还需要好好总结方法了，而且下次头条笔试一定要一个人做，在一个安静的环境下…  在n个元素的数组中，找到差值为k的数字对去重后的个数 定义两个字符变量：s和m，再定义两种操作，第一种操作：m=s；s=s+s;第二种操作：s=s+m;假设初始化如下：s=”a">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-31T02:34:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="18年春招今日头条笔试题">
+<meta name="twitter:description" content="两个小时5道编程题，非常变态，而且题目还不好理解，AC2道，昨天得知AC两道笔试竟然没过，好吧，头条的算法门槛还是比较高的，最想去的公司了，看来我还需要好好总结方法了，而且下次头条笔试一定要一个人做，在一个安静的环境下…  在n个元素的数组中，找到差值为k的数字对去重后的个数 定义两个字符变量：s和m，再定义两种操作，第一种操作：m=s；s=s+s;第二种操作：s=s+m;假设初始化如下：s=”a">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/31/interview180324/"/>
+
+
+
+
+
+  <title> 18年春招今日头条笔试题 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/31/interview180324/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                18年春招今日头条笔试题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T10:05:27+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔试/" itemprop="url" rel="index">
+                    <span itemprop="name">笔试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/31/interview180324/" class="leancloud_visitors" data-flag-title="18年春招今日头条笔试题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>两个小时5道编程题，非常变态，而且题目还不好理解，AC2道，昨天得知AC两道笔试竟然没过，好吧，头条的算法门槛还是比较高的，最想去的公司了，看来我还需要好好总结方法了，而且下次头条笔试一定要一个人做，在一个安静的环境下…</p>
+<ol>
+<li>在n个元素的数组中，找到差值为k的数字对去重后的个数</li>
+<li>定义两个字符变量：s和m，再定义两种操作，<br>第一种操作：<br>m=s；<br>s=s+s;<br>第二种操作：<br>s=s+m;<br>假设初始化如下：<br>s=”a”; m=s;<br>求最小的操作步骤数，可以将s拼接到长度等于n；</li>
+<li>略(类似于点阵显示的问题，虽然简单，但是做起来很费劲)</li>
+<li>给定一个包含n个整数元素的集合a，一个包含m个整数元素的集合b<br>定义magic操作为，从一个集合中取出一个元素，放到另一个集合中，且操作过后每个集合的平均值都大于操作前<br>注意一下两点：<br>1.不可以把一个集合的元素取空，这样就没有平均值了<br>2.值为x的元素从集合b取出放到集合a，但集合a中已经有值为x的元素，则a的平均值不变（因为集合元素不会重复），b的平均值可能会改变（因为x被取出了）<br>问最多可以进行多少次magic操作？</li>
+<li>小T最近迷上一款跳板小游戏<br>已知空中有N个高度互不相同的跳板，小T刚开始在高度为0的地方，每次跳跃可以选择与自己当前高度绝对值差小于等于H的跳板，跳跃过后到达以跳板为轴的镜像位置，问小T在最多跳K次的情况下最高能跳多高？(高度不能为负)</li>
+</ol>
+<a id="more"></a>
+<h4 id="数字对去重后的个数"><a href="#数字对去重后的个数" class="headerlink" title="数字对去重后的个数"></a>数字对去重后的个数</h4><p>这道题直接用两个for循环查找的话是会超时的，所以我一开始就没这么做，而是使用一个Map来，每次去重都删除后面的元素<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TouTiao01</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">    使用map来存储数组中的值出现的个数</div><div class="line">    比较当前元素加上k后的值是否在map中，如果在，就让改值对应的value减1</div><div class="line">    k=0需要特殊考虑</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getTheNumber</span><span class="params">(<span class="keyword">int</span>[]arr,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> res=<span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>(k==<span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;arr.length-<span class="number">1</span>;i+=<span class="number">2</span>)&#123;</div><div class="line">                <span class="keyword">if</span>(arr[i]==arr[i+<span class="number">1</span>])res++;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> arr.length-res;</div><div class="line">        &#125;</div><div class="line">        Map&lt;Integer,Integer&gt; map=<span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;arr.length;i++)&#123;</div><div class="line">            <span class="keyword">if</span>(map.containsKey(arr[i]))map.replace(arr[i],map.get(arr[i])+<span class="number">1</span>);</div><div class="line">            <span class="keyword">else</span> map.put(arr[i],<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;arr.length;i++)&#123;</div><div class="line">            <span class="keyword">if</span>(map.get(arr[i])&gt;<span class="number">0</span>&amp;&amp;map.containsKey(arr[i]+k)&amp;&amp;map.get(arr[i]+k)&gt;<span class="number">0</span>)&#123;</div><div class="line">                map.replace(arr[i]+k,map.get(arr[i])-<span class="number">1</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(Integer key:map.keySet())&#123;</div><div class="line">            res+=map.get(key);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n,k;</div><div class="line">        n=scanner.nextInt();</div><div class="line">        k=scanner.nextInt();</div><div class="line">        <span class="keyword">int</span>[] arr=<span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            arr[i]=scanner.nextInt();</div><div class="line">        &#125;</div><div class="line">        scanner.close();</div><div class="line">        Arrays.sort(arr);</div><div class="line">        System.out.println(getTheNumber(arr,k));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="最小的操作步骤数"><a href="#最小的操作步骤数" class="headerlink" title="最小的操作步骤数"></a>最小的操作步骤数</h4><p>开始在找规律，发现出现很多问题，于是干脆用DFS来做，每一次操作都有两个选择，遍历这些选择，我以为会超时，结果通过了，实际上这是一道BFS的题，每次让所有路径都往前走一步，判断有没有到达终点的，没有继续，有则返回步数。<br>应该也可以使用DP来解决的，毕竟有重复的过程<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TouTiao02</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> minStep=Integer.MAX_VALUE;<span class="comment">//记录需要变换的最小次数</span></div><div class="line">    <span class="comment">/*</span></div><div class="line">    这里由于第一次变换比第二次变换使得字符串增长的更快，所以先走第一次变换，</div><div class="line">    如果无法达到，则回退</div><div class="line">    如果达到，就和最小的步数比较</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(String s,String m,<span class="keyword">int</span> step,<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span>(s.length()&gt;=n)&#123;</div><div class="line">            <span class="keyword">if</span>(s.length()==n)minStep=step&lt;minStep?step:minStep;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">                dfs(s+s,s,step+<span class="number">1</span>,n);</div><div class="line">                dfs(s+m,m,step+<span class="number">1</span>,n);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMinStep</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">        dfs(<span class="string">"mm"</span>,<span class="string">"m"</span>,<span class="number">1</span>,n);</div><div class="line">        <span class="keyword">return</span> minStep;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n;</div><div class="line">        n=scanner.nextInt();</div><div class="line">        scanner.close();</div><div class="line">        System.out.println(getMinStep(n));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="magic操作"><a href="#magic操作" class="headerlink" title="magic操作"></a>magic操作</h3><p>这道题其实挺简单的，就是没有时间看了<br>每次交换的时候只需要知道b中取的元素应该是小于b数组的均值，且大于a数组的均值，而且不能在a数组中包含该元素<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TouTiao04</span> </span>&#123;</div><div class="line">    <span class="comment">/*</span></div><div class="line">    dfs</div><div class="line">    b中取的元素应该是小于b数组的均值，且大于a数组的均值，而且不能在a数组中包含该元素</div><div class="line">     */</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> maxMagic=<span class="number">0</span>;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getMaxMagic</span><span class="params">(ArrayList&lt;Integer&gt;a,ArrayList&lt;Integer&gt;b,<span class="keyword">float</span> avea,<span class="keyword">float</span> aveb,<span class="keyword">int</span> magicStep)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span>(magicStep&gt;maxMagic)maxMagic=magicStep;</div><div class="line">        Collections.sort(a);</div><div class="line">        Collections.sort(b);</div><div class="line">        <span class="keyword">int</span> i=b.size()-<span class="number">1</span>;</div><div class="line">        <span class="keyword">while</span> (i&gt;=<span class="number">0</span>&amp;&amp;(<span class="keyword">float</span>)b.get(i)&gt;aveb)i--;</div><div class="line">        <span class="keyword">while</span> (i&gt;=<span class="number">0</span>&amp;&amp;(<span class="keyword">float</span>)b.get(i)&gt;avea)&#123;</div><div class="line">            <span class="keyword">if</span>(a.contains(b.get(i)))&#123;</div><div class="line">                i--;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">int</span> num=b.get(i);</div><div class="line">            a.add(num);</div><div class="line">            b.remove(i);</div><div class="line">            getMaxMagic(a,b,(avea*(a.size()-<span class="number">1</span>)+num)/a.size(),(aveb*(b.size()+<span class="number">1</span>)-num)/b.size(),magicStep+<span class="number">1</span>);</div><div class="line">            b.add(i,num);</div><div class="line">            a.remove(<span class="keyword">new</span> Integer(num));<span class="comment">//这里是删除num值，而不是最后一个元素，因为a被打乱了</span></div><div class="line">            i--;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n,m;</div><div class="line">        n=scanner.nextInt();</div><div class="line">        m=scanner.nextInt();</div><div class="line">        ArrayList&lt;Integer&gt; a=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        ArrayList&lt;Integer&gt; b=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">float</span> avea=<span class="number">0</span>,aveb=<span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            <span class="keyword">int</span> num=scanner.nextInt();</div><div class="line">            a.add(num);</div><div class="line">            avea+=num;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</div><div class="line">            <span class="keyword">int</span> num=scanner.nextInt();</div><div class="line">            b.add(num);</div><div class="line">            aveb+=num;</div><div class="line">        &#125;</div><div class="line">        scanner.close();</div><div class="line">        getMaxMagic(a,b,avea/n,aveb/m,<span class="number">0</span>);</div><div class="line">        System.out.println(maxMagic);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="跳板小游戏"><a href="#跳板小游戏" class="headerlink" title="跳板小游戏"></a>跳板小游戏</h4><p>感觉这道题题目有点表述不清，按理说应该画一张图的<br>同样使用DFS，发现头条非常喜欢出DFS，BFS，DP的题<br>每一次跳跃都有若干的选择，但是你不知道哪一个选择是最优路径，那就遍历这所有的情况了，没啥好解释的了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line">这里的镜像的意思是以跳后的位置为轴，跳前到跳后的距离再翻转一次</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TouTiao05</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> maxHeight=<span class="number">0</span>;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getMaxHeight</span><span class="params">(<span class="keyword">int</span>[]a,<span class="keyword">int</span> curHeight,<span class="keyword">int</span> k,<span class="keyword">int</span> h)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span>(maxHeight&lt;curHeight)maxHeight=curHeight;</div><div class="line">        <span class="keyword">if</span>(k==<span class="number">0</span>)<span class="keyword">return</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)&#123;</div><div class="line">            <span class="keyword">if</span>(Math.abs(curHeight-a[i])&lt;=h)&#123;</div><div class="line">                <span class="keyword">int</span> value=a[i]-curHeight;</div><div class="line">                getMaxHeight(a,curHeight+<span class="number">2</span>*value&gt;<span class="number">0</span>?curHeight+<span class="number">2</span>*value:<span class="number">0</span>,k-<span class="number">1</span>,h);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n,k,h;</div><div class="line">        n=scanner.nextInt();</div><div class="line">        k=scanner.nextInt();</div><div class="line">        h=scanner.nextInt();</div><div class="line">        <span class="keyword">int</span>[] a=<span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            a[i]=scanner.nextInt();</div><div class="line">        &#125;</div><div class="line">        scanner.close();</div><div class="line">        Arrays.sort(a);</div><div class="line">        getMaxHeight(a,<span class="number">0</span>,k,h);</div><div class="line">        System.out.println(maxHeight);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/31/interview180322/" rel="next" title="18年春招美团笔试题">
+                <i class="fa fa-chevron-left"></i> 18年春招美团笔试题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/31/interview180327/" rel="prev" title="18年春招网易笔试题">
+                18年春招网易笔试题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数字对去重后的个数"><span class="nav-number">1.</span> <span class="nav-text">数字对去重后的个数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最小的操作步骤数"><span class="nav-number">2.</span> <span class="nav-text">最小的操作步骤数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#magic操作"><span class="nav-number"></span> <span class="nav-text">magic操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#跳板小游戏"><span class="nav-number">1.</span> <span class="nav-text">跳板小游戏</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

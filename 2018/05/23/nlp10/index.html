@@ -1,0 +1,1017 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="NER," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="初入NRE，前期打算是先理解CRF，以及CRF，HMM，贝叶斯，最大熵之间的关系，然后用CRF实现命名实体识别，在结合BRNN+CRF训练，对比效果，之后在看看Attention，主动学习，对抗生成网络等等">
+<meta name="keywords" content="NER">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NER学习笔记">
+<meta property="og:url" content="http://yoursite.com/2018/05/23/nlp10/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="初入NRE，前期打算是先理解CRF，以及CRF，HMM，贝叶斯，最大熵之间的关系，然后用CRF实现命名实体识别，在结合BRNN+CRF训练，对比效果，之后在看看Attention，主动学习，对抗生成网络等等">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1011.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1012.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1013.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1001.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1002.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1003.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1004.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1005.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1006.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1007.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1008.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1009.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1010.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1014.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1015.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1016.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1017.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1018.png">
+<meta property="og:updated_time" content="2018-05-28T07:11:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NER学习笔记">
+<meta name="twitter:description" content="初入NRE，前期打算是先理解CRF，以及CRF，HMM，贝叶斯，最大熵之间的关系，然后用CRF实现命名实体识别，在结合BRNN+CRF训练，对比效果，之后在看看Attention，主动学习，对抗生成网络等等">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp1011.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/23/nlp10/"/>
+
+
+
+
+
+  <title> NER学习笔记 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/23/nlp10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                NER学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-23T20:16:30+08:00">
+                2018-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/23/nlp10/" class="leancloud_visitors" data-flag-title="NER学习笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>初入NRE，前期打算是先理解CRF，以及CRF，HMM，贝叶斯，最大熵之间的关系，然后用CRF实现命名实体识别，在结合BRNN+CRF训练，对比效果，之后在看看Attention，主动学习，对抗生成网络等等</p>
+<a id="more"></a>
+<h3 id="use-CoNLL-2002-data-to-build-a-NER-system"><a href="#use-CoNLL-2002-data-to-build-a-NER-system" class="headerlink" title="use CoNLL 2002 data to build a NER system"></a>use CoNLL 2002 data to build a NER system</h3><p>这个是python-crfsuite对应的github上的example，我简单的过一遍，以及添加一些疑问，后续有时间解决。<br>先来看一下训练集，以一个句子为例：<br><code>Melbourne ( Australia ) , 25 may ( EFE ) .</code><br>其表示形式如下，这里主要是用到了词性的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[(u&apos;Melbourne&apos;, u&apos;NP&apos;, u&apos;B-LOC&apos;),</div><div class="line"> (u&apos;(&apos;, u&apos;Fpa&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;Australia&apos;, u&apos;NP&apos;, u&apos;B-LOC&apos;),</div><div class="line"> (u&apos;)&apos;, u&apos;Fpt&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;,&apos;, u&apos;Fc&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;25&apos;, u&apos;Z&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;may&apos;, u&apos;NC&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;(&apos;, u&apos;Fpa&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;EFE&apos;, u&apos;NC&apos;, u&apos;B-ORG&apos;),</div><div class="line"> (u&apos;)&apos;, u&apos;Fpt&apos;, u&apos;O&apos;),</div><div class="line"> (u&apos;.&apos;, u&apos;Fp&apos;, u&apos;O&apos;)]</div></pre></td></tr></table></figure></p>
+<p>然后看一下如何对每一个单词(x)进行找特征的，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">word2features</span><span class="params">(sent, i)</span>:</span></div><div class="line">    word = sent[i][<span class="number">0</span>]</div><div class="line">    postag = sent[i][<span class="number">1</span>]</div><div class="line">    features = [</div><div class="line">        <span class="string">'bias'</span>,</div><div class="line">        <span class="string">'word.lower='</span> + word.lower(),</div><div class="line">        <span class="string">'word[-3:]='</span> + word[<span class="number">-3</span>:],</div><div class="line">        <span class="string">'word[-2:]='</span> + word[<span class="number">-2</span>:],</div><div class="line">        <span class="string">'word.isupper=%s'</span> % word.isupper(),</div><div class="line">        <span class="string">'word.istitle=%s'</span> % word.istitle(),</div><div class="line">        <span class="string">'word.isdigit=%s'</span> % word.isdigit(),</div><div class="line">        <span class="string">'postag='</span> + postag,</div><div class="line">        <span class="string">'postag[:2]='</span> + postag[:<span class="number">2</span>],</div><div class="line">    ]</div><div class="line">    <span class="keyword">if</span> i &gt; <span class="number">0</span>:</div><div class="line">        word1 = sent[i<span class="number">-1</span>][<span class="number">0</span>]</div><div class="line">        postag1 = sent[i<span class="number">-1</span>][<span class="number">1</span>]</div><div class="line">        features.extend([</div><div class="line">            <span class="string">'-1:word.lower='</span> + word1.lower(),</div><div class="line">            <span class="string">'-1:word.istitle=%s'</span> % word1.istitle(),</div><div class="line">            <span class="string">'-1:word.isupper=%s'</span> % word1.isupper(),</div><div class="line">            <span class="string">'-1:postag='</span> + postag1,</div><div class="line">            <span class="string">'-1:postag[:2]='</span> + postag1[:<span class="number">2</span>],</div><div class="line">        ])</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        features.append(<span class="string">'BOS'</span>)</div><div class="line">        </div><div class="line">    <span class="keyword">if</span> i &lt; len(sent)<span class="number">-1</span>:</div><div class="line">        word1 = sent[i+<span class="number">1</span>][<span class="number">0</span>]</div><div class="line">        postag1 = sent[i+<span class="number">1</span>][<span class="number">1</span>]</div><div class="line">        features.extend([</div><div class="line">            <span class="string">'+1:word.lower='</span> + word1.lower(),</div><div class="line">            <span class="string">'+1:word.istitle=%s'</span> % word1.istitle(),</div><div class="line">            <span class="string">'+1:word.isupper=%s'</span> % word1.isupper(),</div><div class="line">            <span class="string">'+1:postag='</span> + postag1,</div><div class="line">            <span class="string">'+1:postag[:2]='</span> + postag1[:<span class="number">2</span>],</div><div class="line">        ])</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        features.append(<span class="string">'EOS'</span>)</div><div class="line">                </div><div class="line">    <span class="keyword">return</span> features</div></pre></td></tr></table></figure></p>
+<p>这个代码我有一些疑问，这里是对每个字生成特征，每个字一个特征集合，然后将一句话的每个字的特征集合组合成一个list，将这个作为一条输入，那么这些特征到底是如何组合的，等等内部细节不是很理解，有时间研究研究源码。</p>
+<p>然后得到输入和输出数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sent2features</span><span class="params">(sent)</span>:</span></div><div class="line">    <span class="keyword">return</span> [word2features(sent, i) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(sent))]</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sent2labels</span><span class="params">(sent)</span>:</span></div><div class="line">    <span class="keyword">return</span> [label <span class="keyword">for</span> token, postag, label <span class="keyword">in</span> sent]</div><div class="line">    </div><div class="line">X_train = [sent2features(s) <span class="keyword">for</span> s <span class="keyword">in</span> train_sents]</div><div class="line">y_train = [sent2labels(s) <span class="keyword">for</span> s <span class="keyword">in</span> train_sents]</div></pre></td></tr></table></figure></p>
+<p>然后就是开始训练<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">trainer = pycrfsuite.Trainer(verbose=<span class="keyword">False</span>)</div><div class="line"><span class="keyword">for</span> xseq, yseq <span class="keyword">in</span> zip(X_train, y_train):</div><div class="line">    trainer.append(xseq, yseq)</div></pre></td></tr></table></figure></p>
+<p>设置参数，这里不是特别懂，可以通过<code>trainer.params()</code>来查看有什么参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">trainer.set_params(&#123;</div><div class="line">    <span class="string">'c1'</span>: <span class="number">1.0</span>,   <span class="comment"># coefficient for L1 penalty</span></div><div class="line">    <span class="string">'c2'</span>: <span class="number">1e-3</span>,  <span class="comment"># coefficient for L2 penalty</span></div><div class="line">    <span class="string">'max_iterations'</span>: <span class="number">50</span>,  <span class="comment"># stop earlier</span></div><div class="line"></div><div class="line">    <span class="comment"># include transitions that are possible, but not observed</span></div><div class="line">    <span class="string">'feature.possible_transitions'</span>: <span class="keyword">True</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>训练<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">trainer.train(<span class="string">'conll2002-esp.crfsuite'</span>)</div></pre></td></tr></table></figure></p>
+<p>通过<code>trainer.logparser.iterations</code>打印具体参数变化情况</p>
+<p>预测部分和评估部分参见[5]中给的网址，这里不做复述</p>
+<p>后面提到了如何核查学习到的分类器：通过查看转移特征和状态特征的权重，得到最相关的和最不相关的转移特征和状态特征。<br>转移特征：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</div><div class="line">info = tagger.info()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_transitions</span><span class="params">(trans_features)</span>:</span></div><div class="line">    <span class="keyword">for</span> (label_from, label_to), weight <span class="keyword">in</span> trans_features:</div><div class="line">        print(<span class="string">"%-6s -&gt; %-7s %0.6f"</span> % (label_from, label_to, weight))</div><div class="line"></div><div class="line">print(<span class="string">"Top likely transitions:"</span>)</div><div class="line">print_transitions(Counter(info.transitions).most_common(<span class="number">15</span>))</div><div class="line"></div><div class="line">print(<span class="string">"\nTop unlikely transitions:"</span>)</div><div class="line">print_transitions(Counter(info.transitions).most_common()[<span class="number">-15</span>:])</div></pre></td></tr></table></figure></p>
+<p>如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">Top likely transitions:</div><div class="line">B-ORG  -&gt; I-ORG   8.631963</div><div class="line">I-ORG  -&gt; I-ORG   7.833706</div><div class="line">B-PER  -&gt; I-PER   6.998706</div><div class="line">B-LOC  -&gt; I-LOC   6.913675</div><div class="line">I-MISC -&gt; I-MISC  6.129735</div><div class="line">B-MISC -&gt; I-MISC  5.538291</div><div class="line">I-LOC  -&gt; I-LOC   4.983567</div><div class="line">I-PER  -&gt; I-PER   3.748358</div><div class="line">B-ORG  -&gt; B-LOC   1.727090</div><div class="line">B-PER  -&gt; B-LOC   1.388267</div><div class="line">B-LOC  -&gt; B-LOC   1.240278</div><div class="line">O      -&gt; O       1.197929</div><div class="line">O      -&gt; B-ORG   1.097062</div><div class="line">I-PER  -&gt; B-LOC   1.083332</div><div class="line">O      -&gt; B-MISC  1.046113</div><div class="line"></div><div class="line">Top unlikely transitions:</div><div class="line">I-PER  -&gt; B-ORG   -2.056130</div><div class="line">I-LOC  -&gt; I-ORG   -2.143940</div><div class="line">B-ORG  -&gt; I-MISC  -2.167501</div><div class="line">I-PER  -&gt; I-ORG   -2.369380</div><div class="line">B-ORG  -&gt; I-PER   -2.378110</div><div class="line">I-MISC -&gt; I-PER   -2.458788</div><div class="line">B-LOC  -&gt; I-PER   -2.516414</div><div class="line">I-ORG  -&gt; I-MISC  -2.571973</div><div class="line">I-LOC  -&gt; B-PER   -2.697791</div><div class="line">I-LOC  -&gt; I-PER   -3.065950</div><div class="line">I-ORG  -&gt; I-PER   -3.364434</div><div class="line">O      -&gt; I-PER   -7.322841</div><div class="line">O      -&gt; I-MISC  -7.648246</div><div class="line">O      -&gt; I-ORG   -8.024126</div><div class="line">O      -&gt; I-LOC   -8.333815</div></pre></td></tr></table></figure></p>
+<p>状态特征：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_state_features</span><span class="params">(state_features)</span>:</span></div><div class="line">    <span class="keyword">for</span> (attr, label), weight <span class="keyword">in</span> state_features:</div><div class="line">        print(<span class="string">"%0.6f %-6s %s"</span> % (weight, label, attr))    </div><div class="line"></div><div class="line">print(<span class="string">"Top positive:"</span>)</div><div class="line">print_state_features(Counter(info.state_features).most_common(<span class="number">20</span>))</div><div class="line"></div><div class="line">print(<span class="string">"\nTop negative:"</span>)</div><div class="line">print_state_features(Counter(info.state_features).most_common()[<span class="number">-20</span>:])</div></pre></td></tr></table></figure></p>
+<p>如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">Top positive:</div><div class="line">8.886516 B-ORG  word.lower=efe-cantabria</div><div class="line">8.743642 B-ORG  word.lower=psoe-progresistas</div><div class="line">5.769032 B-LOC  -1:word.lower=cantabria</div><div class="line">5.195429 I-LOC  -1:word.lower=calle</div><div class="line">5.116821 O      word.lower=mayo</div><div class="line">4.990871 O      -1:word.lower=día</div><div class="line">4.910915 I-ORG  -1:word.lower=l</div><div class="line">4.721572 B-MISC word.lower=diversia</div><div class="line">4.676259 B-ORG  word.lower=telefónica</div><div class="line">4.334354 B-ORG  word[-2:]=-e</div><div class="line">4.149862 B-ORG  word.lower=amena</div><div class="line">4.141370 B-ORG  word.lower=terra</div><div class="line">3.942852 O      word.istitle=False</div><div class="line">3.926397 B-ORG  word.lower=continente</div><div class="line">3.924672 B-ORG  word.lower=acesa</div><div class="line">3.888706 O      word.lower=euro</div><div class="line">3.856445 B-PER  -1:word.lower=según</div><div class="line">3.812373 B-MISC word.lower=exteriores</div><div class="line">3.807582 I-MISC -1:word.lower=1.9</div><div class="line">3.807098 B-MISC word.lower=sanidad</div><div class="line"></div><div class="line">Top negative:</div><div class="line">-1.965379 O      word.lower=fundación</div><div class="line">-1.981541 O      -1:word.lower=británica</div><div class="line">-2.118347 O      word.lower=061</div><div class="line">-2.190653 B-PER  word[-3:]=nes</div><div class="line">-2.226373 B-ORG  postag=SP</div><div class="line">-2.226373 B-ORG  postag[:2]=SP</div><div class="line">-2.260972 O      word[-3:]=uia</div><div class="line">-2.384920 O      -1:word.lower=sección</div><div class="line">-2.483009 O      word[-2:]=s.</div><div class="line">-2.535050 I-LOC  BOS</div><div class="line">-2.583123 O      -1:word.lower=sánchez</div><div class="line">-2.585756 O      postag[:2]=NP</div><div class="line">-2.585756 O      postag=NP</div><div class="line">-2.588899 O      word[-2:]=om</div><div class="line">-2.738583 O      -1:word.lower=carretera</div><div class="line">-2.913103 O      word.istitle=True</div><div class="line">-2.926560 O      word[-2:]=nd</div><div class="line">-2.946862 I-PER  -1:word.lower=san</div><div class="line">-2.954094 B-PER  -1:word.lower=del</div><div class="line">-3.529449 O      word.isupper=True</div></pre></td></tr></table></figure></p>
+<p>其实我是看到这个后，在想前面使用到的特征提取和这个的联系是怎么样的。如何将前面的特征变成了这里的转移特征和状态特征的。</p>
+<p>这里我先搬出统计学习方法中CRF的一些定义<br>线性链的条件随机场的定义如下：<br><img src="/upload/essayimage/nlp/nlp1011.png" alt="nlp1011"><br>这里可以看到还是有简化的，比如<script type="math/tex">Y_i</script>的概率是只和<script type="math/tex">Y_{i-1},Y_{i+1}</script>有关，和全部的<script type="math/tex">X_i</script>有关，条件随机场的解决办法如下，即其参数形式：<br><img src="/upload/essayimage/nlp/nlp1012.png" alt="nlp1012"><br><img src="/upload/essayimage/nlp/nlp1013.png" alt="nlp1013"></p>
+<p>也是前面提到的问题，如何将这个公式和前面的特征联系上。。。</p>
+<h3 id="Chinese-NER-use-CRF"><a href="#Chinese-NER-use-CRF" class="headerlink" title="Chinese NER use CRF"></a>Chinese NER use CRF</h3><p>这个需要安装<code>python-crfsuite</code>，本来很简单的事情，由于我的Mac中安装了Anaconda，导致电脑中有两个python3，结果默认使用pip3安装到了Anaconda的路径下，我pycharm中的是系统的python3，就一直没安装上，发现终端中使用的python3是Anaconda的，最后将<code>~/bash_profile</code>里面的Anaconda的python3路径<code>export ...</code>注释掉，在安装，就好了，(期间不知道为什么pycharm中不能直接安装)<br>这里和前面讲到的区别就是多加了字的结束与开始标志，然后是基于字符的。<br>首先我获得到的是如下训练集：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">海 O</div><div class="line">钓 O</div><div class="line">比 O</div><div class="line">赛 O</div><div class="line">地 O</div><div class="line">点 O</div><div class="line">在 O</div><div class="line">厦 B-LOC</div><div class="line">门 I-LOC</div><div class="line">与 O</div><div class="line">金 B-LOC</div><div class="line">门 I-LOC</div><div class="line">之 O</div><div class="line">间 O</div><div class="line">的 O</div><div class="line">海 O</div><div class="line">域 O</div><div class="line">。 O</div></pre></td></tr></table></figure></p>
+<p>然后将其转为如下数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">海,B,nr,O</div><div class="line">钓,E,nr,O</div><div class="line">比,B,vn,O</div><div class="line">赛,E,vn,O</div><div class="line">地,B,n,O</div><div class="line">点,E,n,O</div><div class="line">在,S,p,O</div><div class="line">厦,B,ns,B-LOC</div><div class="line">门,E,ns,I-LOC</div></pre></td></tr></table></figure></p>
+<p>主要的方法就是将一句话组合起来，然后使用jieba分词，添加词性信息，添加每个字符处于词的什么位置信息（我这里可以理解为这个特征是因为词到字的转变需要）。代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cut_and_seg</span><span class="params">(token)</span>:</span></div><div class="line">    wordlist = jbpos.cut(get_sentence(token))<span class="comment">#这里就是对原来的句子使用jieba进行分词</span></div><div class="line">    <span class="comment">#[pair('海钓', 'nr'), pair('比赛', 'vn'), pair('地点', 'n'), pair('在', 'p'), pair('厦门', 'ns'), pair('与', 'p'), pair('金门', 'n'), pair('之间', 'f'), pair('的', 'uj'), pair('海域', 'n'), pair('。', 'x')]</span></div><div class="line">    index=<span class="number">0</span></div><div class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> wordlist:</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(w.word)):</div><div class="line">            <span class="keyword">if</span> len(w.word) == <span class="number">1</span>:</div><div class="line">                status = <span class="string">'S'</span></div><div class="line">            <span class="keyword">elif</span> i == <span class="number">0</span>:</div><div class="line">                status = <span class="string">'B'</span></div><div class="line">            <span class="keyword">elif</span> i == len(w.word) - <span class="number">1</span>:</div><div class="line">                status = <span class="string">'E'</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                status = <span class="string">'I'</span></div><div class="line">            token[index][<span class="number">1</span>]=status</div><div class="line">            token[index][<span class="number">2</span>]=w.flag<span class="comment">#这个就是词性</span></div><div class="line">            index += <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>然后就是添加特征：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#[[海,B,nr,O],[钓,E,nr,O],[比,B,vn,O],[赛,E,vn,O]...</span></div><div class="line"><span class="comment">#这个代码是核心</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">word2features</span><span class="params">(sent, i)</span>:</span></div><div class="line">    <span class="comment">#print(sent)</span></div><div class="line">    word = sent[i][<span class="number">0</span>]<span class="comment">#</span></div><div class="line">    cuttag = sent[i][<span class="number">1</span>]<span class="comment">#</span></div><div class="line">    postag = sent[i][<span class="number">2</span>]<span class="comment">#</span></div><div class="line">    features = [</div><div class="line">        <span class="string">'bias'</span>,</div><div class="line">        <span class="string">'word='</span>+word,</div><div class="line">       <span class="comment"># 'word.lower=' + word.lower(),</span></div><div class="line">       <span class="comment"># 'word[-3:]=' + word[-3:],</span></div><div class="line">        <span class="comment">#'word[-2:]=' + word[-2:],</span></div><div class="line">       <span class="comment"># 'word.isupper=%s' % word.isupper(),</span></div><div class="line">        <span class="comment">#'word.istitle=%s' % word.istitle(),</span></div><div class="line">        <span class="string">'word.isdigit=%s'</span> % word.isdigit(),</div><div class="line">        <span class="string">'postag='</span> + postag,</div><div class="line">        <span class="string">'cuttag='</span> + cuttag,</div><div class="line">       <span class="comment"># 'postag[:2]=' + postag[:2],</span></div><div class="line">    ]</div><div class="line">    <span class="keyword">if</span> i &gt; <span class="number">0</span>:</div><div class="line">        word1 = sent[i - <span class="number">1</span>][<span class="number">0</span>]</div><div class="line">        postag1 = sent[i - <span class="number">1</span>][<span class="number">2</span>]</div><div class="line">        cuttag1 = sent[i - <span class="number">1</span>][<span class="number">1</span>]</div><div class="line">        features.extend([</div><div class="line">            <span class="string">'-1:word='</span>+word1,</div><div class="line">            <span class="string">'-1:postag='</span> + postag1,</div><div class="line">            <span class="string">'-1:cuttag='</span> + cuttag1,</div><div class="line">           <span class="comment"># '-1:postag[:2]=' + postag1[:2],</span></div><div class="line">        ])</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        features.append(<span class="string">'BOS'</span>)</div><div class="line"></div><div class="line">    <span class="keyword">if</span> i &lt; len(sent) - <span class="number">1</span>:</div><div class="line">        word1 = sent[i + <span class="number">1</span>][<span class="number">0</span>]</div><div class="line">        postag1 = sent[i + <span class="number">1</span>][<span class="number">2</span>]</div><div class="line">        cuttag1 = sent[i + <span class="number">1</span>][<span class="number">1</span>]</div><div class="line">        features.extend([</div><div class="line">            <span class="string">'+1:word='</span> + word1,</div><div class="line">            <span class="string">'+1:postag='</span> + postag1,</div><div class="line">            <span class="string">'+1:cuttag='</span> + cuttag1,</div><div class="line">            <span class="comment">#'+1:postag[:2]=' + postag1[:2],</span></div><div class="line">        ])</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        features.append(<span class="string">'EOS'</span>)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> features</div></pre></td></tr></table></figure></p>
+<p>主要代码和之前的都没有什么变化，这里就不复述了，具体代码参考我后面给出的github代码，会有全部的代码。<br>这里我给出精确率，召回率，F1 score分数，权重最大/小的15个转移特征和状态特征：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">             precision    recall  f1-score   support</div><div class="line"></div><div class="line">      B-LOC       0.88      0.86      0.87      3658</div><div class="line">      I-LOC       0.84      0.85      0.84      4948</div><div class="line">      B-ORG       0.86      0.73      0.79      2185</div><div class="line">      I-ORG       0.88      0.79      0.83      8756</div><div class="line">      B-PER       0.92      0.87      0.90      1864</div><div class="line">      I-PER       0.92      0.89      0.90      3601</div><div class="line"></div><div class="line">avg / total       0.88      0.83      0.85     25012</div><div class="line"></div><div class="line">Top likely transitions:</div><div class="line">B-PER  -&gt; I-PER   4.541048</div><div class="line">I-LOC  -&gt; I-LOC   4.516515</div><div class="line">I-PER  -&gt; I-PER   4.356901</div><div class="line">B-LOC  -&gt; I-LOC   4.221610</div><div class="line">I-ORG  -&gt; I-ORG   4.121786</div><div class="line">B-ORG  -&gt; I-ORG   3.394398</div><div class="line">O      -&gt; O       2.263011</div><div class="line">B-LOC  -&gt; B-LOC   1.059244</div><div class="line">O      -&gt; B-PER   0.823109</div><div class="line">I-LOC  -&gt; B-LOC   0.614743</div><div class="line">O      -&gt; B-ORG   0.374764</div><div class="line">O      -&gt; B-LOC   0.251798</div><div class="line">I-LOC  -&gt; O       -0.002602</div><div class="line">I-PER  -&gt; B-PER   -0.218017</div><div class="line">I-PER  -&gt; O       -0.267320</div><div class="line"></div><div class="line">Top unlikely transitions:</div><div class="line">I-PER  -&gt; B-LOC   -4.207069</div><div class="line">B-ORG  -&gt; I-LOC   -4.499817</div><div class="line">B-PER  -&gt; I-LOC   -4.532694</div><div class="line">I-PER  -&gt; I-LOC   -4.543816</div><div class="line">I-ORG  -&gt; I-PER   -4.544963</div><div class="line">I-LOC  -&gt; I-PER   -4.718752</div><div class="line">B-LOC  -&gt; I-PER   -5.027208</div><div class="line">I-ORG  -&gt; I-LOC   -5.180083</div><div class="line">B-PER  -&gt; I-ORG   -5.460935</div><div class="line">I-PER  -&gt; I-ORG   -6.058599</div><div class="line">B-LOC  -&gt; I-ORG   -7.229793</div><div class="line">I-LOC  -&gt; I-ORG   -7.297481</div><div class="line">O      -&gt; I-PER   -7.558340</div><div class="line">O      -&gt; I-LOC   -8.567686</div><div class="line">O      -&gt; I-ORG   -9.775946</div><div class="line">Top positive:</div><div class="line">7.590840 B-PER  word=阮</div><div class="line">6.730205 O      word=氏</div><div class="line">6.602604 O      word=杯</div><div class="line">6.220573 O      word=某</div><div class="line">5.973532 B-PER  word=刘</div><div class="line">5.936717 B-LOC  -1:word=℃</div><div class="line">5.824072 O      word=、</div><div class="line">5.601934 O      -1:word=该</div><div class="line">5.373217 B-LOC  word=淮</div><div class="line">5.172862 O      postag=uj</div><div class="line">5.141689 B-PER  word=李</div><div class="line">5.116662 O      word=是</div><div class="line">4.907784 O      word=，</div><div class="line">4.815227 B-PER  word=傅</div><div class="line">4.748813 B-PER  word=靳</div><div class="line"></div><div class="line">Top negative:</div><div class="line">-3.523168 I-LOC  -1:word=洲</div><div class="line">-3.621192 O      -1:word=邓</div><div class="line">-3.801631 O      word=鲁</div><div class="line">-3.853975 B-LOC  +1:word=心</div><div class="line">-3.988799 O      +1:word=轩</div><div class="line">-4.001329 O      word=俊</div><div class="line">-4.178284 I-ORG  -1:word=部</div><div class="line">-4.255063 O      +1:word=氏</div><div class="line">-4.351390 I-LOC  word=方</div><div class="line">-4.368295 O      word=俄</div><div class="line">-4.727653 O      word=澳</div><div class="line">-4.789469 O      word=罗</div><div class="line">-5.180110 O      word=华</div><div class="line">-5.929479 I-PER  word=老</div><div class="line">-7.077680 O      word=京</div></pre></td></tr></table></figure></p>
+<p>状态特征是X，转移特征是Y，状态特征也只由当前状态的前后和当前的<script type="math/tex">X_{i}</script>决定。</p>
+<h3 id="Ner-for-Chinese-clinical-text"><a href="#Ner-for-Chinese-clinical-text" class="headerlink" title="Ner for Chinese clinical text"></a>Ner for Chinese clinical text</h3><p>这里就没什么要讲的，只是想说明一些上面的一些问题，比如上面对于每个<script type="math/tex">X_{i}</script>，只用到了前后一个字的信息，这里用到了前后两个的信息，而且这个是基于词的。<br>给定一些文本，其中有如下标签：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># htmltag = [&apos;症状和体征&apos;, &apos;检查和检验&apos;, &apos;治疗&apos;, &apos;疾病和诊断&apos;, &apos;身体部位&apos;]</div><div class="line"># englishtag = [&apos;SIGNS&apos;, &apos;CHECK&apos;, &apos;TREATMENT&apos;, &apos;DISEASE&apos;, &apos;BODY&apos;]</div></pre></td></tr></table></figure></p>
+<p>任务是将这些标记标出来。给出一些标准化的训练集如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">患者	n	O</div><div class="line">老年	t	O</div><div class="line">女性	n	O</div><div class="line">，	x	O</div><div class="line">88	m	O</div><div class="line">岁	m	O</div><div class="line">；	x	O</div><div class="line">2.	m	O</div><div class="line">既往	t	O</div><div class="line">体健	n	S-SIGNS</div><div class="line">，	x	O</div><div class="line">否认	v	B-SIGNS</div><div class="line">药物	n	I-SIGNS</div><div class="line">过敏	nr	E-SIGNS</div></pre></td></tr></table></figure></p>
+<p>此部分主要看一下特征处理这里：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># 特征定义</div><div class="line">def word2features(sent, i):</div><div class="line">    &quot;&quot;&quot;返回特征列表&quot;&quot;&quot;</div><div class="line">    word = sent[i][0]</div><div class="line">    postag = sent[i][1]</div><div class="line">    features = [</div><div class="line">        &apos;bias&apos;,</div><div class="line">        &apos;word=&apos; + word,</div><div class="line">        &apos;word_tag=&apos; + postag,</div><div class="line">    ]</div><div class="line">    if i &gt; 0:</div><div class="line">        features.append(&apos;word[-1]=&apos; + sent[i-1][0])</div><div class="line">        features.append(&apos;word[-1]_tag=&apos; + sent[i-1][1])</div><div class="line">        if i &gt; 1:</div><div class="line">            features.append(&apos;word[-2]=&apos; + sent[i-2][0])</div><div class="line">            features.append(&apos;word[-2, -1]=&apos; + sent[i-2][0] + sent[i-1][0])</div><div class="line">            features.append(&apos;word[-2]_tag=&apos; + sent[i-2][1])</div><div class="line">    if i &lt; len(sent) - 1:</div><div class="line">        features.append(&apos;word[1]=&apos; + sent[i+1][0])</div><div class="line">        features.append(&apos;word[1]_tag=&apos; + sent[i+1][1])</div><div class="line">        if i &lt; len(sent) - 2:</div><div class="line">            features.append(&apos;word[2]=&apos; + sent[i+2][0])</div><div class="line">            features.append(&apos;word[1, 2]=&apos; + sent[i+1][0] + sent[i+2][0])</div><div class="line">            features.append(&apos;word[2]_tag=&apos; + sent[i+2][1])</div><div class="line">    return features</div></pre></td></tr></table></figure></p>
+<p>由此，应该大体上理解了CRF中的特征如何使用了，其具体细节以及后续的进展可以参考[7]</p>
+<h3 id="A-simple-BiLSTM-CRF-model-for-Chinese-Named-Entity-Recognition"><a href="#A-simple-BiLSTM-CRF-model-for-Chinese-Named-Entity-Recognition" class="headerlink" title="A simple BiLSTM-CRF model for Chinese Named Entity Recognition"></a>A simple BiLSTM-CRF model for Chinese Named Entity Recognition</h3><p>先给出LTP的NER的标准类型<br>NE识别模块的标注结果采用O-S-B-I-E标注形式，其含义为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">标记	含义</div><div class="line">O	这个词不是NE</div><div class="line">S	这个词单独构成一个NE</div><div class="line">B	这个词为一个NE的开始</div><div class="line">I	这个词为一个NE的中间</div><div class="line">E	这个词位一个NE的结尾</div><div class="line"></div><div class="line">LTP中的NE 模块识别三种NE，分别如下：</div><div class="line">标记	含义</div><div class="line">Nh	人名</div><div class="line">Ni	机构名</div><div class="line">Ns	地名</div></pre></td></tr></table></figure></p>
+<p>然后demo中给出了<code>O, B-PER, I-PER, B-LOC, I-LOC, B-ORG, I-ORG</code>，就很好理解了，<code>B-PER</code>表示的是人名的开头，<code>I-PER</code>表示的是人名的中间，后面的依次类推，就是地名，组织名。<br>然后其模型如下图所示：<br><img src="/upload/essayimage/nlp/nlp1001.png" alt="nlp1001"><br>第一层look-up layer，目标是将字符表示从one-hot转为字符矩阵，代码中是随机的初始化矩阵，这里可以自己使用语言的知识来训练一个前置矩阵，后面参考的论文中有提到。<br>第二层BiLSTM layer可以有效的使用过去和未来的输入信息来自动的提取特征<br>第三层CRF layer为每一个字符打标签，这里不使用Softmax的原因是如果使用Softmax后，可能得到无语法的标记序列，因为softmax只能独立的为每个位置打标签，我们知道<code>I-LOC</code>不能够在<code>B-PER</code>后面，但是Softmax不知道，<code>CRF层可以使用句级标签信息并对两个不同标签的转换行为建模。</code>这句话不是很理解。<br>这里需要了解一下HMM，CRF的知识，我在后面讲到了<br>这里我想用HMM和CRF先将命名实体识别实现一遍，见前面。</p>
+<h3 id="NB-MaxEnt-HMM-MEMM-CRF"><a href="#NB-MaxEnt-HMM-MEMM-CRF" class="headerlink" title="NB/MaxEnt/HMM/MEMM/CRF"></a>NB/MaxEnt/HMM/MEMM/CRF</h3><p>先讲一下判别式和生成式：<br>判别模型：直接将数据Y(label)，根据所提供的X(fratures)，学习，最后得到模型(划分一个比较明显的边界来区分label)，也就是说判别模型是直接对<code>P(Y|X)</code>进行建模。对所有样本只构建一个模型，确定总体判别边界。<br>生成模型：先从训练样本数据中将所有的数据的分布情况摸透，最终确定一个分布，来作为我们输入数据的分布，即联合分布<code>P(X,Y)</code>（X包含所有的特征<script type="math/tex">x_i</script>，Y包含所有的label），然后来了新样本数据，通过学习模型的联合分布，再结合新样本给的X，通过条件概率得到Y。生成模型在训练阶段只对<code>P(X,Y)</code>建模，对分类而言，要对每个label建模。</p>
+<h4 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h4><p>这里我们的y是一个单变量，而不是一个序列，而X是一个序列。下面详细介绍：<br><img src="/upload/essayimage/nlp/nlp1002.png" alt="nlp1002"><br>这里如果<script type="math/tex">x^{(i)}</script>之间如果不是独立的，其每个取值都有很多种，然后进行组合的可能就会非常庞大，而朴素贝叶斯在此做了一个强假设，<script type="math/tex">x^{(i)}</script>之间是相互独立的。<br>注意其假设是对在出现y的情况下x的一个概率的假设，如下：<br><img src="/upload/essayimage/nlp/nlp1003.png" alt="nlp1003"><br>我们要求的后验概率通过贝叶斯转换后，就变为如下：<br><img src="/upload/essayimage/nlp/nlp1004.png" alt="nlp1004"><br>也就是我们需要找出在不同的y下X的概率最大的那个y</p>
+<h4 id="Logistic-Softmax-MaxEnt"><a href="#Logistic-Softmax-MaxEnt" class="headerlink" title="Logistic(Softmax) /MaxEnt"></a>Logistic(Softmax) /MaxEnt</h4><p>这两个是等价的，统计学习方法中也给出了证明，这里摘抄一个博客中讲到的：<br><img src="/upload/essayimage/nlp/nlp1005.png" alt="nlp1005"><br>即每条输入数据都会被表示为一个n维的向量，可以看成n个特征，而模型中每一类都有n个权重，与n个特征相乘后求和再经过Softmax的结果，代表这条输入数据分到这类的概率。<br>下面这段话，就是一个便利的转换：<br><img src="/upload/essayimage/nlp/nlp1006.png" alt="nlp1006"><br>这就是MaxEnt，其和Logistic的区别只是多加了几个特征而已（但是我不知道为什么要画两条线）：<br><img src="/upload/essayimage/nlp/nlp1007.png" alt="nlp1007"><br>说一下这个图，上面的根节点是y标签，下面的叶子节点(灰色)是x<br>还是不太懂这两者的区别，后面有讲到为什么要画两条线</p>
+<h4 id="图表示"><a href="#图表示" class="headerlink" title="图表示"></a>图表示</h4><p>先用一张图展示如下：<br><img src="/upload/essayimage/nlp/nlp1008.png" alt="nlp1008"><br>然后给出MaxEnt的模型：<br><img src="/upload/essayimage/nlp/nlp1009.png" alt="nlp1009"><br>应该是解释了上面的疑问，也就是说MaxEnt会有多个势函数。<br>HMM是NB的扩展，CRF是MaxEnt的扩展，从上面的图也能看出来，此时的y变为一个序列Y<br><img src="/upload/essayimage/nlp/nlp1010.png" alt="nlp1010"><br>从这张图可以看出来（图示的不是特别好），我这里简述一下，其实很简单：对应每一个序列y，我们设定K组特征函数，和对应的权重向量，使用softmax的思想求解出概率最大的序列y即可。</p>
+<h4 id="HMM-MEMM-CRF"><a href="#HMM-MEMM-CRF" class="headerlink" title="HMM/MEMM/CRF"></a>HMM/MEMM/CRF</h4><p>简单的来说HMM有两个假设，一个是输出观测值之间严格独立，二是状态转移过程中当前状态只与前一状态有关：<br><img src="/upload/essayimage/nlp/nlp1014.png" alt="nlp1014"><br>注意上面的话，说状态序列（<script type="math/tex">I</script>）作标记，标注问题是给定观测序列（<script type="math/tex">O</script>）预测其对应的标记序列（<script type="math/tex">I</script>），记住这句话后，再来看网上给出的HMM模型图：<br><img src="/upload/essayimage/nlp/nlp1015.png" alt="nlp1015"><br>这个图上面的<script type="math/tex">X</script>是观测序列，<script type="math/tex">Y</script>是状态序列，也就是标记。继续看统计学习方法中所举的例子，说给了4个盒子，从这4个盒子中选取一个盒子，然后从这个盒子中选出一个球，记下球的颜色，重复该过程5次，得到观测序列：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">红，红，白，白，红</div></pre></td></tr></table></figure></p>
+<p>预测每个颜色的球最可能来自的盒子号的一个序列(状态序列)，也就是说状态序列先一步观测序列。<br>由于是生成模型，我们用朴素贝叶斯的方法对其进行分析：</p>
+<script type="math/tex; mode=display">
+P(I|O)=\frac{P(I,O)}{P(O)}=\frac{P(O|I)P(I)}{P(O)}\\
+等价于求解 \max_{I}P(O|I)P(I)</script><p>从这个公式中看上面这个模型图，箭头的方向也就不会别扭了吧。HMM先到这，再来看MEMM。<br>MEMM克服了观测之间的严格独立性，给出的图如下：<br><img src="/upload/essayimage/nlp/nlp1016.png" alt="nlp1016"><br>关于这个<code>克服了观测之间的严格独立性</code>，我的理解是状态<script type="math/tex">y_i</script>由之前的只由<script type="math/tex">y_{i-1}</script>决定变为由<script type="math/tex">y_{i-1}和X</script>一起决定。<br>MEMM是局部归一化，会出现标注偏置的问题。CRF使用全局归一化，解决了标注偏置问题。具体的看下面MEMM和CRF的公式即可：<br><img src="/upload/essayimage/nlp/nlp1017.png" alt="nlp1017"><br>可以看到MEMM在求解状态序列时，是分每一步来求解的，而每一步的求解过程中都使用了softmax进行归一化，对比CRF，列出所有可能的状态序列，进行全局softmax归一化。那么偏置在何处呢，看下面这个例子：<br><img src="/upload/essayimage/nlp/nlp1018.png" alt="nlp1018"><br>上图是一个简化的状态转移图，假设过程<code>0-&gt;1</code>出现的次数多于过程<code>0-&gt;4</code>的次数，但是过程<code>4-&gt;5</code>出现的次数远大于过程<code>1-2</code>出现的次数，或者说过程<code>5-&gt;3</code>出现的次数远大于过程<code>2-&gt;3</code>出现的次数，使用MEMM的话，不管过程<code>1-&gt;2,4-&gt;5,2-&gt;3,5-&gt;3</code>它们之间出现的次数如何，归一化的结果都是1，也就是说上述情况下，序列<code>0-1-2-3</code>出现的概率大于序列<code>0-4-5-3</code>出现的概率。但是CRF就不一样了，略。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.<a href="https://github.com/Determined22/zh-NER-TF" target="_blank" rel="external">A simple BiLSTM-CRF model for Chinese Named Entity Recognition</a><br>2.<a href="https://ltp.ai/docs/appendix.html" target="_blank" rel="external">LTP文档</a><br>3.<a href="http://www.cnblogs.com/ooon/p/5829341.html" target="_blank" rel="external">Logistic 最大熵 朴素贝叶斯 HMM MEMM CRF 几个模型的总结</a><br>4.<a href="https://github.com/hontsev/ChineseNER" target="_blank" rel="external">ChineseNER</a><br>5.<a href="https://github.com/scrapinghub/python-crfsuite/blob/master/examples/CoNLL%202002.ipynb" target="_blank" rel="external">Let’s use CoNLL 2002 data to build a NER system</a><br>6.<a href="https://github.com/baiyyang/medical_ner_crfsuite" target="_blank" rel="external">Ner for Chinese clinical text </a><br>7.<a href="http://ceur-ws.org/Vol-1976/" target="_blank" rel="external">Evaluation Tasks at CCKS 2017</a><br>8.<a href="http://tripleday.cn/2016/07/14/hmm-memm-crf/" target="_blank" rel="external">HMM、MEMM和CRF的学习总结</a><br>9.<a href="http://blog.sina.com.cn/s/blog_8789f37b0102ux7l.html" target="_blank" rel="external">MEMM标注偏置问题 </a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NER/" rel="tag"><i class="fa fa-tag"></i> NER</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/16/nlp09/" rel="next" title="KBQA 论文阅读笔记">
+                <i class="fa fa-chevron-left"></i> KBQA 论文阅读笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/27/dl13/" rel="prev" title="PyTorch实现字符生成">
+                PyTorch实现字符生成 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#use-CoNLL-2002-data-to-build-a-NER-system"><span class="nav-number">1.</span> <span class="nav-text">use CoNLL 2002 data to build a NER system</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chinese-NER-use-CRF"><span class="nav-number">2.</span> <span class="nav-text">Chinese NER use CRF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ner-for-Chinese-clinical-text"><span class="nav-number">3.</span> <span class="nav-text">Ner for Chinese clinical text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-simple-BiLSTM-CRF-model-for-Chinese-Named-Entity-Recognition"><span class="nav-number">4.</span> <span class="nav-text">A simple BiLSTM-CRF model for Chinese Named Entity Recognition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NB-MaxEnt-HMM-MEMM-CRF"><span class="nav-number">5.</span> <span class="nav-text">NB/MaxEnt/HMM/MEMM/CRF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#朴素贝叶斯"><span class="nav-number">5.1.</span> <span class="nav-text">朴素贝叶斯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Logistic-Softmax-MaxEnt"><span class="nav-number">5.2.</span> <span class="nav-text">Logistic(Softmax) /MaxEnt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图表示"><span class="nav-number">5.3.</span> <span class="nav-text">图表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HMM-MEMM-CRF"><span class="nav-number">5.4.</span> <span class="nav-text">HMM/MEMM/CRF</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

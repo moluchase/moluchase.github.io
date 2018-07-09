@@ -1,0 +1,1001 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="结合公司的项目看关于KBQA方面的论文，这里只是简单的做个梳理，供后期查阅复习使用，并没有严格的复现等，参考了很多博客的论文笔记—-开放领域的问答系统—-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KBQA 论文阅读笔记">
+<meta property="og:url" content="http://yoursite.com/2018/05/16/nlp09/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="结合公司的项目看关于KBQA方面的论文，这里只是简单的做个梳理，供后期查阅复习使用，并没有严格的复现等，参考了很多博客的论文笔记—-开放领域的问答系统—-">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0901.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0902.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0903.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0904.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0905.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0906.png">
+<meta property="og:updated_time" content="2018-05-21T01:23:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KBQA 论文阅读笔记">
+<meta name="twitter:description" content="结合公司的项目看关于KBQA方面的论文，这里只是简单的做个梳理，供后期查阅复习使用，并没有严格的复现等，参考了很多博客的论文笔记—-开放领域的问答系统—-">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/nlp/nlp0901.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/16/nlp09/"/>
+
+
+
+
+
+  <title> KBQA 论文阅读笔记 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/16/nlp09/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                KBQA 论文阅读笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T11:37:05+08:00">
+                2018-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/16/nlp09/" class="leancloud_visitors" data-flag-title="KBQA 论文阅读笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>结合公司的项目看关于KBQA方面的论文，这里只是简单的做个梳理，供后期查阅复习使用，并没有严格的复现等，参考了很多博客的论文笔记<br>—-开放领域的问答系统—-</p>
+<a id="more"></a>
+<h3 id="Semantic-Parsing-on-Freebase-from-Question-Answer-Pairs"><a href="#Semantic-Parsing-on-Freebase-from-Question-Answer-Pairs" class="headerlink" title="Semantic Parsing on Freebase from Question-Answer Pairs"></a>Semantic Parsing on Freebase from Question-Answer Pairs</h3><p>语义解析</p>
+<h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>在Freebase上训练一个语义解析模型，因为标记问句中的逻辑形式对于一个大批量的问句来说太耗费了，这里使用语义解析来学习问题-答案对，这里主要的挑战是对于一个问题，如何缩小可能的逻辑谓词(这里就是KB中边的意思，比如问句中的出生地，一般问句中会提到<code>bron</code>，而我们需要将其对应到<code>PeopleBornHere</code>，这个<code>PeopleBornHere</code>就是KB中的边名)。我们解决这个问题使用两种方式，第一种方式是建立一个粗糙的对应关系，将短语对应到谓词上，第二种方式是使用<code>bridging</code>操作，即基于临边的谓词来产生中间的谓词(这里举了一个例子，比如<code>Type.University</code>和<code>BarackObama</code>之间可能存在什么谓词关系，这里就去遍历可能的结果，最后对应到<code>Eduction</code>，而这个<code>Eduction</code>就是bridging操作)</p>
+<h4 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h4><p>给定一个知识库<code>K</code>，一个问题-答案对<script type="math/tex">\{(x_i,y_i)\}_{i=1}^{n}</script>，输出一个语义解析，该语义解析通过知识库<code>K</code>能够将新的问题x给出一个答案y，具体的定义形式如下：<br><img src="/upload/essayimage/nlp/nlp0901.png" alt="nlp0901"><br>定义了实体表示为<code>e</code>，谓词(边)表示为<code>p</code><br>定义了三种操作:<br><code>Join</code>表示的是谓词与实体的结合，得到的结果是一个实体，比如谓词<code>PlaceOfBirth</code>和实体<code>Seattle</code>进行<code>Join</code>的结果是<code>PlaceOfBirth.Seattle</code>，其相当于一个实体<code>e</code><br><code>Intersection</code>表示的是两个实体的交集，比如<code>Profession.Scientist</code><script type="math/tex">\cap</script> <code>PlaceOfBirth.Seattle</code><br><code>Aggregation</code>表示对实体进行统计，比如<script type="math/tex">u</script>是一个实体，那么<script type="math/tex">count(u)</script>表示计算实体的基数<br>如上，也就是说对于每一个问句，先进行问句词的映射，然后再将这些映射使用上面的三种操作进行组合，最后会得到一个结果(查询语句)，这里我们用<code>d</code>表示，如下图所示：<br><img src="/upload/essayimage/nlp/nlp0902.png" alt="nlp0902"><br>这里通过不同的操作组合就会得到很多<code>d</code>组成的集合<code>D(x)</code>，我们用<script type="math/tex">\phi (x,d)</script>表示一个语义解析结果<script type="math/tex">d_i</script>和<script type="math/tex">x</script>中提取的特征向量，用<script type="math/tex">\theta</script>表示对应特征的权重，这个是我们模型需要训练的.<br>定义给定问题<script type="math/tex">x</script>后，语义解析为<script type="math/tex">d</script>的概率为：</p>
+<script type="math/tex; mode=display">
+p_{\theta}(d|x)=\frac{exp\{\phi (x,d)^{T}\theta \}}{\sum_{d_i \in D(x)}exp\{\phi (x,d_i)^{T}\theta \}}</script><p>这里我们希望通过在K中查询<script type="math/tex">d</script>的结果和正确的答案相同的<script type="math/tex">d</script>对应的概率最大，使用对数似然函数，定义如下损失函数：</p>
+<script type="math/tex; mode=display">
+O(\theta)=\sum_{i=1}^{n}log \sum_{d \in D(x):[d.z]_K=y_i}p_{\theta}(d|x_i)</script><p>其中<script type="math/tex">[d.z]_K</script>表示的是使用d语句在知识库中查询得到的结果，这里d的不同种解析组合方式可能对应相同的答案，这是第二个求和的原因。</p>
+<h4 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h4><p>做了两部分，第一部分是将自然语言短语映射到逻辑谓词上，第二部分是通过临边谓词生成连接临边谓词的逻辑谓词。(实体映射比较简单，这里的两部分都是谓词映射，即边映射)<br>关于第一部分的映射，比如自然语言短语<code>born in</code>是应该映射到<code>DateOfBirth</code>呢还是应该映射到<code>PlaceLived.Location</code>呢，这里需要考察自然语言短语两边的实体，比如对于三元组<code>(“Obama”, “was also born in”, “August 1961”)</code>的<code>was also born in</code>就应该映射到<code>DateOfBirth</code>，而<code>（“Barack Obama”,&quot;was also born in&quot;,“Honolulu”）</code>的<code>was also born in</code>就应该映射到<code>PlaceOfBirth</code>，那么具体如何做呢？<br>这里使用ReVerbopen IE system的ClueWeb09（注：该数据集由卡耐基梅隆学校在09年构建，还有一个12年的版本，ClueWeb12）上抽取15millions个三元组构成一个数据集，先归一化，比如将<code>(“Obama”, “was also born in”, “August 1961”)</code>归一化为<code>(BarackObama, “was also born in”, 1961-08)</code>，然后对于其中的自然语言短语<script type="math/tex">r</script>，比如<code>was also born in</code>，统计其两边的实体类型，主语实体类型用<script type="math/tex">t_1</script>表示，宾语实体类型用<script type="math/tex">t_2</script>表示，用<script type="math/tex">r[t_1,t_2]</script>进一步表示<script type="math/tex">r</script>，<script type="math/tex">F(r[t_1,t_2])</script>表示实体对集合。<br>同样的，对知识库中的实体关系<script type="math/tex">r_2</script>两边的实体进行类似的统计，得到了实体集合<script type="math/tex">F(r_2)</script>，通过比较集合<script type="math/tex">F(r[t_1,t_2])</script>和集合<script type="math/tex">F(r_2)</script>的Jaccard距离（集合交集元素数目比集合并集元素个数）来确定是否建立自然语言短语和知识库边关系的映射，如下图所示：<br><img src="/upload/essayimage/nlp/nlp0903.png" alt="nlp0903"><br>这里我用通俗的语言解释一下：比如对于自然语言短语<code>was also born in</code>，在给定的训练集中找出它全部的实体对，比如<code>（“Barack Obama”，“Honolulu”）</code>,<code>（“MichelleObama”，“Chicago”）</code>，对应的实体类型是<code>(name,place)</code>，这样每一个自然语言短语都会生成一个集合，再到知识库中对实体关系（边）进行同样的操作，也会生成很多实体关系-集合对，那么对于自然语言短语<code>was also born in</code>对应的集合，遍历知识库对应的全部实体关系-集合对，使用类似Jaccard距离来判断两个集合的相似度，这里比较的是实体对的类型，也就是说图中交集部分的实体对类型全部相同，给定一个阈值，如果满足了，就将<code>was also born in</code>和知识库中的实体关系进行对应，如上图所示。<br>对应的词汇映射操作取如下特征（用来训练分类器，也就是前面提到的<script type="math/tex">\phi (x,d)</script>）：<br><img src="/upload/essayimage/nlp/nlp0904.png" alt="nlp0904"><br>对齐特征：</p>
+<ol>
+<li>自然语言短语<script type="math/tex">r_1</script>对应的实体集合的大小的对数</li>
+<li>逻辑谓词<script type="math/tex">r_2</script>对应的实体集合的大小取对数</li>
+<li>上面两个集合的交集大小取对数</li>
+<li><script type="math/tex">r_2</script>是否是<script type="math/tex">r_1</script>对应的最好的匹配</li>
+</ol>
+<p>这里提一下第4个特征，前面提到会设置一个阈值，也就是说<script type="math/tex">r_1</script>可能对应多个<script type="math/tex">r_2</script>，肯定也会有一个排名，那么第4个特征的意思就是当前选取的映射<script type="math/tex">r_2</script>是不是排名第一个<script type="math/tex">r_2</script>。</p>
+<p>词汇特征：<br>这个没看明白，短语w和谓词z的链接是什么意思啊？？？</p>
+<p>文本相似度：<br>短语<script type="math/tex">r_1</script>和知识库中的实体关系<script type="math/tex">r_2</script>之间的文本相似度</p>
+<p>桥接操作<br>具体来说，给定两个类型（type）分别为<script type="math/tex">t_1</script>和<script type="math/tex">t_2</script>的一元逻辑形式<script type="math/tex">z_1</script>和<script type="math/tex">z_2</script>，我们需要找到一个二元逻辑形式b，在b对应的实体对类型满足<script type="math/tex">(t_1,t_2)</script>的条件下生成逻辑形式<script type="math/tex">(z_1\cap b.z_2)</script> ，这就是桥接，由于这里有类型的限制，所以我们可以在知识库中相邻的逻辑关系中暴力搜索符合条件的二元关系b<br>桥接的特征选取如下：<br><img src="/upload/essayimage/nlp/nlp0905.png" alt="nlp0905"><br>其它操作的特征如下：<br><img src="/upload/essayimage/nlp/nlp0906.png" alt="nlp0906"><br>这些特征含义论文中有讲到，没细看…</p>
+<p>这样由上面的这些特征就会生成<script type="math/tex">\phi (x,d)</script>，而<script type="math/tex">\theta</script>就是对应特征的权重，然后开始训练即可。<br>最后提到这种语义解析树的构建方式是指数级的，在训练和测试的时候，使用了beam search，什么意思呢，关于beam search我最早了解到的是在机器翻译这一块，比如我们训练好了一个翻译模型，那么对于翻译的句子，解码器对第i次输出，经过softmax后会有一个结果，一般就是取最大的对应的词作为第i次的输出，而使用beam search后，比如给定一个k，那么第i个输出的选取仍然是最大的对应的词，但是第i+1的输入会是第i次输出结果的前k个值分别作为第i+1的输入，也就是说每个值会有一个softmax，这里i+1的输出就会有k个softmax向量，选取最大的作为输出，选取前k个作为下一次的输入。<br>这里我的理解是：给定一个k，比如对于给定的一个句子，我们先进行映射，但是一个词可能有多个映射，我们只取前k个，那么这前k个映射后，后期的映射应该是每个都是k的扩张，最后的结果应该不可能只有k个。</p>
+<h3 id="Information-Extraction-over-Structured-Data-Question-Answering-with-Freebase"><a href="#Information-Extraction-over-Structured-Data-Question-Answering-with-Freebase" class="headerlink" title="Information Extraction over Structured Data: Question Answering with Freebase"></a>Information Extraction over Structured Data: Question Answering with Freebase</h3><p>信息抽取，相对于上一种语义解析提升超过了10%，这篇论文比上面的要好理解一些</p>
+<h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>讲到KBQA被限制的原因：</p>
+<ol>
+<li>知识资源</li>
+<li>计算能力</li>
+<li>稳健理解自然语言的能力</li>
+</ol>
+<h4 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach"></a>Approach</h4><p>给出一个问题的一个和多个主题(这里的主题就是实体节点)，在KB中找到对应的节点，通过对这个节点的几条进行分析，来提取结果。假设答案可以在KB中提取到，我们的目的是最大程度的获取到正确的答案。对于自然语言查询的一个挑战是：查询的不正式，比如<code>who cheated on celebrity A</code>，对于<code>cheated on</code>在数据库中的关系是不确定的。最好的解决办法是通过将一般的谓词（from ReVerb）映射到知识库中的关系上【这里的意思应该就是前一篇提到的通过关系两边的实体来实现关系的映射】</p>
+<h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>KBQA面临两个主要的挑战：模型和数据，模型的挑战是发现最好的有意义的问题表示</p>
+<h4 id="Graph-Features"><a href="#Graph-Features" class="headerlink" title="Graph Features"></a>Graph Features</h4><p>比如<code>what is the name of justin bieber brother</code>，这里会找到实体<code>justin biether</code>，然后在对应的知识库中找实体的<code>brother</code>，但是实体只有<code>sibling</code>，那么如何解决呢？下面讲解其过程：<br>在回答上述查询的时候需要考虑多重限制，查找一个人的名字基于如下规则：</p>
+<ol>
+<li>依赖关系 <code>nsubj(what, name)</code>和<code>prep of(name, brother)</code>表明问题寻找的是一个名字信息。</li>
+<li>依赖关系<code>prep of(name,brother)</code>表明名字是一个哥哥。(我们仍然不知道它是否是人名)</li>
+<li>依赖关系<code>nn(brother, bieber)</code>和事实：<code>Bieber</code>是一个人名且人的哥哥也应该是人，表明名字是人名。</li>
+</ol>
+<p>基于此做了如下的依存树修改：</p>
+<ol>
+<li>问题词，用<code>qword</code>表示，比如<code>what/who/how many</code>等</li>
+<li>问题关注点，用<code>qfocus</code>表示，是期望的答案类型，比如<code>name/money/time</code>，我们保持分析简单化，不适用问题分类，只是简单的提取<code>qword</code>和<code>qfocus</code>的名词依赖</li>
+<li>问题动词，用<code>qverb</code>表示，比如<code>is/play/take</code>等，从问题中提取主要的动词。问题动词对答案的类型来说是一个很好的暗示。比如，<code>play</code></li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.<a href="https://nlp.stanford.edu/pubs/semparseEMNLP13.pdf" target="_blank" rel="external">Semantic Parsing on Freebase from Question-Answer Pairs</a><br>2.<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.650.469&amp;rep=rep1&amp;type=pdf" target="_blank" rel="external">Information Extraction over Structured Data: Question Answering with Freebase</a><br>3.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/17/nlp07/" rel="next" title="seq2seq学习笔记">
+                <i class="fa fa-chevron-left"></i> seq2seq学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/23/nlp10/" rel="prev" title="NER学习笔记">
+                NER学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Semantic-Parsing-on-Freebase-from-Question-Answer-Pairs"><span class="nav-number">1.</span> <span class="nav-text">Semantic Parsing on Freebase from Question-Answer Pairs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Setup"><span class="nav-number">1.2.</span> <span class="nav-text">Setup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Approach"><span class="nav-number">1.3.</span> <span class="nav-text">Approach</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Information-Extraction-over-Structured-Data-Question-Answering-with-Freebase"><span class="nav-number">2.</span> <span class="nav-text">Information Extraction over Structured Data: Question Answering with Freebase</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduction"><span class="nav-number">2.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Approach-1"><span class="nav-number">2.2.</span> <span class="nav-text">Approach</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Background"><span class="nav-number">2.3.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Graph-Features"><span class="nav-number">2.4.</span> <span class="nav-text">Graph Features</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

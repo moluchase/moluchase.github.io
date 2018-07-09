@@ -128,7 +128,7 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0505.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0506.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/dl/dl0507.png">
-<meta property="og:updated_time" content="2017-12-20T08:56:40.000Z">
+<meta property="og:updated_time" content="2018-04-06T02:47:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Setting up your ML application">
 <meta name="twitter:description" content="神经网络和深度学习[1-2]神经网络和深度学习[1-3]神经网络和深度学习[1-4]改善深层神经网络：超参数调试、正则化以及优化【2-1】改善深层神经网络：超参数调试、正则化以及优化【2-2】改善深层神经网络：超参数调试、正则化以及优化【2-3】结构化机器学习项目 3Ng的深度学习视频笔记，长期更新">
@@ -429,7 +429,7 @@
 J(W^{[1]},b^{[1]},...,W^{[l]},b^{[l]})=\frac{1}{m}\sum_{i=1}^{m}L(\hat y^{(i)}-y^{(i)})+\frac{\lambda}{2m}\sum_{l=1}^{L}||W^{[l]}||_{F}^{2}</script><p>其中由于<script type="math/tex">W^{[l]}</script>的维度为<script type="math/tex">(n^{[l]},n^{[l-1]})</script>，因此<script type="math/tex">||W^{[l]}||_{F}^{2}=\sum_{i}^{n^{[l-1]}}\sum_{j}^{n^{[l]}}(W_{ji}^{[l]})^2</script><br>继续分析为什么加上正则化后，会让W变小（是W的绝对值变小，即趋近于0），分析反向传播过程，可以发现添加正则项后，只是对<script type="math/tex">dW^{[l]}</script>多添加了一个<script type="math/tex">\frac{\lambda}{m}W^{[l]}</script>项，那么对于权重更新时，假设之前的$dW^{[l]}=(for backprop)$，则现在的变为<script type="math/tex">(for backprop)+\frac{\lambda}{m}W^{[l]}</script>，即</p>
 <script type="math/tex; mode=display">
 W^{[l]}=W^{[l]}- \alpha [(for backprop)+\frac{\lambda}{m}W^{[l]}]\\
-=(1-\frac{\alpha\lambda}{m})W^{[l]}=\alpha(for backprop)</script><p>注意到<script type="math/tex">(1-\frac{\alpha\lambda}{m})</script>恒小于1，也就是说加上正则项后，对W的影响是将W变为趋近于0的数。</p>
+=(1-\frac{\alpha\lambda}{m})W^{[l]}-\alpha(for backprop)</script><p>注意到<script type="math/tex">(1-\frac{\alpha\lambda}{m})</script>恒小于1，也就是说加上正则项后，对W的影响是将W变为趋近于0的数。</p>
 <h4 id="1-5-Why-regularization-reduces-overfitting"><a href="#1-5-Why-regularization-reduces-overfitting" class="headerlink" title="1.5 Why regularization reduces overfitting"></a>1.5 Why regularization reduces overfitting</h4><p>为什么正则化有利于预防过拟合呢，即为什么可以减少方差问题？<br>添加正则项可以避免数据权值矩阵过大，为什么L2正则可以减少过拟合，直观的理解是当<script type="math/tex">\lambda</script>设置很大的时候，权重矩阵会被设置为接近于0的值，即把多层隐藏单元的权重设置为0，消除了这些隐藏单元的影响，这样神经网络就会变成一个很小的网络，如同一个logistic回归单元，这样就将一个过拟合的网络变成了高偏差的网络，如下图红色箭头所示：<br><img src="/upload/essayimage/dl/dl0502.png" alt="dl0502"><br>但是很显然我们不会这样做，我们会选取一个<script type="math/tex">\lambda</script>，使得模型接近于上图的中间模型“just right”。<br>继续看下面这个例子，假设我们用的是双曲激活函数，如果z非常小，即当正则化参数<script type="math/tex">\lambda</script>很大时，激活函数的参数会相对小（即W会小，而z=wa+b）,那么双曲激活函数对于z而言，就是线性函数，每层激活都是线性的，那么深层网络也只能计算线性函数，不适合非常复杂的决策以及允许过度拟合数据集的非线性决策边界(原文：very non-linear decision boundaries that allow it to really overfit right to data sets)。<br>可以看到代价函数对于梯度下降的每一个调幅都单调递减，如果你实现的是正则化，J有一个新的定义，而原来的不带正则项的J可能看不到单调递减的现象，为了调试梯度下降，应该使用带有正则化项的J函数，否则J可能不会在所有调幅范围内都单调递减。【这一段没太明白？？？】</p>
 <h4 id="1-6-Dropout-regularization"><a href="#1-6-Dropout-regularization" class="headerlink" title="1.6 Dropout regularization"></a>1.6 Dropout regularization</h4><p>除了L2正则外，还有一个非常实用的正则化方法—“dropout”<br>假设训练的神经网络存在过拟合，dropout会遍历网络中的每一层，并设置消除神经网络中节点的概率，即假设每个节点被保留下来的概率是0.5，使用dropout后，就会将没被保留的节点删除，及其连线，如下图所示：<br><img src="/upload/essayimage/dl/dl0503.png" alt="dl0503"><br>实施dropout的方法：inverted dropout<br>以第三层为例，给定一个keep-prob(保留率)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">d3=np.random.rand(a3.shape[0],a3.sharp[1])&lt;keep-prob</div><div class="line">a3=np.multiply(a3,d3)</div><div class="line">a3/=keep-prob</div></pre></td></tr></table></figure></p>
 <p>这里之所以要做第三行的代码，是因为需要在删除后的效果和原来的一样，即不影响后面的期望，需要弥补神经元为0的元素<br>这里补充一下：为什么dropout可以降低过拟合？<br>直观的理解就是，每个节点都有可能被删除，因此网络不愿意将所有的赌注全部放在一个节点上，即不会给任意的输入加上过多的权重，因为它可能被删除。和L2正则的效果一样，实施dropout的结果就是它会压缩权重，并完成一些预防过拟合的外层正则化。<br>每层的keep-prob的值可能不同，对于含有很多神经元的层，可以将keep-prob设置成比较小的值。dropout是一种正则化方法，目的是为了预防过拟合，所以除非算法过拟合，不然不应该使用dropout，因此该方法在其它领域用的比较少(之于计算机视觉，因为视觉模型会有很多的参数，但是训练样本有很有限)。<br>dropout的一大缺点是代价函数J不再被明确定义，因为每次迭代都会随机移除一些节点，很难核查梯度下降，对于定义明确的代价函数J每次迭代后都会下降….因此使用Dropout时，先关闭dropout的功能(设置keep-prob=1)，确保J函数代缴递增，然后开启dropout函数。【关于此处，我不是太明白，后期实践实践】</p>
@@ -605,7 +605,7 @@ Check=\frac{||d\theta_{approx}-d\theta||_{2}}{||d\theta_{approx}||_{2}+||d\theta
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">103</span>
+                <span class="site-state-item-count">112</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -627,7 +627,7 @@ Check=\frac{||d\theta_{approx}-d\theta||_{2}}{||d\theta_{approx}||_{2}+||d\theta
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
