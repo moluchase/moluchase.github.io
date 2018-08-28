@@ -114,17 +114,26 @@
 
 
 
-<meta name="description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又能尽诉其理。">
+<meta name="description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又尽诉其理。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SVM原理深入理解">
 <meta property="og:url" content="http://yoursite.com/2018/08/27/ml02/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又能尽诉其理。">
+<meta property="og:description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又尽诉其理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-27T02:06:31.000Z">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0201.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0202.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0203.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0205.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0206.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0207.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0209.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0208.png">
+<meta property="og:updated_time" content="2018-08-27T14:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SVM原理深入理解">
-<meta name="twitter:description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又能尽诉其理。">
+<meta name="twitter:description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又尽诉其理。">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/ml/ml0201.png">
 
 
 
@@ -412,9 +421,162 @@
       
 
       
-        <p>以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又能尽诉其理。<br><a id="more"></a></p>
-<h3 id="SVM初步"><a href="#SVM初步" class="headerlink" title="SVM初步"></a>SVM初步</h3><p>SVM源于感知机，这里需要了解一下感知机</p>
-<h4 id="感知机原理"><a href="#感知机原理" class="headerlink" title="感知机原理"></a>感知机原理</h4><p>感知机是二分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，也就是说找出一个超平面，使得这个超平面能够将正负样本分在其两侧，即对于某个超平面</p>
+        <p>以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又尽诉其理。<br><a id="more"></a></p>
+<h4 id="感知机原理浅析"><a href="#感知机原理浅析" class="headerlink" title="感知机原理浅析"></a>感知机原理浅析</h4><p>感知机是二分类的线性分类模型，其输入为实例的特征向量，输出为实例的类别，也就是说找出一个超平面，使得这个超平面能够将正负样本分在其两侧。<br>给定数据集</p>
+<script type="math/tex; mode=display">
+T=\{(x_1,y_1),...(x_N,y_N)\}\\
+其中 x_i \in R^n,y_i \in \{+1,-1\}</script><p>即对于某个超平面<script type="math/tex">S</script></p>
+<script type="math/tex; mode=display">
+w \cdot x +b=0</script><p>能够将数据集中的正实例点和负实例点完全正确的划分到超平面的两侧，即对所有的<script type="math/tex">y_i</script>=+1的实例i，有<script type="math/tex">w \cdot x_i+b>0</script>，对所有<script type="math/tex">y_i=-1</script>的实例i，有<script type="math/tex">w \cdot x_i+b<0</script>，可以看出感知机的目的是找出一个超平面，将两类样本尽可能的正确分到超平面的两侧，也就是说尽量少的误分类，那么如何衡量呢，即损失函数是什么呢，这里使用的是点到直线的距离，可以知道误分类的样本特点是：</p>
+<script type="math/tex; mode=display">
+-y_i(w \cdot x_i +b)>0</script><p>即所有误分类点到超平面S的距离和为：</p>
+<script type="math/tex; mode=display">
+-\frac{1}{||w||}\sum_{x_i \in M}y_i(w \cdot x_i+b)</script><p>其中M为误分类点的集合，而感知机的损失函数并没有考虑<script type="math/tex">\frac{1}{||w||}</script>，其损失函数如下：</p>
+<script type="math/tex; mode=display">
+L(w,b)=-\sum_{x_i \in M}y_i(w \cdot x_i+b)</script><p>至于为什么不考虑<script type="math/tex">\frac{1}{||w||}</script>，我觉得感知机的目的只是区分正负样本，而<script type="math/tex">\frac{1}{||w||}</script>可以看成常数，和正负没有关系，而且计算量也会增大，<script type="math/tex">\frac{1}{||w||}</script>的含义在SVM中会有解释。<br>那么有了损失函数，进行梯度求导更新就能解出最优解：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L(w,b)}{\partial w} = -\sum_{x_{i} \in M}{y_{i} x_{i}} \\
+\frac{\partial L(w,b)}{\partial b} = -\sum_{x_{i} \in M}{y_{i}} \\
+w^{t+1} = w^{t} + \sum_{x_{i} \in M}{y_{i} x_{i}} \\
+b^{t+1} = b^{t} + \sum_{x_{i} \in M}{y_{i}}</script><p>至于梯度更新部分会涉及到批梯度下降，随机梯度下降等等就不展开了。</p>
+<h4 id="SVM优化问题引出"><a href="#SVM优化问题引出" class="headerlink" title="SVM优化问题引出"></a>SVM优化问题引出</h4><p>SVM是建立在感知机的基础上的，这一点和LR也是相似的【这一块以后也会进行详细的对比】，感知机只是找出一个可以分离正负样本的超平面就可以了，但是问题是如果有多个可以将正负样本分离的超平面该怎么选择，或者说存在一个噪声点，可能会导致超平面的误判，这里就涉及到模型的鲁棒性和泛化能力。SVM的目的是找出能够正确划分训练数据集并且几何间隔最大的分离超平面。如下图所示：<br><img src="/upload/essayimage/ml/ml0201.png" alt="ml0201"><br>几何间隔：对于给定的数据集  T  和超平面<script type="math/tex">w\cdot x+b=0</script>，定义超平面关于样本点<script type="math/tex">\left( x_i,y_i \right)</script> 的几何间隔为</p>
+<script type="math/tex; mode=display">
+ \gamma _i=y_i\left( \frac{\boldsymbol{w}}{\lVert \boldsymbol{w} \rVert}\cdot \boldsymbol{x}_{\boldsymbol{i}}+\frac{b}{\lVert \boldsymbol{w} \rVert} \right)</script><p>超平面关于所有样本点的几何间隔的最小值为</p>
+<script type="math/tex; mode=display">
+ \gamma =\underset{i=1,2...,N}{\min}\gamma _i</script><p>也就是让<script type="math/tex">\gamma</script>最大，且所有的点都满足其几何间隔大于<script type="math/tex">\gamma</script>:</p>
+<script type="math/tex; mode=display">
+ \underset{\boldsymbol{w,}b}{\max}\ \gamma \\
+ s.t.\ \ \ y_i\left( \frac{\boldsymbol{w}}{\lVert \boldsymbol{w} \rVert}\cdot \boldsymbol{x}_{\boldsymbol{i}}+\frac{b}{\lVert \boldsymbol{w} \rVert} \right) \ge \gamma \ ,i=1,2,...,N</script><p>这里需要讲一下函数间隔，函数间隔就是不带<script type="math/tex">||w||</script>，即：</p>
+<script type="math/tex; mode=display">
+ \hat{\gamma _i}=y_i\left( \boldsymbol{w}\cdot \boldsymbol{x}_{\boldsymbol{i}}+b \right)</script><p>函数间隔的变化对优化问题没有影响，也就是说我们关心的间隔是<script type="math/tex">||w||</script>，即可以令<script type="math/tex">\hat{\gamma _i}=1</script>，那么优化问题就变为：</p>
+<script type="math/tex; mode=display">
+ \underset{\boldsymbol{w,}b}{\min}\ \frac{1}{2}\lVert \boldsymbol{w} \rVert ^2 \\
+ y_i\left( \boldsymbol{w}\cdot \boldsymbol{x}_{\boldsymbol{i}}+b \right) \ge 1,\ i=1,2,...,N</script><p>如上，SVM要优化的问题出来了，接下来就是如何进行优化了</p>
+<h4 id="拉格朗日乘子法"><a href="#拉格朗日乘子法" class="headerlink" title="拉格朗日乘子法"></a>拉格朗日乘子法</h4><p>对于无约束的优化问题来说：</p>
+<script type="math/tex; mode=display">
+\min f(x)</script><p>直接求导，让偏导数为0，解方程组即可，对于一般的问题直接使用这种方程求解析解就可以了，但是也有很多问题解不出解，所以需要用到梯度下降法，牛顿法，坐标下降法的数值迭代算法。</p>
+<p>进一步，对于满足一定约束条件下的最小化目标函数，比如下面：</p>
+<script type="math/tex; mode=display">
+\min f(x)\\
+s.t. \,\,h(x)=0</script><p>这个问题就不能单独的去求f(x)的极值点了，假设f(x)和h(x)如下图所示，f(x)显示的是投影在平面上的等值线<br><img src="/upload/essayimage/ml/ml0202.png" alt="ml0202"><br>取得极值点的情况只有一种，也就是h(x)和f(x)相切，因为如果相交，说明后面一定还有更小/大的值，这样就有如下条件：</p>
+<script type="math/tex; mode=display">
+∇f(x,y)=λ∇h(x,y)</script><p>然后和原来非方程h(x)=0联立起来就是在高等数学上看到的拉格朗日解法了。<br>那么更进一步，如果问题中既有等式约束，又有不等式约束呢，如下：</p>
+<script type="math/tex; mode=display">
+\min f(x)\\
+s.t.\,\,h(x)=0\\
+\,\,\,\,\,\,\,\,g(x)≤0</script><p>即可行域由原来的一条线变成了一块区域，那么能取得到的极值点的地方可能有两种情况：</p>
+<ol>
+<li>在h(x)和等值线相切的地方</li>
+<li>f(x)的极值点本身就在可行域里面</li>
+</ol>
+<p>如下图：<br><img src="/upload/essayimage/ml/ml0203.png" alt="ml0203"></p>
+<p>这里的h(x)理解为可行区域的边界，可以是h(x)本身，也可以是g(x)=0的情况。</p>
+<p>对于第一种情况，不等式约束就变成等式约束了，对<script type="math/tex">f(x)+λh(x)+μg(x)</script>用拉格朗日乘子法：</p>
+<script type="math/tex; mode=display">
+∇f(x)+λ∇h(x)+μ∇g(x)=0\\
+h(x)=0\\
+g(x)=0\\
+μ≥0</script><p>这部分解释<script type="math/tex">μ≥0</script>没有看懂。。。<br>对于第二种情况，不等式约束就相当于没有，对<script type="math/tex">f(x)+λh(x)</script>用拉格朗日乘子法：</p>
+<script type="math/tex; mode=display">
+∇f(x)+λ∇h(x)=0\\
+h(x)=0\\
+g(x)≤0</script><p>综合可得：</p>
+<script type="math/tex; mode=display">
+∇f(x)+λ∇h(x)+μ∇g(x)=0\\
+μg(x)=0\\
+μ≥0\\
+h(x)=0\\
+g(x)≤0</script><p>这就是KKT条件</p>
+<h4 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h4><p>一个优化问题可以使用两个角度来考虑，即主问题和对偶问题，在约束最优化问题中，常常利用拉格朗日对偶问题将原始问题转换为对偶问题，通过解对偶问题来得到原始问题的解。这样做是因为对偶问题的复杂度往往低于主问题。<br>这一部分看不懂，详见参考4<br>摘抄一句话吧：对于一般的优化问题，强对偶性通常不成立，但是若主问题是凸优化问题，如式中 f(x) 和 <script type="math/tex">g_j(x)</script> 均为凸函数，<script type="math/tex">h_i(x)</script>为仿射函数，且其可行域中至少有一点使不等式约束严格成立，则此时强对偶性成立。</p>
+<h4 id="SVM优化问题求解"><a href="#SVM优化问题求解" class="headerlink" title="SVM优化问题求解"></a>SVM优化问题求解</h4><p>SVM最优化问题使用前面提到的拉格朗日乘子法，得到：</p>
+<script type="math/tex; mode=display">
+L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right) =\frac{1}{2}\lVert \boldsymbol{w} \rVert ^2-\sum_{i=1}^N{\alpha _i\left( y_i\left( \boldsymbol{w}\cdot \boldsymbol{x}_{\boldsymbol{i}}+b \right) -1 \right)}</script><p>SVM满足前面说道的强对偶性(满足KKT条件，且优化问题是凸优化问题)，即有：</p>
+<script type="math/tex; mode=display">
+\underset{\boldsymbol{w,}b}{\min}\underset{\alpha _i\ge 0}{\max}\ L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right)= \underset{\alpha _i\ge 0}{\max}\underset{\boldsymbol{w,}b}{\min}\ L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right)</script><p>即将主问题（最小最大）变为对偶问题（最大最小），接下来求解对偶问题：<br>对<script type="math/tex">L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right)</script>  中的<script type="math/tex">\boldsymbol{w}</script> 和  b  的求偏导，并令其等于0，可得</p>
+<script type="math/tex; mode=display">
+\boldsymbol{w}=\sum_{i=1}^N{\alpha _iy_i\boldsymbol{x}_{\boldsymbol{i}}} \\
+\sum_{i=1}^N{\alpha _iy_i}=0</script><p>将以上两个等式带入拉格朗日目标函数，消去<script type="math/tex">\boldsymbol{w}</script>和  b  ， 得</p>
+<script type="math/tex; mode=display">
+ L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right) =\frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_j\left( \boldsymbol{x}_{\boldsymbol{i}}\cdot \boldsymbol{x}_{\boldsymbol{j}} \right)}}-\sum_{i=1}^N{\alpha _iy_i\left( \left( \sum_{j=1}^N{\alpha _jy_j\boldsymbol{x}_{\boldsymbol{j}}} \right) \cdot \boldsymbol{x}_{\boldsymbol{i}}+b \right) +}\sum_{i=1}^N{\alpha _i} 
+\\
+ =-\frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_j\left( \boldsymbol{x}_{\boldsymbol{i}}\cdot \boldsymbol{x}_{\boldsymbol{j}} \right)}}+\sum_{i=1}^N{\alpha _i}</script><p>即</p>
+<script type="math/tex; mode=display">
+\underset{\boldsymbol{w,}b}{\min}\ L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right) =-\frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_j\left( \boldsymbol{x}_{\boldsymbol{i}}\cdot \boldsymbol{x}_{\boldsymbol{j}} \right)}}+\sum_{i=1}^N{\alpha _i}</script><p>然后解外层，即：</p>
+<script type="math/tex; mode=display">
+\underset{\boldsymbol{\alpha }}{\max}\ -\frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_j\left( \boldsymbol{x}_{\boldsymbol{i}}\cdot \boldsymbol{x}_{\boldsymbol{j}} \right)}}+\sum_{i=1}^N{\alpha _i} 
+\\
+ s.t.\,\,\,\,\sum_{i=1}^N{\alpha _iy_i}=0 
+\\
+ \,\,\,\,\,\,\,\,\alpha _i\ge 0,\ i=1,2,...,N</script><p>把目标式子加一个负号，将求解极大转换为求解极小</p>
+<script type="math/tex; mode=display">
+ \underset{\boldsymbol{\alpha }}{\min}\ \frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_j\left( \boldsymbol{x}_{\boldsymbol{i}}\cdot \boldsymbol{x}_{\boldsymbol{j}} \right)}}-\sum_{i=1}^N{\alpha _i} 
+\\
+ s.t.\,\,\,\,\sum_{i=1}^N{\alpha _iy_i}=0 
+\\
+\,\,\,\,\,\,\,\,\alpha _i\ge 0,\ i=1,2,...,N</script><p>至于这个问题该如何求解呢，SMO算法。。。[暂时不看了]</p>
+<h4 id="软间隔"><a href="#软间隔" class="headerlink" title="软间隔"></a>软间隔</h4><p>实际情况下几乎不存在完全线性可分的数据，为了解决这个问题，引入软间隔这个概念，即允许某些点不满足约束：</p>
+<script type="math/tex; mode=display">
+y_j\left( \boldsymbol{w}\cdot \boldsymbol{x}_{\boldsymbol{j}}+b \right) \ge 1-\xi _i</script><p>采用hinge损失，将原优化问题改写为</p>
+<script type="math/tex; mode=display">
+\underset{\boldsymbol{w,}b,\xi _i}{\min}\ \frac{1}{2}\lVert \boldsymbol{w} \rVert ^2+C\sum_{i=1}^m{\xi _i} 
+\\
+ s.t.\,\,\,\, y_i\left( \boldsymbol{w}\cdot \boldsymbol{x}_{\boldsymbol{i}}+b \right) \ge 1-\xi _i \\
+\,\,\,\,\xi _i\ge 0\ ,\ i=1,2,...,N</script><p>即对每个松弛变量<script type="math/tex">\xi _i</script>，支付一个代价<script type="math/tex">\xi _i</script>，其中C&gt;0称为惩罚参数。C值大时对误分类的惩罚增大，C值小时对误分类的惩罚减小。<br>具体就不展开了。。。</p>
+<h4 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h4><p>上面在求解SVM的最优问题都是针对线性可分的，对于输入空间中非线性分类问题，可以通过非线性变换将它转换为某个维特征空间中的线性分类问题，在高维特征空间中学习线性支持向量机。在解完对偶问题后，目标函数中只涉及到样本之间的内积，而核函数就是使用某种映射替换其内积。<br>其中<script type="math/tex">K\left( x,z \right)</script>是一个函数，或正定核，意味着存在一个从输入空间到特征空间的映射 <script type="math/tex">\phi \left( x \right)</script> ，对任意输入空间中的  x,z  ，有</p>
+<script type="math/tex; mode=display">
+K\left( x,z \right) =\phi \left( x \right) \cdot \phi \left( z \right)</script><p>也就是将原来的</p>
+<script type="math/tex; mode=display">
+ \underset{\boldsymbol{\alpha }}{\min}\ \frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_j\left( \boldsymbol{x}_{\boldsymbol{i}}\cdot \boldsymbol{x}_{\boldsymbol{j}} \right)}}-\sum_{i=1}^N{\alpha _i}</script><p>变换为：</p>
+<script type="math/tex; mode=display">
+ \underset{\boldsymbol{\alpha }}{\min}\ \frac{1}{2}\sum_{i=1}^N{\sum_{j=1}^N{\alpha _i\alpha _jy_iy_jK\left( \boldsymbol{x}_{\boldsymbol{i}},\boldsymbol{x}_{\boldsymbol{j}} \right)}}-\sum_{i=1}^N{\alpha _i}</script><p>上面就是核函数的定义，将一个低维空间映射到高维空间。<br>这里有两个问题需要解决：</p>
+<ol>
+<li>为什么核函数要将低维空间映射到高维空间，核函数的目的，也就是为什么使用核函数后线性可分</li>
+<li>核函数如何选择</li>
+</ol>
+<p>关于低维向高维扩展，也就是增加维度信息(便于超平面区分)<br>知乎上有一篇讲的还算比较直观，如下：<br>kernel 的作用就是把你的数据集上下左右前后拉扯揉捏，直到你一刀下去正好把所有的0分到一边，所有的1分到另一边。这个上下左右前后拉扯揉捏的过程就是你的kernel. 不管是svm还是cnn，都可以这样来解释[摘抄自5]<br><img src="/upload/essayimage/ml/ml0205.png" alt="ml0205"><br>比如上面这个例子，右边的红蓝点无法直接一刀切开。那如果你把所有的蓝色点往下拉，把所有的红色点往上推，那你就可以一刀把他们从中间劈开了。那这个推拉的过程就是kernel干的事。<br>在这个例子里，这个函数如下</p>
+<script type="math/tex; mode=display">
+[x_1,x_2]=[x_1,x_2,x_1^2+x_2^2]</script><p>再有一个例子如下图：<br><img src="/upload/essayimage/ml/ml0206.png" alt="ml0206"><br>将其映射到三维空间上，新坐标如下计算：</p>
+<script type="math/tex; mode=display">
+x_1=x_1^2\\
+x_2=x_2^2\\
+x_3=\sqrt{2}x_1x_2</script><p>映射后的结果如下图：<br><img src="/upload/essayimage/ml/ml0207.png" alt="ml0207"></p>
+<h4 id="SVM中常用的核函数"><a href="#SVM中常用的核函数" class="headerlink" title="SVM中常用的核函数"></a>SVM中常用的核函数</h4><p>【补充LibSVM和LibLinear<br>LIBSVM是一套完整的SVM模型实现，用户可以在LIBSVM中使用核函数来训练非线性分类器，也可以使用更基础的线性SVM，而LIBLINEAR是一个针对线性分类场景而设计的工具包，除了支持线性SVM外，还支持线性Logistic Regression<br>区别如下：</p>
+<ol>
+<li>凡是确定使用线性分类器的场景，一定使用LIBLINEAR而不是LIBSVM</li>
+<li>如果样本量较大，比如达到10万以上规模，LIBSVM很难处理了，如果线性分类器的效果实在不好，只能采用人工构造特征+LIBLINEAR方式，或者采用其他分类器，如神经网络，随机森林</li>
+<li>对于高维稀疏数据，典型的如文本向量空间表示，一般采用线性分类器</li>
+<li>对于样本量和维度都不算太大的问题，且没有对预测的效率过分要求，都可以使用LIBSVM，一般其能够达到更高的精度</li>
+</ol>
+<p>】</p>
+<p>这里参考6翻译过来[英文文章的严谨性中文简直无法相比…，以后再也不看中文的了]<br>SVM要求优化如下问题：<br><img src="/upload/essayimage/ml/ml0209.png" alt="ml0209"><br>其中<script type="math/tex">x_i</script>通过使用函数<script type="math/tex">\phi</script>被映射到更高维度的空间，<script type="math/tex">K(x_i,x_j)=\phi(x_i)^T\phi(x_j)</script>被叫做核函数，一般核函数有如下几种：<br><img src="/upload/essayimage/ml/ml0208.png" alt="ml0208"><br>关于如何选取核函数有如下几条：</p>
+<ol>
+<li>如果特征比较大，我们不需要将数据映射到一个更高维的空间，因此，非线性映射不能提高其表现，使用线性核就足够了，我们仅需要选择参数C。</li>
+<li>当特征数量远大于样本数量时（经常出现在生物信息学中），同时使用RBF和linear kernels，得出的结论是两者是可比较的，因此不需要去映射数据。</li>
+<li>当特征数量和样本数量都很大时（经常出现在文档分类），一般使用LIBLINEAR，因为LIBSVM非常耗时。</li>
+<li>当样本数量远大于特征数量时，经常会将数据映射到高维空间中去，如果你更喜欢使用线性核，可以使用LIBLINEAR</li>
+</ol>
+<h4 id="SVM-n问"><a href="#SVM-n问" class="headerlink" title="SVM n问"></a>SVM n问</h4><ol>
+<li><p>SVM的损失函数？<br>合页损失函数：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{N}max(0,1-y_i(wx_i+b))+\lambda ||w||^2</script></li>
+<li><p>支持向量机(support vector machine)为什么叫支持向量机<br>从损失函数的角度出发，如上式，可以看到并不是所有的样本都参与损失函数的计算，当样本点在间隔外就不参与计算，这就是支持向量机的来源</p>
+</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>其实即便是这样花很多时间去看SVM这一部分，仍然感觉有好多东西无法理解，而且越往深里看，需要掌握的东西越多，先攻克一点，后续慢慢琢磨</p>
+<ol>
+<li>为什么SVM要用拉格朗日，能不能直接找出损失函数，使用梯度下降法求解不就完了</li>
+<li>最后需要使用SMO算法的那步优化的式子中的x内积的含义是什么，为什么要在那一步使用核函数？</li>
+<li>。。。</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li>统计学习方法</li>
+<li><a href="https://zhuanlan.zhihu.com/p/31886934" target="_blank" rel="external">支持向量机—-原理篇</a></li>
+<li><a href="https://www.cnblogs.com/xinchen1111/p/8804858.html" target="_blank" rel="external">真正理解拉格朗日乘子法和KKT条件</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/35755150" target="_blank" rel="external">SVM详解(1)SVM基本型</a></li>
+<li><a href="https://www.zhihu.com/question/24627666" target="_blank" rel="external">机器学习有很多关于核函数的说法，核函数的定义和作用是什么</a></li>
+<li><a href="https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf" target="_blank" rel="external">A Practical Guide to Support Vector Classification</a></li>
+<li><a href="https://www.cnblogs.com/zhizhan/p/5001411.html" target="_blank" rel="external">LIBSVM与LIBLINEAR</a></li>
+</ol>
 
       
     </div>
@@ -481,6 +643,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/27/ml04/" rel="prev" title="LR原理深入理解">
+                LR原理深入理解 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -554,7 +720,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -631,7 +797,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM初步"><span class="nav-number">1.</span> <span class="nav-text">SVM初步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#感知机原理"><span class="nav-number">1.1.</span> <span class="nav-text">感知机原理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#感知机原理浅析"><span class="nav-number">1.</span> <span class="nav-text">感知机原理浅析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM优化问题引出"><span class="nav-number">2.</span> <span class="nav-text">SVM优化问题引出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拉格朗日乘子法"><span class="nav-number">3.</span> <span class="nav-text">拉格朗日乘子法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对偶问题"><span class="nav-number">4.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM优化问题求解"><span class="nav-number">5.</span> <span class="nav-text">SVM优化问题求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软间隔"><span class="nav-number">6.</span> <span class="nav-text">软间隔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核函数"><span class="nav-number">7.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM中常用的核函数"><span class="nav-number">8.</span> <span class="nav-text">SVM中常用的核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM-n问"><span class="nav-number">9.</span> <span class="nav-text">SVM n问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考"><span class="nav-number">10.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number"></span> <span class="nav-text">参考</span></a></div>
             
 
           </div>
