@@ -129,7 +129,7 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0207.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0209.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0208.png">
-<meta property="og:updated_time" content="2018-08-27T14:45:36.000Z">
+<meta property="og:updated_time" content="2018-08-31T06:04:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SVM原理深入理解">
 <meta name="twitter:description" content="以前看统计学习方法这本书虽然将其中的公式都推导了一遍，但是仍然没有理解其中的算法原理，如今面试发现频频被问到，而且非常深入，准备花点时间好好捋一捋，现在发现对一个算法的深入理解比起简单的调用和之前的理解来说太难了，而且包括知乎上的讲解也很难有一篇文章能够将原理讲的明明白白的，读起来总是觉得欠缺点什么，自己将学习过程记录下来，或是借鉴别人的思想，或是自己的理解，希望能即简明又尽诉其理。">
@@ -513,7 +513,18 @@ L\left( \boldsymbol{w,}b,\boldsymbol{\alpha } \right) =\frac{1}{2}\lVert \boldsy
 \\
  s.t.\,\,\,\,\sum_{i=1}^N{\alpha _iy_i}=0 
 \\
-\,\,\,\,\,\,\,\,\alpha _i\ge 0,\ i=1,2,...,N</script><p>至于这个问题该如何求解呢，SMO算法。。。[暂时不看了]</p>
+\,\,\,\,\,\,\,\,\alpha _i\ge 0,\ i=1,2,...,N</script><p>至于这个问题该如何求解呢，SMO算法</p>
+<h4 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h4><p>这里只是简单提一下，详细参考8或其它。<br>由前面的推导我们得到如下表达式：</p>
+<script type="math/tex; mode=display">
+min \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_{i}\alpha_{j}y^{i}y^{j}K(X^{i}.X^{j})-\sum_{i=1}^{m}\alpha_{i}\\
+s.t. \sum_{i=1}^{m}\alpha_{i}y^{i}=0\\
+0\le \alpha_{i}\leq C</script><p>SMO在整个二次规划的过程总共干了两件事：</p>
+<ul>
+<li>选取一对参数<script type="math/tex">\left( \alpha _i,\alpha _j \right)</script></li>
+<li>固定<script type="math/tex">\vec \alpha</script>向量的其他参数，将<script type="math/tex">\left( \alpha _i,\alpha _j \right)</script>代入上述表达式进行求最优解获得更新后的<script type="math/tex">\left( \alpha _i,\alpha _j \right)</script></li>
+</ul>
+<p>SMO不断执行这两个步骤直至收敛。<br>我们最终优化的是权重w，因为w的值是受<script type="math/tex">\alpha _i</script>的控制的，因此需要求解<script type="math/tex">\alpha _i</script>。</p>
+<p>问题又来了，为什么要使用SMO算法，一般的优化问题不都是使用梯度下降吗？<br>可以使用梯度下降训练SVM，不过SVM的目标函数是一个凸优化问题，利用凸优化理论求解训练速度更快。(参考9)<br>又有问题了，既然使用SMO算法更快，那么为什么SVM和LR相比，都说LR更快，LR到底快在哪里呢？</p>
 <h4 id="软间隔"><a href="#软间隔" class="headerlink" title="软间隔"></a>软间隔</h4><p>实际情况下几乎不存在完全线性可分的数据，为了解决这个问题，引入软间隔这个概念，即允许某些点不满足约束：</p>
 <script type="math/tex; mode=display">
 y_j\left( \boldsymbol{w}\cdot \boldsymbol{x}_{\boldsymbol{j}}+b \right) \ge 1-\xi _i</script><p>采用hinge损失，将原优化问题改写为</p>
@@ -561,6 +572,7 @@ x_3=\sqrt{2}x_1x_2</script><p>映射后的结果如下图：<br><img src="/uploa
 \sum_{i=1}^{N}max(0,1-y_i(wx_i+b))+\lambda ||w||^2</script></li>
 <li><p>支持向量机(support vector machine)为什么叫支持向量机<br>从损失函数的角度出发，如上式，可以看到并不是所有的样本都参与损失函数的计算，当样本点在间隔外就不参与计算，这就是支持向量机的来源</p>
 </li>
+<li>SVM为什么比LR慢</li>
 </ol>
 <h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>其实即便是这样花很多时间去看SVM这一部分，仍然感觉有好多东西无法理解，而且越往深里看，需要掌握的东西越多，先攻克一点，后续慢慢琢磨</p>
 <ol>
@@ -568,7 +580,7 @@ x_3=\sqrt{2}x_1x_2</script><p>映射后的结果如下图：<br><img src="/uploa
 <li>最后需要使用SMO算法的那步优化的式子中的x内积的含义是什么，为什么要在那一步使用核函数？</li>
 <li>。。。</li>
 </ol>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ol>
 <li>统计学习方法</li>
 <li><a href="https://zhuanlan.zhihu.com/p/31886934" target="_blank" rel="external">支持向量机—-原理篇</a></li>
 <li><a href="https://www.cnblogs.com/xinchen1111/p/8804858.html" target="_blank" rel="external">真正理解拉格朗日乘子法和KKT条件</a></li>
@@ -576,6 +588,9 @@ x_3=\sqrt{2}x_1x_2</script><p>映射后的结果如下图：<br><img src="/uploa
 <li><a href="https://www.zhihu.com/question/24627666" target="_blank" rel="external">机器学习有很多关于核函数的说法，核函数的定义和作用是什么</a></li>
 <li><a href="https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf" target="_blank" rel="external">A Practical Guide to Support Vector Classification</a></li>
 <li><a href="https://www.cnblogs.com/zhizhan/p/5001411.html" target="_blank" rel="external">LIBSVM与LIBLINEAR</a></li>
+<li><a href="https://www.zhihu.com/question/40546280" target="_blank" rel="external">SMO算法是干什么的？有什么作用？</a></li>
+<li><a href="https://www.zhihu.com/question/265751466/answer/298470700" target="_blank" rel="external">用梯度下降训练SVM会有什么问题？</a></li>
+<li></li>
 </ol>
 
       
@@ -720,7 +735,7 @@ x_3=\sqrt{2}x_1x_2</script><p>映射后的结果如下图：<br><img src="/uploa
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">116</span>
+                <span class="site-state-item-count">121</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -797,7 +812,7 @@ x_3=\sqrt{2}x_1x_2</script><p>映射后的结果如下图：<br><img src="/uploa
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#感知机原理浅析"><span class="nav-number">1.</span> <span class="nav-text">感知机原理浅析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM优化问题引出"><span class="nav-number">2.</span> <span class="nav-text">SVM优化问题引出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拉格朗日乘子法"><span class="nav-number">3.</span> <span class="nav-text">拉格朗日乘子法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对偶问题"><span class="nav-number">4.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM优化问题求解"><span class="nav-number">5.</span> <span class="nav-text">SVM优化问题求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软间隔"><span class="nav-number">6.</span> <span class="nav-text">软间隔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核函数"><span class="nav-number">7.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM中常用的核函数"><span class="nav-number">8.</span> <span class="nav-text">SVM中常用的核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM-n问"><span class="nav-number">9.</span> <span class="nav-text">SVM n问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考"><span class="nav-number">10.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number"></span> <span class="nav-text">参考</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#感知机原理浅析"><span class="nav-number">1.</span> <span class="nav-text">感知机原理浅析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM优化问题引出"><span class="nav-number">2.</span> <span class="nav-text">SVM优化问题引出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拉格朗日乘子法"><span class="nav-number">3.</span> <span class="nav-text">拉格朗日乘子法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对偶问题"><span class="nav-number">4.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM优化问题求解"><span class="nav-number">5.</span> <span class="nav-text">SVM优化问题求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMO算法"><span class="nav-number">6.</span> <span class="nav-text">SMO算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软间隔"><span class="nav-number">7.</span> <span class="nav-text">软间隔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核函数"><span class="nav-number">8.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM中常用的核函数"><span class="nav-number">9.</span> <span class="nav-text">SVM中常用的核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVM-n问"><span class="nav-number">10.</span> <span class="nav-text">SVM n问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考"><span class="nav-number">11.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

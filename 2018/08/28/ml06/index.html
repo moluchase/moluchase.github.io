@@ -1,0 +1,1005 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这里主要用来记录模型训练后，使用的评价指标等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="评价指标深入理解">
+<meta property="og:url" content="http://yoursite.com/2018/08/28/ml06/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="这里主要用来记录模型训练后，使用的评价指标等">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0601.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0603.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0602.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/ml0604.png">
+<meta property="og:updated_time" content="2018-08-29T09:19:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="评价指标深入理解">
+<meta name="twitter:description" content="这里主要用来记录模型训练后，使用的评价指标等">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/ml/ml0601.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/28/ml06/"/>
+
+
+
+
+
+  <title> 评价指标深入理解 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/28/ml06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                评价指标深入理解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T20:23:01+08:00">
+                2018-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/28/ml06/" class="leancloud_visitors" data-flag-title="评价指标深入理解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这里主要用来记录模型训练后，使用的评价指标等<br><a id="more"></a></p>
+<h4 id="PRF"><a href="#PRF" class="headerlink" title="PRF"></a>PRF</h4><p>精确率：在预测为正确的样本中实际正确的样本的占比<br>召回率：在实际正确的样本中被预测为正确的样本的占比<br>F1值：可以思考并联电阻<br>如下图所示：<br><img src="/upload/essayimage/ml/ml0601.png" alt="ml0601"><br>这幅图更加直观：<br><img src="/upload/essayimage/ml/ml0603.png" alt="ml0603"></p>
+<h4 id="ROC和AUC"><a href="#ROC和AUC" class="headerlink" title="ROC和AUC"></a>ROC和AUC</h4><p>ROC曲线的横坐标为FPR，纵坐标为TPR<br>FPR：实际中的负样本有多少被预测为正样本<br>TPR：实际中的正样本有多少被预测为正样本<br>绘制曲线ROC的方法是：模型会对不同的样本输出一个分数，绘图时，设定阈值k，将分数低于该阈值的判定为负样本，将分数高于该阈值的判定为正样本，这样就会有FPR和TPR值，继续设定阈值k，又会有一个坐标，将这些坐标值连起来就是ROC曲线<br>ROC曲线下的面积就是AUC<br>如下图所示：<br><img src="/upload/essayimage/ml/ml0602.png" alt="ml0602"><br>这里我理解一下：<br>阈值是从1开始，到0结束，阈值为1的时候，将分数小于1的样本归为负样本，可以知道一般模型对样本的打分都是小于1的，只能说是无限接近1，因此其结果就是样本全部被预测为负样本，那么FPR和TPR就为0，随着阈值的减小，比如阈值等于0.9，将分数小于0.9的归为负样本，将分数大于0.9的归为正样本，也就是说如果模型足够好，这个点会越靠近(0,1)点，也就是最后ROC曲线下的面积越大</p>
+<p>AUC的物理意义：假设分类器的输出是样本属于正类的socre（置信度），则AUC的物理意义为，任取一对（正、负）样本，正样本的score大于负样本的score的概率</p>
+<h4 id="AUC和准确率"><a href="#AUC和准确率" class="headerlink" title="AUC和准确率"></a>AUC和准确率</h4><p>对于不平衡的样本，准确率是没有用的，比如数据集中垃圾邮件占比10%，正常邮件占比90%，如果一个模型将所有的样本都认为是正常邮件，准确率是90%，但是模型没有一点分类效果</p>
+<h4 id="PRC和ROC的对比"><a href="#PRC和ROC的对比" class="headerlink" title="PRC和ROC的对比"></a>PRC和ROC的对比</h4><p>一般考虑样本不均衡的情况，分两种情况</p>
+<ol>
+<li>正样本远大于负样本<br>比如数据集中正负样本比例为，正样本：负样本=1000：1，将阈值不断下降：<ul>
+<li>对于PRC曲线，刚开始可能只有100个样本被判为正样本，之后会越来越多，这样P永远是1，R在不断增加，好的分类器和坏的分类器的PRC曲线无法区分</li>
+<li>对于ROC曲线，纵坐标一直增加，横坐标基本不变</li>
+</ul>
+</li>
+<li>正样本远小于负样本<br>拿垃圾邮件分类问题，垃圾邮件（正样本）：正常邮件(负样本)=1：1000，将阈值不断下降：<ul>
+<li>对于PRC曲线来说，也就是被判为垃圾邮件的比例越来越多，P会越来越低，R为1，如果模型比较好的话，曲线下降就比较缓慢，模型比较差的话，曲线下降会很陡</li>
+<li>对于ROC曲线来说，纵坐标是召回率，一直是1，横坐标表示负样本中有多少被判为正样本(即正常邮件中有多少被判为垃圾邮件)，因为正常邮件特别多，即便是有几个被误判，其比值也非常小，因此对于好模型和坏模型来说，ROC曲线不会有太大的变化</li>
+</ul>
+</li>
+</ol>
+<p>上面分析的比较粗略，总之知道ROC和PRC的横坐标和纵坐标的意义即可，PRC考虑的是正样本的情况，ROC同时考虑了正负样本的情况，正因为这样，对于样本不平衡的数据集而言，ROC表现得更加稳定</p>
+<h4 id="数据不均衡的处理"><a href="#数据不均衡的处理" class="headerlink" title="数据不均衡的处理"></a>数据不均衡的处理</h4><ol>
+<li><p>从算法内部出发</p>
+<ul>
+<li>损失函数加惩罚项<br>以三分类（类别名可标为0， 1， 2）为例，假设训练集三种类别数量分别为100000，1000， 100，其比例为1000:10:1。则在其损失函数对每类别添加权重weight = [1,10,1000]（注意：是类别数量比重的倒序，即数据少的weight需要大一点）</li>
+<li>改用其他机器学习算法<br>比如决策树就不会受到不均衡数据的影响(这个实质就是加惩罚项,存在质疑)</li>
+<li>修改算法<br>也就是说如果某一类样本特别多，就降低这类样本的阈值，比如A，B样本，如果A样本远大于B样本，模型对每个样本都会有一个分数，一般阈值设置为0.5，这里如果B样本比较少，大概率一个样本是A的可能性更高，那么将阈值调为0.6或者更高，即大于0.6的才为A样本。[纠正模型对训练数据不平衡的误判]</li>
+</ul>
+</li>
+<li><p>从数据的角度</p>
+<ul>
+<li>收集更多数据以补充小样本数据从而达到平衡</li>
+<li>过采样：拷贝一部分样本偏少的数据多份<br>优点：不会导致信息丢失，表现优异<br>缺点：增加了过度拟合的可能性</li>
+<li>欠采样：删除一部分样本偏多的数据，以达到平衡<br>优点：当数据集很大时，它可以通过减少训练数据样本来帮助改善运行时间和存储问题<br>缺点：丢弃了对于构建分类器可能很重要的信息，采样的结果可能是有偏采样</li>
+</ul>
+</li>
+<li><p>改变评价指标<br>PRF，ROC</p>
+</li>
+<li>集成技术<br>主要的目标是改善单个分类器的性能<br>如下图所示：<br><img src="/upload/essayimage/ml/ml0604.png" alt="ml0604"><br><strong>bagging</strong><br>优点：<br>（1）提高机器学习算法的稳定性和准确性<br>（2）减少差异<br>（3）克服过拟合<br>（4）改进分类器的错误分类率<br>（5）在嘈杂的数据环境中，bagging方法优于boosting方法[也就是说模型的鲁棒性强]<br>缺点：只有当基本分类器开始并不是很差的时候才有效，如果基分类器效果本来就差，最后的结果可能更差<br><strong>boosting</strong><br>Boosting是一种集合弱学习器的集合技术，可以创建一个能够做出准确预测的强大学习器。<br>弱学习器：当数据的微小变化引起分类模型较大的变化时，分类器学习算法模型被认为是弱学习器<br>在下一次迭代中，新分类器将更多权重放在那些在上一轮中被错误分类的情况中，有如下几种Boosting方法：<ul>
+<li>AdaBoost<br>优点：实现起来简单； 适用于任何分类问题，不容易过拟合<br>缺点：对嘈杂的数据和异常值敏感</li>
+<li>GBDT<br>拟合残差，通过梯度下降最小化损失函数<br>缺点：需要微调三个参数：收缩参数，树的深度，树的个数，需要对这些参数进行适当训练以获得良好的拟合，如果参数未能正确调整，可能会导致过度拟合。</li>
+<li>XGBoost<br>是GBDT的一种先进且高效实现<br>优点：它比GBDT快了10倍，因为它实现了并行处理，它非常灵活，用户可以定义自定义优化目标和评估标准 (不太懂，参考3)</li>
+</ul>
+</li>
+</ol>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ol>
+<li><a href="https://zhuanlan.zhihu.com/p/38183927" target="_blank" rel="external">不平衡数据集的机器学习方法</a></li>
+<li><a href="https://www.zhihu.com/question/30643044/answer/224360465" target="_blank" rel="external">精确率，召回率，F1值，ROC，AUC各自的优缺点是什么？</a></li>
+<li><a href="https://www.analyticsvidhya.com/blog/2017/03/imbalanced-classification-problem/" target="_blank" rel="external">How to handle lmbalanced Classification Problems in machine learning?</a></li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/28/ml05/" rel="next" title="过拟合和欠拟合问题分析">
+                <i class="fa fa-chevron-left"></i> 过拟合和欠拟合问题分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/29/ml07/" rel="prev" title="数据预处理方法详解">
+                数据预处理方法详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#PRF"><span class="nav-number">1.</span> <span class="nav-text">PRF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ROC和AUC"><span class="nav-number">2.</span> <span class="nav-text">ROC和AUC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AUC和准确率"><span class="nav-number">3.</span> <span class="nav-text">AUC和准确率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PRC和ROC的对比"><span class="nav-number">4.</span> <span class="nav-text">PRC和ROC的对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据不均衡的处理"><span class="nav-number">5.</span> <span class="nav-text">数据不均衡的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

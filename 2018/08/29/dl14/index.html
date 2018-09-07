@@ -1,0 +1,1026 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|Microsoft Yahei:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="面试过程中问到的一些深度学习中的东西总结。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络与梯度更新方面知识总结">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/dl14/index.html">
+<meta property="og:site_name" content="moluchase">
+<meta property="og:description" content="面试过程中问到的一些深度学习中的东西总结。。。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/dl1401.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/dl1402.png">
+<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/dl1403.png">
+<meta property="og:updated_time" content="2018-09-05T07:33:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="神经网络与梯度更新方面知识总结">
+<meta name="twitter:description" content="面试过程中问到的一些深度学习中的东西总结。。。">
+<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/ml/dl1401.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/dl14/"/>
+
+
+
+
+
+  <title> 神经网络与梯度更新方面知识总结 | moluchase </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0bfbafc8c8254a80a162ed15e4e48f48";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">moluchase</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">step by step</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/dl14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peng song">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/upload/image/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="moluchase">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                神经网络与梯度更新方面知识总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T20:17:20+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/29/dl14/" class="leancloud_visitors" data-flag-title="神经网络与梯度更新方面知识总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>面试过程中问到的一些深度学习中的东西总结。。。<br><a id="more"></a></p>
+<h4 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h4><p>sigmoid</p>
+<script type="math/tex; mode=display">
+\sigma (x)=\frac{1}{1+exp(-x)}\\
+\sigma^{'}(x)=\sigma(x)(1-\sigma(x))</script><p>sigmoid函数具有一切基本激活函数该有的功能</p>
+<p>tanh</p>
+<script type="math/tex; mode=display">
+\tanh(x)=\frac{exp(x)-exp(-x)}{exp(x)+exp(-x)}=2\sigma(2x)-1\\
+\tanh^{'}(x)=1-\tanh^{2}(x)</script><p>tanh就是变换后的sigmoid<br>tanh的优点：</p>
+<ul>
+<li>在实践中被发现可以更快的收敛(因为tanh是0中心对称的，在训练过程中梯度方向可能会有正有负，这样对比非0均值而言更容易收敛)</li>
+<li>梯度计算成本少(这个优点不太懂，对比与sigmoid吗？？？)</li>
+</ul>
+<p>ReLU的反向传播：不可导的地方用分段函数表示<br>ReLU主要用在计算机视觉方面<br>ReLU的优点：</p>
+<ul>
+<li>解决了梯度消失的问题(我看有提到解决梯度爆炸问题，这个我不太清楚，难道是左半部分梯度等于0，就解决的梯度爆炸吗？)</li>
+<li>计算方便，计算速度快，加速网络训练</li>
+</ul>
+<p>ReLU的缺点：</p>
+<ul>
+<li>输出不是以0为中心的(这一点，在sigmoid和tanh对比的时候提到过)</li>
+<li>如果梯度更新的过程中神经元的值小于0，ReLU的结果就是0，导致神经元死亡(通过降低学习率来解决)</li>
+</ul>
+<p>leakrelu<br>leakrelu就是为了解决relu的0区间带来的影响，其数学表达为：</p>
+<script type="math/tex; mode=display">
+leakrelu=\begin{equation} f(x)= \begin{cases} x, & {x\gt 0} \\\\ x*k, & {x\leq 0} \end{cases} \end{equation}</script><p>其中k是leak系数，一般选择0.1或者0.2，或者通过学习而来<br>leakrelu解决了0区间带来的影响，而且包含了relu的所有优点</p>
+<h4 id="梯度消失与梯度爆炸"><a href="#梯度消失与梯度爆炸" class="headerlink" title="梯度消失与梯度爆炸"></a>梯度消失与梯度爆炸</h4><p>发生在梯度更新的过程中，对于每层的求导而言，都会有一个W参数和激活函数的导数相乘的信息，那么如果有很多层的话，就会有多个这样的信息相乘，如果W中对应的值小于1，就会导致最后的结果趋于0（梯度消失），激活函数的导数值也是同样的，反之，如果他们的乘积大于1，相对的就会出现梯度爆炸<br>梯度消失的解决方案：</p>
+<ul>
+<li>改用其它激活函数：sigmoid激活函数导数的最大值是1/4，tanh导师最大值为1，但是relu正半轴导数恒等于1</li>
+<li>BN：在线性值y传入到激活函数前先通过一个BN的归一化，就是通过对每一层的输出做scale和shift的方法，通过一定的规范化手段，把每层神经网络任意神经元这个输入值的分布强行拉回到接近均值为0方差为1的标准正太分布，即严重偏离的分布强制拉回比较标准的分布，这样使得激活输入值落在非线性函数对输入比较敏感的区域，这样输入的小变化就会导致损失函数较大的变化，使得让梯度变大，避免梯度消失问题产生，而且梯度变大意味着学习收敛速度快，能大大加快训练速度。(此处有疑问：BN将传入到激活函数的值归一为均值近似为0，那么岂不是传入ReLU后有一半的值是0？？？[见数据预处理方法详解中对BN的解释])</li>
+<li>残差网络</li>
+<li>LSTM</li>
+</ul>
+<p>梯度爆炸的解决方案：</p>
+<ul>
+<li>梯度剪切：设定梯度阈值，将梯度限定到该阈值之内</li>
+<li>权重正则化：L1和L2正则，实质上Dropout也是(其实现就是不让模型过分依赖某些神经核，即降低该神经核对应的权重)</li>
+<li>BN</li>
+<li>残差网络</li>
+<li>LSTM</li>
+</ul>
+<h4 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h4><p><strong>卷积</strong><br>卷积核：局部性，即它只关注局部特征，局部的程度决定了卷积核的大小<br><strong>池化</strong><br>池化的本质是采样，即压缩特征<br>其意义主要有两点：</p>
+<ol>
+<li>减少参数</li>
+<li>增强鲁棒性(可以从采样的角度理解，具体参见1)</li>
+</ol>
+<p>关于池化层的反向传播：</p>
+<ol>
+<li>mean pooling<br>把某个元素的梯度等分为n份分配给前一层，和其前向计算过程相同，如下图：<br><img src="/upload/essayimage/ml/dl1401.png" alt="dl1401"></li>
+<li>max pooling<br>反向传播中只有前向传播过来的位置有值，其他位置为0，如下图：<br><img src="/upload/essayimage/ml/dl1402.png" alt="dl1402"></li>
+</ol>
+<h4 id="RNN，LSTM，GRU中"><a href="#RNN，LSTM，GRU中" class="headerlink" title="RNN，LSTM，GRU中"></a>RNN，LSTM，GRU中</h4><p>RNN这一部分我主要想提一下梯度消失的问题：<br>RNN中一层中共用一个参数W，对于一个普通的RNN网络如下：<br><img src="/upload/essayimage/ml/dl1403.png" alt="dl1403"><br>给出RNN的基本公式，定义损失为交叉损失函数：</p>
+<script type="math/tex; mode=display">
+s_{t}=f(Ux_{t}+Ws_{t-1}) \\
+\hat{y_{t}}=softmax(Vs_{t})\\
+E_{t}(y_{t},\hat{y_{t}})=-y_{t}log\hat{y_{t}}\\
+E(y,\hat{y})=\sum_{t}^{}{E_{t}(y_{t},\hat{y_{t}})}=-\sum_{t}^{}{y_{t}log\hat{y_{t}}}</script><p>对W进行求导，因为每个时间节点都在使用W，因此是一个求和的过程：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial W}=\sum_{t}^{}{\frac{\partial E_{t}}{\partial W}}</script><p>这里对t时刻的梯度分析：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_t}{\partial W}=\sum_{k=1}^t\frac{\partial E_t}{\partial y_t}\frac{\partial y_t}{\partial s_t}\frac{\partial s_t}{\partial s_k}\frac{\partial s_k}{\partial W}\\
+\frac{\partial s_t}{\partial s_k}=\prod_{j=k+1}^t\frac{\partial s_j}{\partial s_{j-1}}</script><p>这里的梯度求和的过程是这样的，比如对t时刻的梯度，除了受t时刻的输入影响外，还会受到t-1时刻，t-2时刻，… 等的影响，这里理解为长依赖，这正是RNN的优势所在，但是随着t的增加，越往前的时刻的输入对t的影响就越小，因为其对应的梯度值连乘的结果会严重受激活函数的导数与W乘积的影响，这样就掩盖了RNN的优势。</p>
+<p>LSTM和GRU就解决了这个问题，反向传播如上所示，其内部结构之前已经烂熟于心，这里就不叙述了。</p>
+<p>LSTM中为什么使用sigmoid和tanh，为什么不使用ReLU？<br>这里使用sigmoid可以理解为百分比的概念，而为什么使用tanh而不使用ReLU呢，因为LSTM的网络一般不会很深，而且LSTM解决了梯度消失的问题，不需要再使用ReLU了，不过当网络很深时，就会出现梯度消失的问题，可能需要使用ReLU。<br>为什么LSTM中要使用tanh：<br>The main problem in RNN is the vanishing gradient problem. Also, to keep the gradient in the linear region of the activation function, we need a function whose second derivative can sustain for a long range before going to zero.<br>Tanh is a good function with the above properties.<br>[不懂，和二阶导有啥关系？？？]</p>
+<h4 id="n问"><a href="#n问" class="headerlink" title="n问"></a>n问</h4><ol>
+<li>lstm网络参数数量计算</li>
+<li>lstm公式推导，前向传播公式</li>
+<li>bp推导</li>
+<li>cnn的卷积操作，cnn过滤器个数选择</li>
+</ol>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1.<a href="https://www.zhihu.com/question/49376084/answer/172483833" target="_blank" rel="external">如何理解卷积神经网络中的卷积和池化</a><br>2.<a href="https://zhuanlan.zhihu.com/p/25631496" target="_blank" rel="external">神经网络训练中的梯度消失和梯度爆炸</a><br>3.<a href="https://zhuanlan.zhihu.com/p/33006526" target="_blank" rel="external">详解深度学习中的梯度消失，爆炸原因及解决方法</a><br>4.<a href="https://blog.csdn.net/qq_21190081/article/details/72871704" target="_blank" rel="external">深度学习笔记(3)—-CNN中一些特殊环节的反向传播</a><br>5.<a href="https://github.com/maxim5/cs224n-winter-2017/blob/master/lecture_notes/cs224n-2017-notes5.pdf" target="_blank" rel="external">CS224n Lecture Notes: Part V</a><br>6.<a href="https://www.reddit.com/r/MachineLearning/comments/2t1rsp/lstm_question/" target="_blank" rel="external">LSTM question</a><br>7.<a href="https://cs224d.stanford.edu/lecture_notes/notes3.pdf" target="_blank" rel="external">CS224n Lecture Notes: Part III</a><br>8.<a href="https://stackoverflow.com/questions/40761185/what-is-the-intuition-of-using-tanh-in-lstm" target="_blank" rel="external">What is the intuition of using tanh in LSTM</a><br>9.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果觉得有帮助，给我打赏吧！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/upload/image/wechat.png" alt="Peng song WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/upload/image/alipay.png" alt="Peng song Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/29/ml07/" rel="next" title="数据预处理方法详解">
+                <i class="fa fa-chevron-left"></i> 数据预处理方法详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/29/ml08/" rel="prev" title="机器学习中的数学知识">
+                机器学习中的数学知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yODMzMy80OTA1"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/upload/image/head.png"
+               alt="Peng song" />
+          <p class="site-author-name" itemprop="name">Peng song</p>
+           
+              <p class="site-description motion-element" itemprop="description">海阔凭鱼跃，天高任鸟飞</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/moluchase" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/molu_chase/article/" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-csdn"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#激活函数"><span class="nav-number">1.</span> <span class="nav-text">激活函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度消失与梯度爆炸"><span class="nav-number">2.</span> <span class="nav-text">梯度消失与梯度爆炸</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CNN"><span class="nav-number">3.</span> <span class="nav-text">CNN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RNN，LSTM，GRU中"><span class="nav-number">4.</span> <span class="nav-text">RNN，LSTM，GRU中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n问"><span class="nav-number">5.</span> <span class="nav-text">n问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017/04 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peng song</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("i4ELzHGwKH3mMkXr4eMOdJjm-gzGzoHsz", "Mz3PflHjlldl1BtsxPz9VuhR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -114,19 +114,17 @@
 
 
 
-<meta name="description" content="这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：集成学习原理小结一文读懂集成学习Bagging与随机森林算法原理小结">
+<meta name="description" content="主要总结机器学习中常用的集成方法：boosting，bagging，stacking，这一部分最为重要，在面试的过程中也总是答不好，这里多花点时间将其相关的方面全部总结一遍。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习之集成学习">
 <meta property="og:url" content="http://yoursite.com/2017/12/05/ml03/index.html">
 <meta property="og:site_name" content="moluchase">
-<meta property="og:description" content="这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：集成学习原理小结一文读懂集成学习Bagging与随机森林算法原理小结">
+<meta property="og:description" content="主要总结机器学习中常用的集成方法：boosting，bagging，stacking，这一部分最为重要，在面试的过程中也总是答不好，这里多花点时间将其相关的方面全部总结一遍。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/upload/essayimage/ml0301.jpg">
-<meta property="og:updated_time" content="2017-12-06T11:14:42.000Z">
+<meta property="og:updated_time" content="2018-09-03T02:03:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习之集成学习">
-<meta name="twitter:description" content="这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：集成学习原理小结一文读懂集成学习Bagging与随机森林算法原理小结">
-<meta name="twitter:image" content="http://yoursite.com/upload/essayimage/ml0301.jpg">
+<meta name="twitter:description" content="主要总结机器学习中常用的集成方法：boosting，bagging，stacking，这一部分最为重要，在面试的过程中也总是答不好，这里多花点时间将其相关的方面全部总结一遍。">
 
 
 
@@ -414,10 +412,300 @@
       
 
       
-        <p>这里主要分三部分讲解：boosting，bagging，stacking，详细论述请参考下面给出的文章，本文基本上是结合这些文章再针对自己的理解的一个汇总：<br><a href="http://www.cnblogs.com/pinard/p/6131423.html" target="_blank" rel="external">集成学习原理小结</a><br><a href="http://www.xtecher.com/Xfeature/view?aid=7974" target="_blank" rel="external">一文读懂集成学习</a><br><a href="http://www.cnblogs.com/pinard/p/6156009.html" target="_blank" rel="external">Bagging与随机森林算法原理小结</a><br><a id="more"></a></p>
-<h3 id="boosting"><a href="#boosting" class="headerlink" title="boosting"></a>boosting</h3><h3 id="bagging"><a href="#bagging" class="headerlink" title="bagging"></a>bagging</h3><p>  bagging原理就是给定T个弱学习器，假设有m个训练样本，用来训练这T个弱学习器的样本是从这m个训练样本中有放回的选取m个样本(这就是bootstrap采样)进行训练，最后对这T个弱学习器采取结合策略来合并，对于弱学习器，一般使用决策树。对于合并多个弱学习器采用的方法：如果是分类问题，通常采用简单的投票法，得到最多票数的类别或者之一作为最终模型的输出；对于回归问题，通常使用简单的平均法，对T个弱学习器的得到的回归结果进行算术平均作为最终模型的输出。<br>  讲一下bootstrap采样：因为是有放回的采样，所以之前采样到的样本放回后有可能继续被采样到，这里每个样本被采样到的概率是<script type="math/tex">\frac{1}{m}</script>，不被采样到的概率是<script type="math/tex">1-\frac{1}{m}</script>。那么m次采样都没有被采样到的概率是<script type="math/tex">(1-\frac{1}{m})^m</script>，这里如果m趋近与无穷大，这个结果趋近于<script type="math/tex">\frac{1}{e}=0.368</script>，即bagging每轮随机采样的过程中，训练数据集中大约有36.8%的数据没有被采样到，这些数据被称为袋外数据，由于这些数据没有参与训练集模型的拟合，因此可以用来检测模型的泛化能力。<br>  这里讲到由于Bagging算法每次都进行采样来训练模型，因此泛化能力很强，对降低模型的方差有作用，而对模型的拟合程度会差，即模型的偏差会大一些<br>这里要理解上面的这句话，需要知道模型的方差，偏差，过拟合，欠拟合等概念<br>先给出下面一张图，可以说基本上把全部的知识都体现出来了<br><img src="/upload/essayimage/ml0301.jpg" alt="ml0301"><br>讲解几个概念：<br>偏差(bias)：学习算法的期望预测与真实结果的偏离程度，刻画了学习算法本身的拟合能力<br>方差(variance)：刻画的是同样大小的训练集的变动所导致学习性能的变化，刻画了数据扰动所造成的影响<br>欠拟合：模型的偏差过大，没有找出更多的特征<br>过拟合：模型的方差过大，特征过多<br>继续看上面的这个图，高偏差低方差的情况就是模型过于简单，需要寻找更多的特征来拟合模型；高偏差高方差就是模型不但对不同的数据集不稳定而且对真实数据预测不准，这个应该很少发生；低偏差高方差就是说预期的结果都落在真实结果的周围，过拟合</p>
-<p>具体参考知乎上的回答<a href="https://www.zhihu.com/question/27068705" target="_blank" rel="external">机器学习中的Bias(偏差)，Error(误差)，和Variance(方差)有什么区别和联系</a></p>
-<h3 id="stacking"><a href="#stacking" class="headerlink" title="stacking"></a>stacking</h3>
+        <p>主要总结机器学习中常用的集成方法：boosting，bagging，stacking，这一部分最为重要，在面试的过程中也总是答不好，这里多花点时间将其相关的方面全部总结一遍。</p>
+<a id="more"></a>
+<h3 id="DT"><a href="#DT" class="headerlink" title="DT"></a>DT</h3><p>决策树是一个树结构（可以是二叉树或非二叉树），适用于分类和回归，其方法是把特征空间划分成一系列矩阵，然后给每个矩阵赋值一个常数。<br>决策树的关键步骤是分裂属性，即在某个节点处按照某一特征属性的不同划分成不同的分支，其目标是让各个分裂子集尽可能的纯净(属于同一类别)；其关键是选择属性的度量准则<br>训练数据时，通过损失函数最小化原则构建决策树模型<br>决策树学习通常包括3个步骤：特征选择，决策树生成，决策树修剪<br>优点：模型具有可读性，分类速度快<br>缺点：容易过拟合，学习决策树是NP难题，数据集不平衡容易导致树模型产生偏差<br>实际使用技巧：</p>
+<ul>
+<li>对于拥有大量特征的数据决策树会出现过拟合的现象。获得一个合适的样本比例的特征十分重要，因为在高维空间只有少量的样本的树是十分容易过拟合的。</li>
+<li>考虑事先进行降维，使树更好的找到具有分辨性的特征</li>
+<li>为防止决策树偏向主导类，可以通过从每个类中抽取相等数量的样本来进行类平衡</li>
+</ul>
+<h4 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h4><p>熵表示随机变量不确定性的度量<br>设X是一个有限状态的离散型随机变量，其概率分布为:</p>
+<script type="math/tex; mode=display">
+P(X = x_i) = p_i,\ i=1,2,\cdots,n</script><p>则随机变量X的熵定义为</p>
+<script type="math/tex; mode=display">
+H(X)= - \sum_{i=1}^{n} p_{i}log(p_i)</script><p>熵越大，则随机变量的不确定性越大。</p>
+<p>条件熵<br>随机变量X给定的条件下，随机变量Y的条件熵H(Y|X)定义为：</p>
+<script type="math/tex; mode=display">
+H(Y|X) = \sum_{i=1}^{n}p_i H(Y|X=x_i)</script><p>其中，<script type="math/tex">p_i = P(X = x_i)</script>。</p>
+<p>信息增益<br>信息增益表示的是：得知特征X的信息而使得类Y的信息的不确定性减少的程度。<br>具体定义如下：<br>特征A对训练数据集D的信息增益g(D,A)定义为集合D的经验熵H(D)与特征A给定条件下D的经验条件熵H(D|A)之差，即</p>
+<script type="math/tex; mode=display">
+g(D,A)=H(D)-H(D|A)</script><p>一般地，熵H(Y)与条件熵H(Y|X)之差称为互信息(mutual information).</p>
+<h4 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h4><p>熵表示的是数据中包含的信息量大小。熵越小，数据的纯度越高，也就是说数据越趋于一致，这是我们希望的划分之后每个子节点的样子。<br>信息增益 = 划分前熵 - 划分后熵。信息增益越大，则意味着使用属性a来进行划分所获得的 “纯度提升” 越大 。也就是说，用属性a来划分训练集，得到的结果中纯度比较高。</p>
+<p>ID3的缺点：</p>
+<ul>
+<li>只能处理分类属性的数据，不能处理连续的数据</li>
+<li>划分过程会由于子集规模过小而造成统计特征不充分而停止</li>
+<li>ID3在选择根节点和各内部节点中的分支属性时，采用信息增益作为评价标准。信息增益的缺点是倾向于选择取值较多的属性，在有些情况下这类属性可能不会提供太多有价值的信息</li>
+<li>没有考虑过拟合的问题</li>
+<li>对缺失值的情况没有考虑</li>
+</ul>
+<h4 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h4><p>C4.5克服了ID3仅仅能够处理离散属性的分类问题，以及信息增益偏向选择值较多特征的问题，使用信息增益比来选择特征，同时C4.5也引入了剪枝，以及对缺失值的处理(这一部分参考6)<br>这里着重说一下C4.5的以下这几个改进</p>
+<ul>
+<li>处理连续属性：<br>将某个连续型特征的值按从小到大排序，比如为a1,a2,…,am，这样就有m-1个划分点，对这m-1个划分点进行信息增益计算，找到最好的特征点，其过程如同CART。</li>
+<li>信息增益比：<br>信息增益趋向于选择值较多的特征的问题，这个很容易理解，信息熵衡量的是被分类后其混乱程度，如同聚类一样，同样数量的样本，聚的簇越多，簇内的样本当然就越紧密了(熵小)，这里加了一个惩罚项，簇越多，值越大(是在同等情况下)，公式如下：<script type="math/tex; mode=display">
+g_R(D,A)=\frac{g(D,A)}{H_A(D)}</script>其中 <script type="math/tex">H_A(D)=-\sum_{i=1}^{n}{\frac{|D_i|}{|D|}log_2\frac{|D_i|}{|D|}}</script>， n 是特征 A 取值的个数</li>
+</ul>
+<p>决策树C4.5算法的不足</p>
+<ul>
+<li>决策树非常容易过拟合，但剪枝的算法有很多种，C4.5的剪枝策略有优化的空间，一般剪枝有两种思路，一种是预剪枝，即在生成决策树的时候就决定是否剪枝，另一种是后剪枝，即先生成决策树，再通过交叉验证来剪枝(CART中的剪枝就是采用后剪枝+交叉验证)</li>
+<li>C4.5生成的是多叉树，即一个父节点可以有多个节点，而计算机中一般来说二叉树模型比多叉数运算高效</li>
+<li>C4.5只能用于分类</li>
+<li>C4.5分裂策略使用了熵模型，里面有大量耗时的对数运算，如果是连续值，还有大量的排序运算</li>
+</ul>
+<h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>CART与ID3，C4.5不同之处在于CART生成的树必须是二叉树，其全称是分类与回归树(classification and regression tree)，既可以用于分类问题，又可以用于回归问题。<br>CART对C4.5进行了改进，其分类模型对比于C4.5:<br>其中在分裂策略上，C4.5使用熵模型，涉及大量的对数运算，而CART分类树算法使用基尼指数代替信息增益比，基尼系数代表了模型的纯度，基尼指数越小，模型越纯净。<br>假设有 K 个类别，样本点属于第k类的概率为<script type="math/tex">p_k</script>,则概率分布的基尼指数定义为：</p>
+<script type="math/tex; mode=display">
+Gini(p)=\sum_{k=1}^{K}p_{k}(1-p_k)=1-\sum_{k=1}^{K}p_{k}^{2}</script><p>在树的构建上，除了度量方式使用基尼指数外，与C4.5最大的区别就是CART使用二叉树，对于连续特征来说是一样的，但是对于离散特征而言就不同，比如被选中的特征A有三个类别A1,A2,A3，C4.5会在该节点下分裂为三个子树，但是CART采用的是不停的二分，比如上面的例子，CART会考虑将A分为{A1}和{A2,A3},{A1,A2}和{A3},{A1,A3}三种情况，然后分别对这三种情况找出基尼系数最小的组合来建立二叉树[这一点，在统计学习方法上和博客（参考7）上有出入，不知道是不是我理解有误]<br>统计学习方法中这样讲到：<br>如果样本集合D根据特征A是否取某一可能值a被分割为<script type="math/tex">D_1</script>和<script type="math/tex">D_2</script>两部分，则在特征A的条件下，集合D的基尼指数定义为：</p>
+<script type="math/tex; mode=display">
+Gini(D,A)=\frac{D_1}{D}Gini(D_1)+\frac{D_2}{D}Gini(D_2)</script><p>按上面的例子，统计学习方法其实是做了一个二分，是线性的（即是A1和不是A1的，是A2和不是A2的，是A3和不是A3的），而该博客中提到的是组合，这种复杂度就比较高了。<br><strong>有一个疑问</strong>：上面讲到二叉树模型比多叉树模型运行高效，但是构建二叉树的时间复杂度比多叉树要大很多，应该是多了一个循环，具体优势我觉得应该是构建后的查询的优势吧。</p>
+<p>回归树<br>使用平方误差最小化准则来选择特征并进行划分，又叫做最小二乘回归树，假设已将输入空间划分为 M 个单元<script type="math/tex">R_1,R_2,...,R_M</script>，即 M 个特征，并且在每个单元<script type="math/tex">R_m</script>上有一个固定的输出值<script type="math/tex">c_m</script>，于是回归树可以表示为:</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^{M}c_{m}I(x\in R_m)</script><p>处理连续特征的方法同CART分类树，只是在分裂的度量方式上有所改变：<br>当输入空间的划分确定时，可以用平方误差<script type="math/tex">\sum_{x_i \in R_m}(y_i - f(x_i))^2</script>来表示回归树对于训练数据的预测误差，用平方误差最小的准则求解每个单元上的最优值。<br>选择最优切分特征 j 和切分点 s ,具体做法为:</p>
+<script type="math/tex; mode=display">
+\min_{j,s}[\min_{c_1}\sum_{x_i\in R_1(j,s)}{(y_i-c_1)^2}+\min_{c_2}\sum_{x_i\in R_2(j,s)}{(y_i-c_2)^2}]</script><p>首先遍历特征 j ,对固定的切分特征 j 扫描切分点 s ,选择使上式达到最小值的对 (j,s)</p>
+<h4 id="剪枝"><a href="#剪枝" class="headerlink" title="剪枝"></a>剪枝</h4><p>剪枝算法用来防止决策树过拟合，提高泛化能力，剪枝分为预剪枝和后剪枝。<br>预剪枝是指在决策树的生成过程中，对每个节点在划分前先进行评估，若当前的划分不能带来泛化性能的提升，则停止划分，并将当前节点标记为叶节点。<br>后剪枝是指先从训练集生成一颗完整的决策树，然后自底向上对非叶节点进行考察，若将该节点对应的子树替换为叶节点，能带来泛化性能的提升，则将该子树替换为叶节点。<br>那么怎么来判断是否带来泛化性能的提升呢？最简单的就是留出法，即预留一部分数据作为验证集来进行性能评估</p>
+<p>决策树的损失函数如下：</p>
+<script type="math/tex; mode=display">
+C_{\alpha}(T)=\sum_{t=1}^{|T|}N_tH_t(T)+\alpha|T|\\
+H_t(T)=-\sum_k\frac{N_{tk}}{N_t}log\frac{N_{tk}}{N_t}</script><p>其中树T的叶子节点个数为|T|，t是树T的叶子节点，该叶节点有<script type="math/tex">N_t</script>个样本点，其中k类样本点有<script type="math/tex">N_{tk}</script>个，k=1，2，..,K，<script type="math/tex">H_t(T)</script>为叶节点t上的经验熵，<script type="math/tex">\alpha>=0</script>为参数</p>
+<p>剪枝过程如下：</p>
+<ul>
+<li>从生成算法的决策树<script type="math/tex">T_0</script>底端开始不断剪枝，直到<script type="math/tex">T_0</script>的根节点，形成一个子树序列<script type="math/tex">\{T_0,T_1,...,T_n\}</script><br>具体过程：对于固定的<script type="math/tex">\alpha</script>，一定存在使损失函数最小的子树，将其表示为<script type="math/tex">T_{\alpha}</script>，也就是说不断的增加<script type="math/tex">\alpha</script>，就会得到一系列的最优子树，直到<script type="math/tex">\alpha</script>大到根节点组成的单节点树最优为止[详见统计学习方法]</li>
+<li>通过交叉验证法在独立的数据集上对子序列进行测试，从中选择最优子树</li>
+</ul>
+<h3 id="决策树小结"><a href="#决策树小结" class="headerlink" title="决策树小结"></a>决策树小结</h3><p>优点：</p>
+<ul>
+<li>简单直观</li>
+<li>基本不需要预处理，不需要提前归一化</li>
+<li>使用决策树预测的代价是<script type="math/tex">O(log_2m)</script></li>
+<li>既可以处理离散值，也可以处理连续值</li>
+<li>可以处理多维度输出的分类问题</li>
+<li>可以通过交叉验证来选择模型，提高模型的泛化能力</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>非常容易过拟合[剪枝]</li>
+<li>受样本点的影响比较大[通过集成学习]</li>
+<li>容易陷入局部最优[通过集成学习]</li>
+<li>比较复杂的关系决策树学习不到，比如异或[使用神经网络]</li>
+<li>样本不平衡会严重影响决策树生成[可以通过调节样本权重]</li>
+</ul>
+<h3 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h3><p>先从训练集中用初始权重训练出一个弱学习器1，根据弱学习的学习误差率表现来更新训练样本的权重，使得之前的弱学习器1学习误差率高的训练样本点的权重变高，使得这些样本点在后面的弱学习器中能够得到足够的重视，在调整权重后重新训练弱学习期2，如此重复进行，直到弱学习器达到事先指定的数目t，最后将这t个弱学习器通过集合策略进行整合，得到最终的强学习器。<br>boosting的思想用如下公式表示：</p>
+<script type="math/tex; mode=display">
+F_m(x)=f_0+\alpha_1f_1(x)+...+\alpha_mf_m(x)</script><h4 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h4><p><strong>AdaBoost的核心是修改样本的权重，让学习器更看重权重大的样本</strong><br>提升方法面临两个问题：</p>
+<ul>
+<li>在每一轮，如何改变训练数据的概率分布或者权值分布。</li>
+<li>如何将弱分类器组合成强分类器。</li>
+</ul>
+<p>AdaBoost 的做法：</p>
+<ul>
+<li>提高那些被前一轮弱分类器错误分类样本的权值，降低那些被正确分类的样本的权值。这样一来，那些没有得到正确分类的数据，由于其权值的加大而受到后一轮弱分类器的关注；(这一点有点像样本不平衡的解决方案)</li>
+<li>采用加权多数表决。具体的，加大分类错误率低的分类器的权值，使其在表决中起较大作用，减少分类误差率大的弱分类器的权值，使其在表决中起较小作用。</li>
+</ul>
+<p>由上可以知道AdaBoost是一个加法模型：</p>
+<script type="math/tex; mode=display">
+f(x) = \sum_{m=1}^{M}\alpha_{m}G_{m}(x)</script><p>其中 <script type="math/tex">G_{m}(x)</script>为基学习器，<script type="math/tex">\alpha_{m}</script>为系数。<br>在第m步的时候，目标是最小化指定的损失函数<script type="math/tex">L(y,f(x))</script>，即 :</p>
+<script type="math/tex; mode=display">
+\min\limits_{(\alpha_{m}\,,\,G_{m})}\sum\limits_{i=1}^{N}L(y_{i}, \,\sum\limits_{m=1}^{M}\alpha_{m}G_{m}(x_{i})) \qquad</script><p>其中<script type="math/tex">(x_{1},y_{1}),(x_{2},y_{2}),\cdots(x_{N},y_{N})</script>为训练数据集，也就是说我们要学习的是<script type="math/tex">\alpha_{m}</script>和<script type="math/tex">G_m</script>，我们学习第m个基学习器的时候，前m-1个学习器是固定的，也就是说不再改变，这里体现了Boosting方法的一个好处，即更好的复用性，比如说数据改变了，或者其他之类的，不用在从新训练前面的模型，而是往后添加模型即可[这是我的理解，可能有误]<br>AdaBoost的损失函数是指数损失函数，形式如下：</p>
+<script type="math/tex; mode=display">
+​   L(y,\,f(x)) = e^{-yf(x)}</script><p>即我们现在的目标是在指数函数最小的情况下求得 <script type="math/tex">\alpha_{m}</script>和 <script type="math/tex">G_{m}(x)</script> 。</p>
+<script type="math/tex; mode=display">
+​  (\alpha_{m},G_{m}(x)) = \mathop{\arg\min}\limits_{(\alpha,G)}\sum\limits_{i=1}^{N}e^{-y_{i}f_{m}(x_{i})} = \mathop{\arg\min}\limits_{(\alpha,G)}\sum\limits_{i=1}^{N}e^{-y_{i}(f_{m-1}(x_{i}) + \alpha G(x_{i}))}</script><p>令 <script type="math/tex">w_{i}^{(m)} = e^{-y_{i}f_{m-1}(x_{i})}</script>，由于 <script type="math/tex">w_i^{(m)}</script>不依赖于 <script type="math/tex">\alpha</script> 和 <script type="math/tex">G(x)</script> ，所以可认为其是第m步训练之前赋予每个样本的权重。<br>这里的<script type="math/tex">G(x)</script>是一个基本分类器，这里我们假设是二分类：</p>
+<script type="math/tex; mode=display">
+G_m(x):X->\{-1,+1\}</script><p>于是前面的式子就变为了：</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{N}w_{i}^{(m)}e^{-y_i\alpha G(x_i)} = e^{-\alpha}\sum\limits_{y_{i}=G(x_{i})}w_{i}^{(m)} + e^{\alpha}\sum\limits_{y_i \neq G(x_i)}w_i^{(m)} \\
+
+​ = (e^{\alpha} - e^{-\alpha})\sum\limits_{i=1}^Nw_i^{(m)}\mathbb{I}(y_i \neq G(x_i)) + e^{-\alpha}\sum\limits_{i=1}^Nw_i^{(m)}</script><p>也就是说让误分类对应的<script type="math/tex">w_i^{(m)}</script>变小【这一部分的严格证明参考统计学习方法和参考11】，那么下一轮更新w即可。<br>由</p>
+<script type="math/tex; mode=display">
+w_{i}^{(m+1)} = e^{-y_{i}f_{m}(x_{i})} = e^{-y_{i}(f_{m-1}(x_{i}) + \alpha G(x_{i}))} = e^{-y_if_{m-1}(x_i)}e^{-y_i\alpha_mG_m(x_i)} = w_i^{(m)}e^{-y_i\alpha_mG_m(x_i)}</script><p>可以看到对于<script type="math/tex">\alpha_m>0</script>，若<script type="math/tex">y_i = G_m(x_i)</script> ，则 <script type="math/tex">w_i^{(m+1)} = w_i^{(m)}e^{-\alpha_m}</script> ，表明前一轮被正确分类样本的权值会减小； 若 <script type="math/tex">y_i \neq G_m(x_i)</script> ，则 <script type="math/tex">w_i^{(m+1)} = w_i^{(m)}e^{\alpha_m}</script>，表明前一轮误分类样本的权值会增大。</p>
+<p>AdaBoost算法流程</p>
+<p>输入： 训练数据集 <script type="math/tex">T = \left \{(x_1,y_1), (x_2,y_2), \cdots (x_N,y_N)\right \} ， y\in\left\{-1,+1 \right\}</script> ， 基学习器 <script type="math/tex">G_m(x)</script> ，训练轮数M</p>
+<ol>
+<li><p>初始化权值分布：<script type="math/tex">w_i^{(1)} = \frac{1}{N}\:, \;\;\;\; i=1,2,3, \cdots N</script></p>
+</li>
+<li><p>for m=1 to M:<br>(a) 使用带有权值分布的训练集学习得到基学习器<script type="math/tex">G_m(x)</script>:</p>
+<script type="math/tex; mode=display">
+​  G_m(x) = \mathop{\arg\min}\limits_{G(x)}\sum\limits_{i=1}^Nw_i^{(m)}\mathbb{I}(y_i \neq G(x_i))</script><p>(b) 计算 <script type="math/tex">G_m(x)</script>在训练集上的误差率：</p>
+<script type="math/tex; mode=display">
+​  \epsilon_m = \frac{\sum\limits_{i=1}^Nw_i^{(m)}\mathbb{I}(y_i \neq G_m(x_i))}{\sum\limits_{i=1}^Nw_i^{(m)}}</script><p>(c) 计算 <script type="math/tex">G_m(x)</script> 的系数：<script type="math/tex">\alpha_m = \frac{1}{2}ln\frac{1-\epsilon_m}{\epsilon_m}</script><br>(d) 更新样本权重分布：<script type="math/tex">w_{i}^{(m+1)} = \frac{w_i^{(m)}e^{-y_i\alpha_mG_m(x_i)}}{Z^{(m)}}\; ,\qquad i=1,2,3\cdots N</script><br>　　其中<script type="math/tex">Z^{(m)}</script> 是规范化因子， <script type="math/tex">Z^{(m)} = \sum_{i=1}^Nw^{(m)}ie^{-y_i\alpha_mG_m(x_i)}</script>，以确保所有的 <script type="math/tex">w_i^{(m+1)}</script> 构成一个分布。</p>
+</li>
+<li><p>输出最终模型： <script type="math/tex">G(x) = sign\left[\sum_{m=1}^M\alpha_mG_m(x) \right]</script></p>
+</li>
+</ol>
+<p>上面摘抄自10，但是一大段废话，其实只需要知道：AdaBoost中新生成的学习器和前面的学习器的区别在于样本的权重被改变了，而这个权重改变公式如下（以指数损失为例）：</p>
+<script type="math/tex; mode=display">
+w_{m+1,i}=\frac{w_{mi}}{Z_m}exp(-\alpha_my_iG_m(x_i))
+\\
+w_{m+1,i}=\left\{\begin{matrix}
+\frac{w_{mi}}{Z_m}e^{-a_m} &G_{m}(x_i)=y_i \\ 
+\frac{w_{mi}}{Z_m}e^{a_m} &G_m(x_i)\neq y_i 
+\end{matrix}\right.\\</script><p>对于上述公式只需要知道两点：</p>
+<ul>
+<li>其中<script type="math/tex">\alpha_m</script>表示的是第m个基学习器在整个加法模型的占比，这个值表示的是模型正确判断样本的权重和，即模型越准确，该值越高，改值参看前面部分。</li>
+<li>其改变权重的核心思想是，如果根据前面的权重学习到的模型将该样本误判了，下一个模型增加该样本的权重，否则，降低该样本的权重，具体的<script type="math/tex">G_{m}(x_i)=y_i</script>乘以的是一个小于1的数，<script type="math/tex">G_m(x_i)\neq y_i</script>乘以的是一个大于1的数，而这个数到底有多么的大于1或者小于1，要看该模型对样本判断的正确率</li>
+</ul>
+<p>这里我们可以知道基学习器学习的样本是带权重的，由上，如果是回归问题，仍然按照这个思路(以指数损失为例)，同样希望当前模型误判的样本权重在下一轮变大，反之变小，只不过不再是通过<script type="math/tex">y_iG_m(x_i)</script>来判断，因为该值不能说明问题，不过我们可以使用<script type="math/tex">|y_i-G_m(x_i)|</script>来判断，也就是说基学习器预测的结果和当前结果差距越大，那么我们就越增大这个样本的权重，那么更新方式就可以是如下公式：</p>
+<script type="math/tex; mode=display">
+w_{m+1,i}=\frac{w_{mi}}{Z_m}exp(\alpha_m|y_i-G_m(x_i)|)</script><p>当然上面这个思路只是我自己想的，实际上更新过程如下：<br>计算训练集上的最大误差：</p>
+<script type="math/tex; mode=display">
+E_k=\max|y_i-G_k(x_i|\,\,\,\,i=1,2,...,m</script><p>计算每个样本的相对误差(以线性误差为例)：</p>
+<script type="math/tex; mode=display">
+e_{ki}=\frac{|y_i-G_k(x_i)|}{E_k}</script><p>计算回归误差率：</p>
+<script type="math/tex; mode=display">
+e_k=\sum_{i=1}^{m}w_{ki}e_{ki}</script><p>计算弱学习器的系数：</p>
+<script type="math/tex; mode=display">
+\alpha_k=\frac{e_k}{1-e_k}</script><p>权重更新：</p>
+<script type="math/tex; mode=display">
+w_{k+1,i}=\frac{w_{ki}}{Z_k}\alpha_{k}^{1-e_{ki}}</script><p>具体参见11</p>
+<p>如此AdaBoost就讲完了，回想一下Boosting方法的思路，和梯度下降法非常像，比如我们想知道最优的w，先初始化一个<script type="math/tex">w_0</script>，然后通过求解损失函数的w的梯度，加上学习率，如下：</p>
+<script type="math/tex; mode=display">
+w=w-\alpha \,\,dw</script><p>来一步步逼近w的最优值，再来看AdaBoost方法，第一个基学习器通过权重得到了对样本的一个预测值，对权重使用第一个学习器进行更新，将误判的权重变高，这样第二个学习器就更加重视该样本，就比如最优值是1（样本的标签），第一个学习器将样本预测为-1，模型的结果为<script type="math/tex">-a_1*1</script>，由于第二个学习器足够重视该样本，这个样本在第二个学习器中就被预测为1，那么整个模型的预测值就是<script type="math/tex">-a_1+a_2</script>，也就是向最优值1移动，符合梯度下降的思想，也是Boosting所体现的核心思想。</p>
+<p>缺点：对异常数据敏感</p>
+<h4 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h4><p><strong>GBDT的核心：通过梯度下降获得最优值</strong><br>GBDT主要由三个概念组成：Regression Decision Tree，Gradient Boosting，和Shrinkage<br>回归树在前面已经讲到，这里主要涉及的是梯度提升和shrinkage<br>以一个问题来讲梯度提升的思想：<br>给定如下一个问题：</p>
+<script type="math/tex; mode=display">
+arg \min_x f(x)</script><p>一般的优化方法是使用梯度下降法，即如下过程：</p>
+<ol>
+<li>给定一个起点<script type="math/tex">x_0</script></li>
+<li>对i=1,2,..,K分别做如下迭代：<script type="math/tex; mode=display">
+x_i=x_{i-1}+\gamma_{i-1}*g_{i-1}\\
+g_{i-1}=-\frac{\partial f}{\partial x}|_{x=x_{i-1}}\,\,,\,\,表示f在x_{i-1}点的梯度</script></li>
+<li>直到<script type="math/tex">|g_{i-1}|</script>足够小，或者<script type="math/tex">|x_i-x_{i-1}|</script>足够小停止</li>
+</ol>
+<p>整个优化过程用加法表示如下：</p>
+<script type="math/tex; mode=display">
+x_k=x_0+\gamma_1*g_1+\gamma_2*g_2+...+\gamma_k*g_k</script><p>Gradient Boosting就是由此而来。<br>再来看GBDT的迭代过程，假设前一轮迭代过程得到的强学习器是<script type="math/tex">f_{t-1}(x)</script>，损失函数是<script type="math/tex">L(y,f_{t-1}(x))</script>，本轮的目标就是找到一个CART回归树模型的弱学习器<script type="math/tex">h_{t}(x)</script>，让本轮的损失函数<script type="math/tex">L(y,f_t(x))=L(y,f_{t-1}(x)+h_t(x))</script>最小。将<script type="math/tex">h_t(x)</script>类比成<script type="math/tex">g_t</script>，按照上述思路，就不难理解梯度提升的思想了。<br>梯度提升算法流程如下：<br>输入：训练数据<script type="math/tex">(x_1,y_1),(x_2,y_2),...,(x_N,y_N)</script>，可微损失函数<script type="math/tex">L(y,F(x))</script>，基本回归算法，迭代次数M<br>输出：训练数据对应的回归模型<script type="math/tex">F_M(x)</script><br>算法步骤：<br>第一步：初始化<script type="math/tex">F_0(x)</script>为常量：</p>
+<script type="math/tex; mode=display">
+F_0(x)=arg \min_{\rho}\sum_{i=1}^{N}L(y_i,\rho)</script><p>这里比如L选择平方损失函数，上式变为：</p>
+<script type="math/tex; mode=display">
+arg \min_{\rho}\sum_{i=1}^{N}\frac{1}{2}(y_i-\rho)^2</script><p>求导，令导函数等于0，得到极值：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^N(y_i-\rho)=0\\
+F_0(x)=\rho=\frac{1}{N}\sum_{i=1}^Ny_i</script><p>第二步：令<script type="math/tex">m=1,2,...,M</script>，按下面步骤求解<script type="math/tex">F_m(x)</script>:</p>
+<ol>
+<li>计算“伪残差”：<script type="math/tex; mode=display">
+r_{m,i}=-[\frac{\partial L(y_i,F(x_i))}{\partial F(x)}]_{F(x)=F_{m-1}(x)}\,\,,\,\,i=1,2,..,N</script></li>
+<li>使用基本回归算法拟合数据<script type="math/tex">(x_1,r_{m,1}),(x_2,r_{m,2}),..,(x_N,r_{m,N})</script>，得到<script type="math/tex">h_m(x)</script></li>
+<li>计算<script type="math/tex">\rho_m</script>:<script type="math/tex; mode=display">
+\rho_m=arg \min_{\rho}\sum_{i=1}^{N}L(y_i,F_{m-1}(x_i)+\rho h_m(x))</script>提一句：这里拟合的是梯度，但是梯度前面是需要加上学习率的，这里的<script type="math/tex">\rho</script>就是学习率，通过线性搜索使损失函数最小来得到最优的学习率</li>
+<li>更新<script type="math/tex">F_m</script>为：<script type="math/tex; mode=display">
+F_{m}(x)=F_{m-1}(x)+\rho_mh_m(x)</script></li>
+</ol>
+<p>第三步：训练数据对应的回归模型即为<script type="math/tex">F_M(x)</script></p>
+<p>对于GBDT而言，只是将基回归树设定为CART回归树了，具体如下：<br>输入：训练数据<script type="math/tex">(x_1,y_1),(x_2,y_2),...,(x_N,y_N)</script>，可微损失函数<script type="math/tex">L(y,F(x))</script>，迭代次数M<br>输出：训练数据对应的<script type="math/tex">F_M(x)</script><br>算法步骤：<br>第一步：初始化<script type="math/tex">F_0(x)</script>为常量：</p>
+<script type="math/tex; mode=display">
+F_0(x)=arg \min_{\rho}\sum_{i=1}^{N}L(y_i,\rho)</script><p>第二步：令<script type="math/tex">m=1,2,...,M</script>，按下面步骤求解<script type="math/tex">F_m(x)</script>:</p>
+<ol>
+<li>计算“伪残差”：<script type="math/tex; mode=display">
+r_{m,i}=-[\frac{\partial L(y_i,F(x_i))}{\partial F(x)}]_{F(x)=F_{m-1}(x)}\,\,,\,\,i=1,2,..,N</script></li>
+<li>使用CART回归树拟合数据<script type="math/tex">(x_1,r_{m,1}),(x_2,r_{m,2}),...,(x_N,r_{m,N})</script>，得到第m棵树的叶子节点区域<script type="math/tex">R_{m,j}</script>，其中<script type="math/tex">j=1,2,...,J_m</script></li>
+<li>对<script type="math/tex">j=1,2,..,J_m</script>计算：<script type="math/tex; mode=display">
+\rho_{m,j}=arg \min_{\rho}\sum_{x_i \in R_{m,j}}L(y_i,F_{m-1}(x_i)+\rho)</script>这里的<script type="math/tex">\rho_{m,j}=\rho_mc_{m,j}</script>，其中CART回归树为<script type="math/tex">h_m(x)=\sum_{j=1}^{J_m}c_{m,j}I(x \in R_{m,j})</script></li>
+<li>更新<script type="math/tex">F_m</script>为：<script type="math/tex; mode=display">
+F_m(x)=F_{m-1}(x)+\sum_{j=1}^{J_m}\rho_{m,j}I(x \in R_{m,j})</script></li>
+</ol>
+<p>第三步：训练数据对应的回归模型即为<script type="math/tex">F_M(x)</script></p>
+<p>Shrinkage的主要目的是避免过拟合，即每次走一小步逐渐逼近结果的效果要比每次迈一大步逼近结果的方式更容易避免过拟合。</p>
+<p><strong>GBDT分类问题</strong></p>
+<ol>
+<li>GBDT分类没有直接求解概率值，而是通过一步步迭代，让模型的概率值与真实的概率值(1/0)越来越接近</li>
+<li>做分类的时候，仍然用的是CART回归树，并且每一轮的y标签都会发生变化，只不过在每一轮模型得到y’后，用log似然函数的时候的y使用的是原始的y(即1/0)</li>
+<li>对于二分类，CART回归树不变，但是对于多分类，比如K分类，迭代M次，那么就构造了K*M棵CART回归树，比如对于第i次迭代，需要构造K个回归树，每棵树都是一个二分类(结果分布在0到1之间)</li>
+</ol>
+<p><strong>GBDT常见的损失函数</strong><br>分类问题一般有两种损失函数</p>
+<ol>
+<li>对数损失函数：<script type="math/tex; mode=display">
+L(y,f(x))=log(1+exp(−yf(x)))</script></li>
+<li>指数损失函数：<script type="math/tex; mode=display">
+L(y,f(x))=exp(−yf(x))</script></li>
+</ol>
+<p>回归算法常用的损失函数：</p>
+<ol>
+<li>均方差<script type="math/tex; mode=display">
+L(y,f(x))=(y−f(x))2</script></li>
+<li>绝对损失<script type="math/tex; mode=display">
+L(y,f(x))=|y−f(x)|</script></li>
+<li>Huber损失<script type="math/tex; mode=display">
+L(y,f(x))= \left\{\begin{matrix}
+\frac{1}{2}(y−f(x))^2 & |y−f(x)|≤δ\\ 
+δ(|y−f(x)|−\frac{δ}{2})& |y−f(x)|>δ
+\end{matrix}\right.</script></li>
+</ol>
+<p><strong>AdaBoost与GBDT</strong></p>
+<ol>
+<li>AdaBoost和GBDT在损失函数这一块不一样的地方是，AdaBoost目标是找到一个可以使当前损失函数最小的弱分类器，即让偏导数等于0求解即可，而GBDT里面的损失函数如果是指数损失，可以直接求解，但是其他的，就只能用梯度下降来求解</li>
+</ol>
+<p><strong>GBDT和RF</strong></p>
+<ol>
+<li>异常点少的样本集GBDT表现更加优秀，异常点多的样本集，随机森林表现更好</li>
+</ol>
+<p>树模型的并行化<br>待。。。</p>
+<h4 id="XGBoost"><a href="#XGBoost" class="headerlink" title="XGBoost"></a>XGBoost</h4><p>XGBoost是GBDT的一种高效实现<br>先解释一下泰勒公式：用函数在某点的信息描述其附近的取值，其初衷是用多项式来近似表示函数在某点周围的情况，定理如下：<br>设 n 是一个正整数。如果定义在一个包含 a 的区间上的函数 f 在 a 点处 n+1 次可导，那么对于这个区间上的任意 x，都有：</p>
+<script type="math/tex; mode=display">
+{\displaystyle f(x)=f(a)+\frac {f'(a)}{1!}(x-a)+\frac {f^{(2)}(a)}{2!}(x-a)^{2}+\cdots +\frac {f^{(n)}(a)}{n!}(x-a)^{n}+R_{n}(x).}</script><p>其中的多项式称为函数在a 处的泰勒展开式，剩余的<script type="math/tex">\displaystyle R_{n}(x)</script>是泰勒公式的余项，是<script type="math/tex">\displaystyle (x-a)^{n}</script>的高阶无穷小。</p>
+<p>XGBoost模型在第t步，对<script type="math/tex">x_i</script>的预测为：</p>
+<script type="math/tex; mode=display">
+\hat{y}_i^t= \hat{y}_i^{t-1} + f_t(x_i)</script><p>其中 <script type="math/tex">f_t(x_i)</script> 就是我们这次需要加入的新模型，即需要拟合的模型，此时，目标函数就可以写成：</p>
+<script type="math/tex; mode=display">
+\begin{split} Obj^{(t)} &= \sum_{i=1}^nl(y_i, \hat{y}_i^t) + \sum_{i=i}^t \Omega(f_i) \\ &= \sum_{i=1}^n l\left(y_i, \hat{y}_i^{t-1} + f_t(x_i) \right) + \Omega(f_t) + constant \end{split}\tag{1}</script><p>即此时最优化目标函数，就相当于求得了<script type="math/tex">f_t(x_i)</script>（也就是当前树模型），其中的<script type="math/tex">\Omega(f_t)</script>为树模型的正则项，表示如下：</p>
+<script type="math/tex; mode=display">
+\Omega(f_t)=\gamma T + \frac12 \lambda \sum_{j=1}^T w_j^2</script><p>其中<script type="math/tex">w_j</script>表示叶子节点对应的取值，T表示叶子节点的个数</p>
+<p>由泰勒级数我们将<script type="math/tex">f(x+\Delta x)</script>在x处二阶展开，如下：</p>
+<script type="math/tex; mode=display">
+f(x+\Delta x)\approx f(x)+f'(x)\Delta x +\frac{1}{2}f^{''}(x)\Delta x^2</script><p>将<script type="math/tex">\Delta x</script>当成<script type="math/tex">f_t(x)</script>，目标函数就变为如下式子：</p>
+<script type="math/tex; mode=display">
+Obj^{(t)} = \sum_{i=1}^n \left[ l(y_i, \hat{y}_i^{t-1}) + g_if_t(x_i) + \frac12h_if_t^2(x_i) \right] + \Omega(f_t) + constant</script><p>其中<script type="math/tex">g_{i}</script> 为损失函数的一阶导，<script type="math/tex">h_{i}</script>为损失函数的二阶导，注意这里的导是对 <script type="math/tex">\hat{y}_i^{t-1}</script>求导.<br>上面的式子对比与GBDT还是很明显的，利用了梯度的二阶导。<br>用<script type="math/tex">w_{q(x)}</script>表示树模型<script type="math/tex">f_t(x)</script>，其中q(x)是一个映射，将样本指向对应叶子节点，而<script type="math/tex">w_j</script>表示对应的叶子节点的值<br>假设<script type="math/tex">I_j=\{ i \vert q(x_i)=j \}</script>为第 j 个叶子节点的样本集合，根据上面的一些变换可以写成：</p>
+<script type="math/tex; mode=display">
+\begin{split} Obj^{(t)} &\approx \sum_{i=1}^n \left[ g_if_t(x_i) + \frac12h_if_t^2(x_i) \right] + \Omega(f_t) \\ &= \sum_{i=1}^n \left[ g_iw_{q(x_i)} + \frac12h_iw_{q(x_i)}^2 \right] + \gamma T + \frac12 \lambda \sum_{j=1}^T w_j^2 \\ &= \sum_{j=1}^T \left[(\sum_{i \in I_j}g_i)w_j + \frac12(\sum_{i \in I_j}h_i + \lambda)w_j^2 \right] + \gamma T \end{split}</script><p>由于一个叶子结点有多个样本存在，因此才有了<script type="math/tex">\sum_{i \in I_j}g_i</script>和 <script type="math/tex">\sum_{i \in I_j}h_i</script>这两项。<br>定义 <script type="math/tex">G_j=\sum_{i \in I_j}g_i ， H_j=\sum_{i \in I_j}h_i</script>，则上式可以写成：</p>
+<script type="math/tex; mode=display">
+Obj^{(t)} = \sum_{j=1}^T \left[G_jw_j + \frac12(H_j + \lambda)w_j^2 \right] + \gamma T</script><p>树的结构是固定的，即我们已经知道了每个叶子结点有哪些样本，所以 G_j 和 H_j 是确定的，但 w 不确定（ w 其实就是我们需要预测的值），那么令目标函数一阶导为0，则可以求得叶子结点 j 对应的值：</p>
+<script type="math/tex; mode=display">
+w_j^*=-\frac{G_j}{H_j+\lambda}</script><p>注意前面用泰勒级数只是引入了损失函数L的二阶导数信息，也就是说将损失函数简化成该表达式，那么让损失函数最小化，很显然进行求导就可以得到最小值，求导让导函数等于0：</p>
+<script type="math/tex; mode=display">
+w_j^*=-\frac{G_j}{H_j+\lambda}</script><p>目标函数的值可以化简为：</p>
+<script type="math/tex; mode=display">
+Obj = -\frac12 \sum_{j=1}^T \frac{G_j^2}{H_j+\lambda} + \gamma T</script><p>关于如何构建基学习器和原始的GBDT有点区别，具体过程如下：<br>a、从深度为0的树开始，对每个叶节点枚举所有的可用特征<br>b、 针对每个特征，把属于该节点的训练样本根据该特征值升序排列，通过线性扫描的方式来决定该特征的最佳分裂点，并记录该特征的最大收益（采用最佳分裂点时的收益）<br>c、 选择收益最大的特征作为分裂特征，用该特征的最佳分裂点作为分裂位置，把该节点生长出左右两个新的叶节点，并为每个新节点关联对应的样本集<br>d、回到第1步，递归执行到满足特定条件为止<br>那么如何计算上面的收益呢，很简单，仍然紧扣目标函数就可以了。假设我们在某一节点上二分裂成两个节点，分别是左（L）右（R），则分列前的目标函数是<script type="math/tex">-\frac12 [\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}] + \gamma</script>，分裂后则是<script type="math/tex">-\frac12 [ \frac{G_L^2}{H_L+\lambda} + \frac{G_R^2}{H_R+\lambda}] +2\gamma</script> ，则对于目标函数来说，分裂后的收益是（这里假设是最小化目标函数，所以用分裂前-分裂后）：</p>
+<script type="math/tex; mode=display">
+Gain=\frac12 \left[ \frac{G_L^2}{H_L+\lambda} + \frac{G_R^2}{H_R+\lambda} - \frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\right] - \gamma</script><p>关于为什么xgboost使用二阶导的原因：</p>
+<ol>
+<li>引入二阶导就相当于引入了加速度信息。</li>
+<li>我觉得使用二阶导只是为了模拟出一个损失函数的近似形式，因为到最后还是使用的一阶求导。</li>
+</ol>
+<h4 id="lightgbm"><a href="#lightgbm" class="headerlink" title="lightgbm"></a>lightgbm</h4><p>有时间就看看</p>
+<h3 id="bagging"><a href="#bagging" class="headerlink" title="bagging"></a>bagging</h3><p>  bagging原理就是给定T个弱学习器，假设有m个训练样本，用来训练这T个弱学习器的样本是从这m个训练样本中有放回的选取m个样本(这就是bootstrap采样)进行训练，最后对这T个弱学习器采取结合策略来合并，对于弱学习器，一般使用决策树。对于合并多个弱学习器采用的方法：如果是分类问题，通常采用简单的投票法，得到最多票数的类别或者之一作为最终模型的输出；对于回归问题，通常使用简单的平均法，对T个弱学习器的得到的回归结果进行算术平均作为最终模型的输出。<br>  讲一下bootstrap采样：因为是有放回的采样，所以之前采样到的样本放回后有可能继续被采样到，这里每个样本被采样到的概率是<script type="math/tex">\frac{1}{m}</script>，不被采样到的概率是<script type="math/tex">1-\frac{1}{m}</script>。那么m次采样都没有被采样到的概率是<script type="math/tex">(1-\frac{1}{m})^m</script>，这里如果m趋近与无穷大，这个结果趋近于<script type="math/tex">\frac{1}{e}=0.368</script>，即bagging每轮随机采样的过程中，训练数据集中大约有36.8%的数据没有被采样到，这些数据被称为袋外数据，由于这些数据没有参与训练集模型的拟合，因此可以用来检测模型的泛化能力。<br>  这里讲到由于Bagging算法每次都进行采样来训练模型，因此泛化能力很强，对降低模型的方差有作用，而对模型的拟合程度会差，即模型的偏差会大一些<br>这里要理解上面的这句话，需要知道模型的方差，偏差，过拟合，欠拟合等概念</p>
+<p>讲解几个概念：<br>偏差(bias)：学习算法的期望预测与真实结果的偏离程度，刻画了学习算法本身的拟合能力<br>方差(variance)：刻画的是同样大小的训练集的变动所导致学习性能的变化，刻画了数据扰动所造成的影响<br>欠拟合：模型的偏差过大，没有找出更多的特征<br>过拟合：模型的方差过大，特征过多<br>继续看上面的这个图，高偏差低方差的情况就是模型过于简单，需要寻找更多的特征来拟合模型；高偏差高方差就是模型不但对不同的数据集不稳定而且对真实数据预测不准，这个应该很少发生；低偏差高方差就是说预期的结果都落在真实结果的周围，过拟合</p>
+<h4 id="RF"><a href="#RF" class="headerlink" title="RF"></a>RF</h4><p>。。。</p>
+<h4 id="n问"><a href="#n问" class="headerlink" title="n问"></a>n问</h4><ol>
+<li>xgboost原理，怎么防止过拟合</li>
+<li>Boosting和bagging在不同情况下的选择</li>
+<li>gbdt的适用场景</li>
+<li>xgb，rf，lr优缺点及应用场景</li>
+<li>决策树怎么剪枝</li>
+<li>lightgbm优势</li>
+<li>xgboost+lr的优势</li>
+<li>gbdt如何进行分类</li>
+</ol>
+<h3 id="stacking"><a href="#stacking" class="headerlink" title="stacking"></a>stacking</h3><p>。。。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://www.zhihu.com/question/27068705" target="_blank" rel="external">机器学习中的Bias(偏差)，Error(误差)，和Variance(方差)有什么区别和联系</a></li>
+<li><a href="http://www.cnblogs.com/pinard/p/6131423.html" target="_blank" rel="external">集成学习原理小结</a></li>
+<li><a href="http://www.xtecher.com/Xfeature/view?aid=7974" target="_blank" rel="external">一文读懂集成学习</a></li>
+<li><a href="http://www.cnblogs.com/pinard/p/6156009.html" target="_blank" rel="external">Bagging与随机森林算法原理小结</a></li>
+<li><a href="http://sklearn.apachecn.org/cn/latest/modules/tree.html" target="_blank" rel="external">决策树</a></li>
+<li><a href="https://www.cnblogs.com/pinard/p/6050306.html" target="_blank" rel="external">决策树算法原理上</a></li>
+<li><a href="http://www.cnblogs.com/pinard/p/6053344.html" target="_blank" rel="external">决策树算法原理下</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/32877396" target="_blank" rel="external">机器学习面试干货精讲(1)</a></li>
+<li><a href="http://aandds.com/blog/ensemble-gbdt.html" target="_blank" rel="external">GBDT</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/37358517" target="_blank" rel="external">集成学习之Boosting-AdaBoost原理</a></li>
+<li><a href="https://www.cnblogs.com/pinard/p/6133937.html" target="_blank" rel="external">集成学习之AdaBoost算法原理小结</a></li>
+<li><a href="https://www.cnblogs.com/bentuwuying/p/6667267.html" target="_blank" rel="external">GBDT理论知识总结</a></li>
+<li><a href="http://statweb.stanford.edu/~jhf/ftp/trebst.pdf" target="_blank" rel="external">Greedy Function Approximation A Gradient Boosting Machine</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E6%B3%B0%E5%8B%92%E5%85%AC%E5%BC%8F" target="_blank" rel="external">泰勒公式</a></li>
+<li><a href="https://www.zybuluo.com/yxd/note/611571" target="_blank" rel="external">GBDT算法原理深入理解</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/41645263" target="_blank" rel="external">通俗易懂理解-GBDT算法原理</a></li>
+<li><a href="https://blog.csdn.net/a819825294/article/details/51206410" target="_blank" rel="external">xgboost原理</a></li>
+</ol>
+
       
     </div>
 
@@ -560,7 +848,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">116</span>
+                <span class="site-state-item-count">121</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -637,7 +925,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#boosting"><span class="nav-number">1.</span> <span class="nav-text">boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bagging"><span class="nav-number">2.</span> <span class="nav-text">bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stacking"><span class="nav-number">3.</span> <span class="nav-text">stacking</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DT"><span class="nav-number">1.</span> <span class="nav-text">DT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#信息熵"><span class="nav-number">1.1.</span> <span class="nav-text">信息熵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ID3"><span class="nav-number">1.2.</span> <span class="nav-text">ID3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C4-5"><span class="nav-number">1.3.</span> <span class="nav-text">C4.5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CART"><span class="nav-number">1.4.</span> <span class="nav-text">CART</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剪枝"><span class="nav-number">1.5.</span> <span class="nav-text">剪枝</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树小结"><span class="nav-number">2.</span> <span class="nav-text">决策树小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boosting"><span class="nav-number">3.</span> <span class="nav-text">Boosting</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AdaBoost"><span class="nav-number">3.1.</span> <span class="nav-text">AdaBoost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GBDT"><span class="nav-number">3.2.</span> <span class="nav-text">GBDT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XGBoost"><span class="nav-number">3.3.</span> <span class="nav-text">XGBoost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lightgbm"><span class="nav-number">3.4.</span> <span class="nav-text">lightgbm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bagging"><span class="nav-number">4.</span> <span class="nav-text">bagging</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RF"><span class="nav-number">4.1.</span> <span class="nav-text">RF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n问"><span class="nav-number">4.2.</span> <span class="nav-text">n问</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stacking"><span class="nav-number">5.</span> <span class="nav-text">stacking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
