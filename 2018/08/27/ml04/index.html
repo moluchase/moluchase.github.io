@@ -121,7 +121,7 @@
 <meta property="og:site_name" content="moluchase">
 <meta property="og:description" content="看似简单的LR其实要是捋起来估计也是SVM不相上下">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-29T13:46:20.000Z">
+<meta property="og:updated_time" content="2018-09-14T16:03:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LR原理深入理解">
 <meta name="twitter:description" content="看似简单的LR其实要是捋起来估计也是SVM不相上下">
@@ -488,13 +488,10 @@ s.t.\,\,\,\,E_p(f_i)-E_{p'}(f_i)=0,\,\,\,\,i=1,2,..n\\
 \\ P(y=0|x) = 1 - p(y=1|x)</script><p>发现逻辑回归其实就是最大熵模型在y=1时抽取x的特征的一种情况</p>
 <h4 id="n问LR"><a href="#n问LR" class="headerlink" title="n问LR"></a>n问LR</h4><ol>
 <li>LR中为什么要使用sigmoid？</li>
-<li>LR处理的特征是离散的还是连续的，<br>链接：<a href="https://www.nowcoder.com/discuss/98955?type=2&amp;order=0&amp;pos=281&amp;page=1" target="_blank" rel="external">https://www.nowcoder.com/discuss/98955?type=2&amp;order=0&amp;pos=281&amp;page=1</a><br>来源：牛客网</li>
+<li>LR处理的特征是离散的还是连续的，<br>LR处理的特征是离散的还是连续的？（连续的）；离散化，会有什么影响吗，比如一个特征取值0-1，需要离散化吗？（又是一脸蒙蔽！！！离散化对于树模型来说，应该是比较好的，但是LR，应该不用吧，我没有用过，哎，菜啊）；好，我们想想树是怎么做的，CART对于连续特征，也是二分的，如果我们先做好离散这件事，是不是会更好一点，对于LR来说，也是一样，是会有一定提升的。（没有太理解，想想也是吧，一个特征挤在0-1，可能造成的区分性没有那么明显，而离散化之后，加强了特征对于数据的区分度，不知道这么理解对不对，有大佬的话，不吝赐教）</li>
+<li></li>
 </ol>
-<p>LR处理的特征是离散的还是连续的？（连续的）；离散化，会有什么影响吗，比如一个特征取值0-1，需要离散化吗？（又是一脸蒙蔽！！！离散化对于树模型来说，应该是比较好的，但是LR，应该不用吧，我没有用过，哎，菜啊）；好，我们想想树是怎么做的，CART对于连续特征，也是二分的，如果我们先做好离散这件事，是不是会更好一点，对于LR来说，也是一样，是会有一定提升的。（没有太理解，想想也是吧，一个特征挤在0-1，可能造成的区分性没有那么明显，而离散化之后，加强了特征对于数据的区分度，不知道这么理解对不对，有大佬的话，不吝赐教）</p>
-<ol>
-<li><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1.统计学习方法<br>2.<a href="https://www.zhihu.com/question/24094554/answer/108247115" target="_blank" rel="external">如何理解最大熵模型里面的特征</a><br>3.<a href="https://zhuanlan.zhihu.com/p/36012167" target="_blank" rel="external">最大熵模型</a><br>4.</p>
-</li>
-</ol>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1.统计学习方法<br>2.<a href="https://www.zhihu.com/question/24094554/answer/108247115" target="_blank" rel="external">如何理解最大熵模型里面的特征</a><br>3.<a href="https://zhuanlan.zhihu.com/p/36012167" target="_blank" rel="external">最大熵模型</a><br>4.</p>
 
       
     </div>
@@ -638,7 +635,7 @@ s.t.\,\,\,\,E_p(f_i)-E_{p'}(f_i)=0,\,\,\,\,i=1,2,..n\\
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

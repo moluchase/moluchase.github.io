@@ -124,7 +124,7 @@
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/dl1401.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/dl1402.png">
 <meta property="og:image" content="http://yoursite.com/upload/essayimage/ml/dl1403.png">
-<meta property="og:updated_time" content="2018-09-07T09:04:01.000Z">
+<meta property="og:updated_time" content="2018-09-07T09:12:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络与梯度更新方面知识总结">
 <meta name="twitter:description" content="面试过程中问到的一些深度学习中的东西总结。。。">
@@ -484,7 +484,10 @@ E(y,\hat{y})=\sum_{t}^{}{E_{t}(y_{t},\hat{y_{t}})}=-\sum_{t}^{}{y_{t}log\hat{y_{
 <script type="math/tex; mode=display">
 \theta_j=\theta_j-\alpha \frac{\partial J(\theta)}{\partial \theta_j}</script><p>梯度下降法利用的是切线的斜率<br>牛顿法<br>假设损失函数<script type="math/tex">J(\theta)</script>具有二阶连续偏导数，若第k次迭代值为<script type="math/tex">x^{(k)}</script>（初始化任意一个值），则可将<script type="math/tex">f(x)</script>在<script type="math/tex">x^{(k)}</script>附近进行二阶泰勒展开：</p>
 <script type="math/tex; mode=display">
-f(x)=f(x^{k})+g_{k}^{T}(x-x^{(k)})+\frac{1}{2}(x-x^{(k)})^{T}H(x^{(k)})(x-x^{(k)})</script><h4 id="n问"><a href="#n问" class="headerlink" title="n问"></a>n问</h4><ol>
+f(x)=f(x^{k})+g_{k}^{T}(x-x^{(k)})+\frac{1}{2}(x-x^{(k)})^{T}H(x^{(k)})(x-x^{(k)})</script><p>其中<script type="math/tex">g_k</script>为f(x)的梯度向量在<script type="math/tex">x^{(k)}</script>的值，<script type="math/tex">H(x^{(k)})</script>是f(x)的二阶梯度矩阵(海赛矩阵)</p>
+<script type="math/tex; mode=display">
+H(x)=\bigg[\frac{\partial^2 f}{\partial x_i \partial x_j}\bigg]_{n\times n}</script><p>对损失函数求导：</p>
+<h4 id="n问"><a href="#n问" class="headerlink" title="n问"></a>n问</h4><ol>
 <li>lstm网络参数数量计算</li>
 <li>lstm公式推导，前向传播公式</li>
 <li>bp推导</li>
@@ -634,7 +637,7 @@ f(x)=f(x^{k})+g_{k}^{T}(x-x^{(k)})+\frac{1}{2}(x-x^{(k)})^{T}H(x^{(k)})(x-x^{(k)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
